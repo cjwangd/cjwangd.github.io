@@ -145,6 +145,35 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/03/02/java-%E8%AE%BE%E7%BD%AE-%E6%9C%AC%E5%9C%B0%E5%BA%93%E8%B7%AF%E5%BE%84/">
+        <p class="h4 index-header">java 设置 本地库路径</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">JNI 设置库文件路径1. Java的System.load 和 System.loadLibrary都可以用来加载库文件2.例如你可以这样载入一个windows平台下JNI库文件：System.load(&quot;C://Documents and Settings//TestJNI.dll&quot;); //绝对路径3. System.loadLibrary参数为库文件名例如你可以这样载入一个windows平台下JNI库文件
+System.loadLibrary (&quot;TestJNI&quot;);这里TestJNI必须在 java.library.path这一jvm变量所指向的路径中，可以通过如下方法获得该变量的值：
+System.getProperty(&quot;java.library.path&quot;);默认情况下，Windows平台下包含下面的路径：
+  1）和jre相关的目录  2）程序当前目录  3）Windows目录  4）系统目录(system32)  5）系统环境变量path指定的目录
+4.在linux下添加一个java.library.pat</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-02&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/01/27/webpack5-%E5%90%AF%E5%8A%A8webpack-dev-server-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/">
         <p class="h4 index-header">webpack5 启动webpack-dev-server 报错解决</p>
         
@@ -587,49 +616,11 @@ npm install --save-dev babel-preset-stage-2
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/12/24/SPING-CLOUD-GATEWAY-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
-        <p class="h4 index-header">SPING CLOUD GATEWAY 自定义负载均衡</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">问题微服务和航显设备通过socket连接，微服务端管理socket的连接，用户从web发送指令到航显设备执行。如果用户发送的指令到一台没有soket连接的微服务，那么控制指令将无法到达航显设备。
-解决思路用户发送的请求通过 spring cloud gateway负载，自定义负载均衡，发送请求的时候带航显设备连接的微服务ip，自定义负载根据ip去选择转发的服务器，这样请求就不会到达没有连接的微服务
-自定义负载均衡全局过滤器 LoadBalancerClientFilter根据自动配置规则，如果用户定义了LoadBalancerClientFilter ，就使用用户定义的
-package com.cares.gateway.filter;
-
-import com.cares.gateway.rules.FidsLoadBalanceRule;
-import com.google.common.collect.Maps;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.c</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/SPRINGCLOUD">SPRINGCLOUD</a>&nbsp;
-          &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   

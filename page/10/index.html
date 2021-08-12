@@ -145,6 +145,74 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/06/28/RABBITMQ-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/">
+        <p class="h4 index-header">RABBITMQ 集群安装</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1 环境
+
+
+节点
+主机名
+ip地址
+操作系统版本
+
+
+
+节点一
+midware1
+10.5.11.74
+centos 7.5
+
+
+节点二
+midware2
+10.5.11.75
+centos 7.5
+
+
+2 设置hostname2.1 添加 hostsvi /etc/hosts
+
+10.5.11.74 midware1
+10.5.11.75 midware22.2 hostname节点一
+hostnamectl set-hostname midware1节点二
+hostnamectl set-hostname midware23 集群安装3.1 节点一安装软件rpm -ivh socat-1.7.3.2-2.el7.x86_64.rpm
+rpm -ivh erlang-18.1-1.el6.x86_64.rpm
+rpm -ivh rabbitmq-server-3.6.8-1.el6.noarch.rpm3.2 节点一配置systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+rabbitmqctl add_u</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-06-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/rabbit%20mq">rabbit mq</a>&nbsp;
+          
+            <a href="/tags/%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85">集群安装</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/05/18/RABBITMQ-%E5%8A%A8%E6%80%81%E7%9B%91%E5%90%AC%E4%B8%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2/">
         <p class="h4 index-header">RABBITMQ 动态监听与消息转换</p>
         
@@ -517,112 +585,11 @@ ENTRYPOINT [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;while true; do  sleep 1
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E8%A3%85%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">内网安装区块链网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装规划域名说明
-
-
-域名
-说明
-
-
-
-orderer.cares.com
-排序节点
-
-
-peer0.nkg.com
-nkg peer节点
-
-
-ca.cares.com
-排序组织证书颁发节点
-
-
-ca.nkg.com
-nkg 证书颁发节点
-
-
-tls.cares.com
-全局 tls证书颁发节点
-
-
-peer0.weh.com
-weh peer 节点
-
-
-ca.weh.com
-weh 证书颁发节点
-
-
-peer0.tna.com
-tna peer节点
-
-
-ca.tna.com
-tna证书颁发节点
-
-
-
-域名规划
-
-
-IP
-域名
-
-
-
-192.168.53.50
-orderer.cares.com peer0.nkg.com ca.cares.com ca.nkg.com tls.cares.com
-
-
-192.168.53.51
-peer0.weh.com ca.weh.com
-
-
-192.168.53.52
-peer0.tna.com ca.tna.com
-
-
-基础软件安装（全部机器相同操作）1、go将go的可执行文件路径添加到PATH
-export PATH=$PATH:/root</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%20%E5%86%85%E7%BD%91%20%E6%97%A0%E4%BA%92%E8%81%94%E7%BD%91">区块链 内网 无互联网</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/9/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/page/9/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   

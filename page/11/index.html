@@ -145,6 +145,107 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E8%A3%85%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">内网安装区块链网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">安装规划域名说明
+
+
+域名
+说明
+
+
+
+orderer.cares.com
+排序节点
+
+
+peer0.nkg.com
+nkg peer节点
+
+
+ca.cares.com
+排序组织证书颁发节点
+
+
+ca.nkg.com
+nkg 证书颁发节点
+
+
+tls.cares.com
+全局 tls证书颁发节点
+
+
+peer0.weh.com
+weh peer 节点
+
+
+ca.weh.com
+weh 证书颁发节点
+
+
+peer0.tna.com
+tna peer节点
+
+
+ca.tna.com
+tna证书颁发节点
+
+
+
+域名规划
+
+
+IP
+域名
+
+
+
+192.168.53.50
+orderer.cares.com peer0.nkg.com ca.cares.com ca.nkg.com tls.cares.com
+
+
+192.168.53.51
+peer0.weh.com ca.weh.com
+
+
+192.168.53.52
+peer0.tna.com ca.tna.com
+
+
+基础软件安装（全部机器相同操作）1、go将go的可执行文件路径添加到PATH
+export PATH=$PATH:/root</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%20%E5%86%85%E7%BD%91%20%E6%97%A0%E4%BA%92%E8%81%94%E7%BD%91">区块链 内网 无互联网</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/16/Arachni-%E5%AE%89%E5%85%A8%E6%89%AB%E6%8F%8F/">
         <p class="h4 index-header">Arachni 安全扫描</p>
         
@@ -579,51 +680,11 @@ systemctl start redis.service
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/08/MYSQL-%E6%B8%85%E7%90%86binlog-1/">
-        <p class="h4 index-header">MYSQL 清理binlog</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">自动删除binglog参数设置group_replication_transaction_size_limit=0   #设置事务大小无限制
-expire_logs_days=3   #binlog 保留3天
-innodb cluster 自动加入集群参数autoRejoinTries
-Cluster.setOption(&#39;autoRejoinTries&#39;, 10)
-手动删除3天前的日志PURGE BINARY LOGS BEFORE DATE(NOW() - INTERVAL 3 DAY) + INTERVAL 0 SECOND;
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%97%A5%E5%BF%97%E6%B8%85%E7%90%86">日志清理</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/10/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+      <a class="extend prev" rel="prev" href="/page/10/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   

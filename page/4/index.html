@@ -145,6 +145,44 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/12/24/SPING-CLOUD-GATEWAY-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
+        <p class="h4 index-header">SPING CLOUD GATEWAY 自定义负载均衡</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">问题微服务和航显设备通过socket连接，微服务端管理socket的连接，用户从web发送指令到航显设备执行。如果用户发送的指令到一台没有soket连接的微服务，那么控制指令将无法到达航显设备。
+解决思路用户发送的请求通过 spring cloud gateway负载，自定义负载均衡，发送请求的时候带航显设备连接的微服务ip，自定义负载根据ip去选择转发的服务器，这样请求就不会到达没有连接的微服务
+自定义负载均衡全局过滤器 LoadBalancerClientFilter根据自动配置规则，如果用户定义了LoadBalancerClientFilter ，就使用用户定义的
+package com.cares.gateway.filter;
+
+import com.cares.gateway.rules.FidsLoadBalanceRule;
+import com.google.common.collect.Maps;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/SPRINGCLOUD">SPRINGCLOUD</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/12/24/docker-%E6%B8%85%E7%90%86%E6%97%A5%E5%BF%97/">
         <p class="h4 index-header">docker 清理日志</p>
         
@@ -545,62 +583,11 @@ WORKDIR /home/oracle指定用户工作目录，加入脚本要在当前目录创
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/11/19/%E7%8F%AD%E6%8A%A5%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
-        <p class="h4 index-header">航班报文生命周期</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">9C8743 沈阳-威海-南京，威海为本场10点21分 威海收到华东空管局 发出AFTN_FPL ，起降范围沈阳到威海 计划起飞14:25,预计飞行一小时，机号B8646ZCZC YZP0134 100221          
-FF ZSWHZXZX
-100221 ZSSSZFPM
-(FPL-CQH8743-IS
--A320/M-SDE3FGHIM3RWY/LB1
--ZYTX0625
--K0850S0780 TOSID A588 CHI W107 SANKO A326 OBDIS H152 WEH
--ZSWH0100 ZSYT ZSQD
--PBN/A1B2B3B4C1D1O1S2 REG/B8646 SEL/LMBG CODE/781085 RMK/TCAS 
-ADSB)
-
-
-NNNN
-
-12点51分22秒 威海收到春秋发出 SITA_FPL放行报,起降范围威海到南京,(不会收到起降范围沈阳到威海段)，机号B8646ZCZC YZP0297 100451          
-QU WEHZP8X
-.     
-QU WEHZP8X
-.     
-QU WEHZP8X
-.     
-Q</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-19&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%88%AA%E7%A9%BA%E4%B8%9A%E5%8A%A1">航空业务</a>&nbsp;
-          &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
