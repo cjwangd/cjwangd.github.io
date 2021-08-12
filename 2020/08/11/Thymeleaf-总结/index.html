@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>Thymeleaf 总结 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 八月 11日 2020, 9:39 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="1、配置"><a href="#1、配置" class="headerlink" title="1、配置"></a>1、配置</h1><pre><code>spring.thymeleaf.cache=false
+spring.thymeleaf.enable-spring-el-compiler=true</code></pre><pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><h1 id="2、js变量赋值"><a href="#2、js变量赋值" class="headerlink" title="2、js变量赋值"></a>2、js变量赋值</h1><p>其中script 标签type 要替换为 th:inline=”javascript”,替换变量双重中括号[[spel表达式]]</p>
+<pre><code>&lt;script th:inline=&quot;javascript&quot;&gt;
+  //前台调用时传过来的参数
+  var menuclick = [[$&#123;param.menu&#125;]];
+  var specialtext = [[$&#123;specialtext&#125;]];
+  var index = [[$&#123;index&#125;]];
+  //前台系统配置调用首页，其他的不调用首页 type=homePage
+  var type = [[$&#123;type&#125;]];
+
+  var xx= [[$&#123;session.LOGIN_USER_NAME&#125;]];
+  if(&#39;null&#39;==xx)&#123;
+    window.location.href = &quot;./&quot;;
+  &#125;
+
+  setLocalUser();
+  function userModifyOp()&#123;
+
+    cares.loadModule(&#39;userModify&#39;, &#39;个人信息&#39;, &#39;userManagement/userModify.js&#39;,[[$&#123;session.LOGIN_USER_NAME.usrId&#125;]]);
+  &#125;
+
+  function jumpHome()&#123;
+      window.location.href=&quot;index/index.jsp&quot;;
+  &#125;
+
+
+&lt;/script&gt;</code></pre><h1 id="3、设置标签动态属性"><a href="#3、设置标签动态属性" class="headerlink" title="3、设置标签动态属性"></a>3、设置标签动态属性</h1><pre><code>th:attr=&quot;id=@&#123;&#39;bpmnModel-&#39;+ $&#123;param.uuid&#125;&#125;&quot;</code></pre><h1 id="4、-日期格式化"><a href="#4、-日期格式化" class="headerlink" title="4、 日期格式化"></a>4、 日期格式化</h1><pre><code>&lt;span th:text=&quot;$&#123;#dates.format(curDate, &#39;yyyy-MM-dd HH:mm:ss&#39;)&#125;&quot;&gt;&lt;/span&gt;</code></pre><p>说明： 使用内置对象dates的format函数即可对日期进行格式化，在format函数中，第一个参数是日期对象，对二两个参数为日期格式（规则跟SimpleDateFormat一样）<br>需要注意的是：<br>· 内置对象一般都以s结尾，如dates、lists、numbers等<br>· 在使用内置对象是在对象名前都需要加#号。</p>
+<h1 id="5、数字格式化"><a href="#5、数字格式化" class="headerlink" title="5、数字格式化"></a>5、数字格式化</h1><pre><code>&lt;span th:text=&quot;$&#123;#numbers.formatDecimal(money, 0, 2)&#125;&quot;&gt;&lt;/span&gt;</code></pre><p>说明： 此示例表示保留两位小数位，整数位自动；</p>
+<pre><code>&lt;span th:text=&quot;$&#123;#numbers.formatDecimal(money, 3, 2)&#125;&quot;&gt;&lt;/span&gt;</code></pre><p>说明： 此示例表示保留两位小数位，3位整数位（不够的前加0）</p>
+<h1 id="6、获取列表长度"><a href="#6、获取列表长度" class="headerlink" title="6、获取列表长度"></a>6、获取列表长度</h1><pre><code>&lt;span th:text=&quot;$&#123;#lists.size(datas)&#125;&quot;&gt;&lt;/span&gt;
+</code></pre><p>说明： 使用#lists.size来获取List的长度。</p>
+<h1 id="7、获取URL参数值"><a href="#7、获取URL参数值" class="headerlink" title="7、获取URL参数值"></a>7、获取URL参数值</h1><pre><code>&lt;span th:text=&quot;$&#123;#httpServletRequest.getParameter(&#39;page&#39;)&#125;&quot;&gt;&lt;/span&gt;
+</code></pre><p>说明： 当访问<a target="_blank" rel="noopener" href="http://localhost:1105/index?page=5时页面将会得到page对应的值：5。">http://localhost:1105/index?page=5时页面将会得到page对应的值：5。</a></p>
+<h1 id="8、定义变量"><a href="#8、定义变量" class="headerlink" title="8、定义变量"></a>8、定义变量</h1><pre><code>&lt;div th:with=&quot;curPage=$&#123;#httpServletRequest.getParameter(&#39;page&#39;)&#125;&quot;&gt; &lt;h3&gt;当前页码：&lt;span th:text=&quot;$&#123;curPage&#125;&quot;&gt;&lt;/span&gt;&lt;/h3&gt;&lt;/div&gt;</code></pre><p>说明： 同样，当访问<a target="_blank" rel="noopener" href="http://localhost:1105/index?page=5时，页面将显示：当前页码：5，说明用th:with来定义变量，多个用,号隔开，使用范围在当前标签内。">http://localhost:1105/index?page=5时，页面将显示：当前页码：5，说明用th:with来定义变量，多个用,号隔开，使用范围在当前标签内。</a></p>
+<h1 id="9、自定义标签属性"><a href="#9、自定义标签属性" class="headerlink" title="9、自定义标签属性"></a>9、自定义标签属性</h1><p>在Thymeleaf中可以使用th:加上标签的任何属性进行赋值，但有些时候会遇到自定义的属性，再用th:加自定义的属性则会无效。比如：需要对<span>标签增加objName和objId这样的属性，在非Thymeleaf情况下是这样：</p>
+<pre><code>&lt;span objId=&quot;1&quot; objName=&quot;知识林&quot;&gt;&lt;/span&gt;</code></pre><p>变量情况是：</p>
+<pre><code>&lt;span objId=&quot;$&#123;obj.id&#125;&quot; objName=&quot;$&#123;obj.name&#125;&quot;&gt;&lt;/span&gt;</code></pre><p>在Thymeleaf下则是：</p>
+<pre><code>&lt;span th:attr=&quot;myDate=$&#123;#dates.format(curDate, &#39;yyyy-mm-dd&#39;)&#125;, myMoney=$&#123;money&#125;&quot;&gt;&lt;/span&gt;</code></pre><p>说明：<br>在页面上查看源代码可以看到：</p>
+<pre><code>&lt;span myMoney=&quot;91.6059494319957&quot; myDate=&quot;2016-31-02&quot;&gt;&lt;/span&gt;
+</code></pre><p>说明自定义属性用：th:attr，多个属性用,隔开。</p>
+<h1 id="10、内置对象"><a href="#10、内置对象" class="headerlink" title="10、内置对象"></a>10、内置对象</h1><p>上面简单描述了比较常用的dates、lists、numbers这几个内置对象，在Thymeleaf还有很多的内置对象，像strings也非常常用，用法跟java.lang.String类的用法一样。<br>在Thymeleaf中的内置对象有：</p>
+<ol>
+<li>#dates：日期格式化内置对象，具体方法可以参照java.util.Date</li>
+<li>#calendars：类似于#dates，但是是java.util.Calendar类的方法；</li>
+<li>#numbers： 数字格式化；</li>
+<li>#strings：字符串格式化，具体方法可以参照java.lang.String，如startsWith、contains等；</li>
+<li>#objects：参照java.lang.Object；</li>
+<li>#bools：判断boolean类型的工具；</li>
+<li>#arrays：数组操作的工具；</li>
+<li>#lists：列表操作的工具，参照java.util.List；</li>
+<li>#sets：Set操作工具，参照java.util.Set；</li>
+<li>#maps：Map操作工具，参照java.util.Map；</li>
+<li>#aggregates：操作数组或集合的工具；</li>
+<li>#messages：操作消息的工具。</li>
+</ol>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JAVA">JAVA</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/thymeleaf">thymeleaf</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Thymeleaf 总结&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

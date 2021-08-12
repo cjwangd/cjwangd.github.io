@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>NSIS 打包添加自定义页面 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期一, 五月 17日 2021, 7:17 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.1k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>自助终端打包安装需要根据不同的位置设置不同的访问路径</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>在欢迎页和许可页之间插入一个自定义页面，用于选择自助终端的位置</p>
+<p>在成功安装后，将访问路径写入启动文件</p>
+<pre><code>Unicode true
+; Script generated by the HM NIS Edit Script Wizard.
+
+; HM NIS Edit Wizard helper defines
+!define PRODUCT_NAME &quot;旅客服务自助终端&quot;
+!define PRODUCT_VERSION &quot;1.0&quot;
+!define PRODUCT_PUBLISHER &quot;上海民航华东凯亚系统集成有限公司南京研发中心&quot;
+!define PRODUCT_WEB_SITE &quot;http://hdcares.travelsky.cn/&quot;
+!define PRODUCT_DIR_REGKEY &quot;Software\Microsoft\Windows\CurrentVersion\App Paths\start.cmd&quot;
+!define PRODUCT_UNINST_KEY &quot;Software\Microsoft\Windows\CurrentVersion\Uninstall\$&#123;PRODUCT_NAME&#125;&quot;
+!define PRODUCT_UNINST_ROOT_KEY &quot;HKLM&quot;
+
+SetCompressor lzma
+!include nsDialogs.nsh
+!include LogicLib.nsh
+; MUI 1.67 compatible ------
+!include &quot;MUI.nsh&quot;
+
+
+; MUI Settings
+!define MUI_ABORTWARNING
+!define MUI_ICON &quot;fids.ico&quot;
+!define MUI_UNICON &quot;fids.ico&quot;
+
+; Language Selection Dialog Settings
+!define MUI_LANGDLL_REGISTRY_ROOT &quot;$&#123;PRODUCT_UNINST_ROOT_KEY&#125;&quot;
+!define MUI_LANGDLL_REGISTRY_KEY &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot;
+!define MUI_LANGDLL_REGISTRY_VALUENAME &quot;NSIS:Language&quot;
+
+Var Dialog
+Var radioDep
+Var radioArr
+Var selectedPos
+
+; Welcome page
+!insertmacro MUI_PAGE_WELCOME
+
+Page custom nsDialogsPage nsDialogsPageLeave
+Function nsDialogsPage
+ !insertmacro MUI_HEADER_TEXT_PAGE &quot;位置选择&quot; &quot;选择自助终端所在位置，默认为出发层&quot;
+    nsDialogs::Create 1018
+    Pop $Dialog
+
+    $&#123;If&#125; $Dialog == error
+        Abort
+    $&#123;EndIf&#125;
+    $&#123;NSD_CreateRadioButton&#125; 30% 30% 100% 20% &quot;出发层&quot;
+    Pop $radioDep
+
+    $&#123;NSD_CreateRadioButton&#125; 30% 45% 100% 25% &quot;到达层&quot;
+    Pop $radioArr
+
+        $&#123;NSD_SetState&#125; $radioDep $&#123;BST_CHECKED&#125;
+
+    nsDialogs::Show
+
+FunctionEnd
+
+Function nsDialogsPageLeave
+$&#123;NSD_GetState&#125; $radioDep $0
+   StrCpy $selectedPos $0
+
+FunctionEnd
+; License page
+!insertmacro MUI_PAGE_LICENSE &quot;license.txt&quot;
+; Directory page
+!insertmacro MUI_PAGE_DIRECTORY
+; Instfiles page
+!insertmacro MUI_PAGE_INSTFILES
+
+
+
+; Finish page
+!insertmacro MUI_PAGE_FINISH
+
+; Uninstaller pages
+!insertmacro MUI_UNPAGE_INSTFILES
+
+
+; Language files
+!insertmacro MUI_LANGUAGE &quot;SimpChinese&quot;
+
+; Reserve files
+!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
+; MUI end ------
+
+Name &quot;$&#123;PRODUCT_NAME&#125; $&#123;PRODUCT_VERSION&#125;&quot;
+OutFile &quot;FidsInstaller.exe&quot;
+InstallDir &quot;$PROGRAMFILES\$&#123;PRODUCT_NAME&#125;&quot;
+InstallDirRegKey HKLM &quot;$&#123;PRODUCT_DIR_REGKEY&#125;&quot; &quot;&quot;
+ShowInstDetails show
+ShowUnInstDetails show
+
+
+
+
+
+Function .onInit
+  !insertmacro MUI_LANGDLL_DISPLAY
+FunctionEnd
+
+var depUrl
+var arrUrl
+Function  .onInstSuccess
+
+ReadINIStr $0 $INSTDIR\addr.ini address dep
+ReadINIStr $1 $INSTDIR\addr.ini address arr
+
+
+StrCpy $depUrl $0
+StrCpy $arrUrl $1
+
+
+  ClearErrors
+FileOpen $0 $INSTDIR\start.cmd w
+IfErrors done
+FileWrite $0 &quot;echo off&quot;
+FileWrite $0 &quot;$\n&quot;
+FileWrite $0 &quot;set cwd=$INSTDIR\&quot;
+FileWrite $0 &quot;$\n&quot;
+FileWrite $0 &quot;set path=%cwd%jre\bin;%cwd%lib\passportLib;%cwd%lib\printer;%cwd%lib\faceLib\win32-x86;%cwd%lib\ceflib\lib\win32;%path%&quot;
+FileWrite $0 &quot;$\n&quot;
+
+  $&#123;If&#125; $selectedPos == 1
+     FileWrite $0 &quot;start javaw -Dfids.backend.url=$depUrl -Dfile.encoding=UTF-8 -Djna.library.path=%cwd%\idcard -classpath %cwd%lib\*;%cwd%lib\ceflib\*;%cwd%jre\lib\*;%cwd%jre\lib\ext\*;%cwd%bin\pss-front.jar  com.cares.pssfront.PssFrontApplication&quot;
+  $&#123;EndIf&#125;
+
+    $&#123;If&#125; $selectedPos == 0
+     FileWrite $0 &quot;start javaw -Dfids.backend.url=$arrUrl -Dfile.encoding=UTF-8 -Djna.library.path=%cwd%\idcard -classpath %cwd%lib\*;%cwd%lib\ceflib\*;%cwd%jre\lib\*;%cwd%jre\lib\ext\*;%cwd%bin\pss-front.jar  com.cares.pssfront.PssFrontApplication&quot;
+  $&#123;EndIf&#125;
+  FileWrite $0 &quot;$\n&quot;
+FileClose $0
+
+  done:
+FunctionEnd
+
+Section &quot;MainSection&quot; SEC01
+  SetOutPath &quot;$INSTDIR&quot;
+  SetOverwrite try
+  File &quot;fids.ico&quot;
+  File &quot;addr.ini&quot;
+  File &quot;license.txt&quot;
+  File &quot;start.cmd&quot;
+  File /r &quot;jre&quot;
+  File /r &quot;lib&quot;
+  File /r &quot;bin&quot;
+
+  CreateDirectory &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;&quot;
+  CreateShortCut &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\$&#123;PRODUCT_NAME&#125;.lnk&quot; &quot;$INSTDIR\start.cmd&quot; &quot;&quot; &quot;$INSTDIR\fids.ico&quot;
+  CreateShortCut &quot;$DESKTOP\$&#123;PRODUCT_NAME&#125;.lnk&quot; &quot;$INSTDIR\start.cmd&quot; &quot;&quot; &quot;$INSTDIR\fids.ico&quot;
+SectionEnd
+
+Section -AdditionalIcons
+  WriteIniStr &quot;$INSTDIR\$&#123;PRODUCT_NAME&#125;.url&quot; &quot;InternetShortcut&quot; &quot;URL&quot; &quot;$&#123;PRODUCT_WEB_SITE&#125;&quot;
+  CreateShortCut &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\Website.lnk&quot; &quot;$INSTDIR\$&#123;PRODUCT_NAME&#125;.url&quot;
+  CreateShortCut &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\Uninstall.lnk&quot; &quot;$INSTDIR\uninst.exe&quot;
+SectionEnd
+
+Section -Post
+
+  WriteUninstaller &quot;$INSTDIR\uninst.exe&quot;
+  WriteRegStr HKLM &quot;$&#123;PRODUCT_DIR_REGKEY&#125;&quot; &quot;&quot; &quot;$INSTDIR\start.cmd&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;DisplayName&quot; &quot;$(^Name)&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;UninstallString&quot; &quot;$INSTDIR\uninst.exe&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;DisplayIcon&quot; &quot;$INSTDIR\fids.ico&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;DisplayVersion&quot; &quot;$&#123;PRODUCT_VERSION&#125;&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;URLInfoAbout&quot; &quot;$&#123;PRODUCT_WEB_SITE&#125;&quot;
+  WriteRegStr $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot; &quot;Publisher&quot; &quot;$&#123;PRODUCT_PUBLISHER&#125;&quot;
+  WriteRegStr HKCU &quot;Software\Microsoft\Windows\CurrentVersion\Run&quot; &quot;$&#123;PRODUCT_NAME&#125;&quot; &quot;$INSTDIR\start.cmd&quot;
+SectionEnd
+
+
+Function un.onUninstSuccess
+  HideWindow
+  MessageBox MB_ICONINFORMATION|MB_OK &quot;$(^Name) 已经成功的从您的电脑中删除&quot;
+FunctionEnd
+
+
+Function un.onInit
+!insertmacro MUI_UNGETLANGUAGE
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 &quot;确定要删除 $(^Name) 和所有组件吗?&quot; IDYES +2
+  Abort
+FunctionEnd
+
+Section Uninstall
+  Delete &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\Uninstall.lnk&quot;
+  Delete &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\Website.lnk&quot;
+  Delete &quot;$DESKTOP\$&#123;PRODUCT_NAME&#125;.lnk&quot;
+  Delete &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;\$&#123;PRODUCT_NAME&#125;.lnk&quot;
+
+  RMDir &quot;$SMPROGRAMS\$&#123;PRODUCT_NAME&#125;&quot;
+  RMDir /r /REBOOTOK $INSTDIR
+  DeleteRegValue HKCU &quot;Software\Microsoft\Windows\CurrentVersion\Run&quot; &quot;$&#123;PRODUCT_NAME&#125;&quot;
+  DeleteRegKey $&#123;PRODUCT_UNINST_ROOT_KEY&#125; &quot;$&#123;PRODUCT_UNINST_KEY&#125;&quot;
+  DeleteRegKey HKLM &quot;$&#123;PRODUCT_DIR_REGKEY&#125;&quot;
+  SetAutoClose true
+SectionEnd
+
+</code></pre><h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><p>1.在脚本开始设置 Unicode true，解决中文乱码的问题。否则需要设置脚本文件编码为中文编码。<br>设置  Unicode true 后不要在nsis编辑器中打开，打开后中文是乱码。此时调用命令行打包就行了</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="/images/pasted-186.png" srcset="/img/loading.gif" alt="upload successful"></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%89%93%E5%8C%85">打包</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/NSIS">NSIS</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%89%93%E5%8C%85">打包</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A1%B5%E9%9D%A2">自定义页面</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "NSIS 打包添加自定义页面&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

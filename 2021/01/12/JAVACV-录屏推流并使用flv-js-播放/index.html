@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>JAVACV 录屏推流并使用flv.js 播放 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 一月 12日 2021, 12:01 中午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    791 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>流媒体服务器 ubuntu2004+nginx+nginx-http-flv-module</p>
+<p>推流   win10+javacv</p>
+<p>拉流   win10 + flv.js</p>
+<h1 id="nginx-编译"><a href="#nginx-编译" class="headerlink" title="nginx 编译"></a>nginx 编译</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><h3 id="libpcre3"><a href="#libpcre3" class="headerlink" title="libpcre3"></a>libpcre3</h3><pre><code>sudo apt install libpcre3-dev</code></pre><h3 id="zlib"><a href="#zlib" class="headerlink" title="zlib"></a>zlib</h3><p>下载源码<br><a target="_blank" rel="noopener" href="http://www.zlib.net/zlib-1.2.11.tar.gz">http://www.zlib.net/zlib-1.2.11.tar.gz</a></p>
+<pre><code>tar zxvf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure
+make 
+make install
+</code></pre><h3 id="nginx-http-flv-module"><a href="#nginx-http-flv-module" class="headerlink" title="nginx-http-flv-module"></a>nginx-http-flv-module</h3><p><a target="_blank" rel="noopener" href="https://github.com/winshining/nginx-http-flv-module/archive/master.zip">https://github.com/winshining/nginx-http-flv-module/archive/master.zip</a></p>
+<h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><p>下载源码<br><a target="_blank" rel="noopener" href="http://nginx.org/download/nginx-1.19.6.tar.gz">http://nginx.org/download/nginx-1.19.6.tar.gz</a></p>
+<pre><code>tar zxvf nginx-1.19.6.tar.gz
+cd nginx-1.19.6
+
+./configure --prefix=/home/wangcj/nginx --add-module=/home/wagncj/nginx-http-flv-module
+make 
+
+make install
+
+</code></pre><h2 id="nginx-流媒体服务器配置"><a href="#nginx-流媒体服务器配置" class="headerlink" title="nginx 流媒体服务器配置"></a>nginx 流媒体服务器配置</h2><pre><code>worker_processes  1; #should be 1 for Windows, for it doesn&#39;t support Unix domain socket
+error_log logs/error.log error;
+events &#123;
+    worker_connections  4096;
+&#125;
+
+http &#123;
+    include       mime.types;
+    default_type  application/octet-stream;
+    keepalive_timeout  65;
+    server &#123;
+        listen       80;
+
+        location / &#123;
+            root   html;
+            index  index.html index.htm;
+        &#125;
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html &#123;
+            root   html;
+        &#125;
+
+        location /live &#123;
+            flv_live on; #open flv live streaming (subscribe)
+            chunked_transfer_encoding  on; #open &#39;Transfer-Encoding: chunked&#39; response
+
+            add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;; #add additional HTTP header
+            add_header &#39;Access-Control-Allow-Credentials&#39; &#39;true&#39;; #add additional HTTP header
+        &#125;
+
+        location /hls &#123;
+            types &#123;
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            &#125;
+
+            root /tmp;
+            add_header &#39;Cache-Control&#39; &#39;no-cache&#39;;
+        &#125;
+
+        location /dash &#123;
+            root /tmp;
+            add_header &#39;Cache-Control&#39; &#39;no-cache&#39;;
+        &#125;
+
+        location /stat &#123;
+            #configuration of streaming &amp; recording statistics
+
+            rtmp_stat all;
+            rtmp_stat_stylesheet stat.xsl;
+        &#125;
+
+        location /stat.xsl &#123;
+            root /var/www/rtmp; #specify in where stat.xsl located
+        &#125;
+
+        location /control &#123;
+            rtmp_control all; #configuration of control module of rtmp
+        &#125;
+    &#125;
+&#125;
+
+rtmp_auto_push on;
+rtmp_auto_push_reconnect 1s;
+rtmp_socket_dir /tmp;
+
+rtmp &#123;
+    out_queue           4096;
+    out_cork            8;
+    max_streams         128;
+    timeout             15s;
+    drop_idle_publisher 15s;
+
+    log_interval 5s; #interval used by log module to log in access.log, it is very useful for debug
+    log_size     1m; #buffer size used by log module to log in access.log
+
+    server &#123;
+        listen 1935;
+        server_name www.test.*; #for suffix wildcard matching of virtual host name
+
+        application myapp &#123;
+            live on;
+            gop_cache on; #open GOP cache for reducing the wating time for the first picture of video
+        &#125;
+
+        application hls &#123;
+            live on;
+            hls on;
+            hls_path /tmp/hls;
+        &#125;
+
+        application dash &#123;
+            live on;
+            dash on;
+            dash_path /tmp/dash;
+        &#125;
+    &#125;
+
+    server &#123;
+        listen 1935;
+        server_name *.test.com; #for prefix wildcard matching of virtual host name
+
+        application myapp &#123;
+            live on;
+            gop_cache on; #open GOP cache for reducing the wating time for the first picture of video
+        &#125;
+    &#125;
+
+    server &#123;
+        listen 1935;
+        server_name www.test.com; #for completely matching of virtual host name
+
+        application myapp &#123;
+            live on;
+            gop_cache on; #open GOP cache for reducing the wating time for the first picture of video
+        &#125;
+    &#125;
+&#125;
+
+</code></pre><h1 id="javacv-推流"><a href="#javacv-推流" class="headerlink" title="javacv 推流"></a>javacv 推流</h1><h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;org.bytedeco&lt;/groupId&gt;
+            &lt;artifactId&gt;javacv&lt;/artifactId&gt;
+            &lt;version&gt;1.5.4&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.bytedeco&lt;/groupId&gt;
+            &lt;artifactId&gt;javacv-platform&lt;/artifactId&gt;
+            &lt;version&gt;1.5.4&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre><h2 id="推流代码"><a href="#推流代码" class="headerlink" title="推流代码"></a>推流代码</h2><pre><code>        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(&quot;desktop&quot;);
+        grabber.setImageWidth(1920);
+        grabber.setImageHeight(1080);
+        grabber.setFormat(&quot;gdigrab&quot;);
+        grabber.setFrameRate(15);
+
+
+        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(&quot;rtmp://192.168.226.128:1935/myapp/123&quot;,grabber.getImageWidth(),grabber.getImageHeight());
+        recorder.setFormat(&quot;flv&quot;);
+        recorder.setFrameRate(grabber.getFrameRate());
+        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+
+
+        try &#123;
+            recorder.start();
+            grabber.start();
+
+            while (!Thread.interrupted()) &#123;
+                long start = System.currentTimeMillis();
+
+                Frame frame = grabber.grabImage();
+                recorder.record(frame);
+            &#125;
+        &#125; catch (Exception exception) &#123;
+            exception.printStackTrace();
+        &#125;
+</code></pre><h2 id="启动推流"><a href="#启动推流" class="headerlink" title="启动推流"></a>启动推流</h2><p><img src="/images/pasted-169.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p><img src="/images/pasted-170.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h1 id="flv-js-拉流"><a href="#flv-js-拉流" class="headerlink" title="flv.js 拉流"></a>flv.js 拉流</h1><h2 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h2><p><img src="/images/pasted-171.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<pre><code>&lt;script src=&quot;flv.min.js&quot;&gt;&lt;/script&gt;
+&lt;video id=&quot;videoElement&quot; muted&gt;&lt;/video&gt;
+&lt;script&gt;
+    if (flvjs.isSupported()) &#123;
+        var videoElement = document.getElementById(&#39;videoElement&#39;);
+        var flvPlayer = flvjs.createPlayer(&#123;
+            type: &#39;flv&#39;,
+            url: &#39;http://192.168.226.128/live?app=myapp&amp;stream=123&#39;
+        &#125;);
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        flvPlayer.play();
+    &#125;
+&lt;/script&gt;
+</code></pre><h2 id="直播效果"><a href="#直播效果" class="headerlink" title="直播效果"></a>直播效果</h2><p><img src="/images/pasted-172.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h1 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h1><p>视频感觉有几秒延时。之前按照videojs一直没成功，并且现在flash逐渐退出，果断放弃videojs</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JAVA">JAVA</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/javacv">javacv</a>
+                
+                  <a class="hover-with-bg" href="/tags/flv-js">flv.js</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E7%9B%B4%E6%92%AD">直播</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%B1%8F%E5%B9%95%E5%BD%95%E5%88%B6">屏幕录制</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JAVACV 录屏推流并使用flv.js 播放&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

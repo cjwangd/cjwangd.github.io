@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>JNA 读取护照 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 三月 6日 2021, 11:12 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    720 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="护照读取流程"><a href="#护照读取流程" class="headerlink" title="护照读取流程"></a>护照读取流程</h1><ol>
+<li>初始化护照阅读器接口</li>
+<li>设置读取配置</li>
+<li>检测护照放入状态（只有护照放入才能读取）</li>
+<li>读取护照</li>
+<li>获取需要的信息</li>
+<li>释放护照阅读器资源</li>
+</ol>
+<h1 id="定义接口"><a href="#定义接口" class="headerlink" title="定义接口"></a>定义接口</h1><pre><code>public interface PassportService extends Library &#123;
+
+    PassportService INSTANCE = Native.load(&quot;IDCard&quot;, PassportService.class, W32APIOptions.UNICODE_OPTIONS);
+
+    /**
+     * 初始化sdk
+     * @param cArrUserID
+     * @param nType
+     * @param cArrDirectory  lib 路径
+     * @return
+     */
+    int InitIDCard(WString cArrUserID, int nType, WString cArrDirectory);
+
+    /**
+     * 检测是否有证件放入
+     * -1 核心尚未初始化
+     * 0 未检测到证件放入或拿出
+     * 1 检测到有证件放入
+     * 2 检测到证件被拿出
+     * 3 检测到手机条码（仅支持 AR、 KR 系列设备）
+     * @return
+     */
+    int DetectDocument();
+
+
+    int GetRecogResultEx(int attr,int nIndex, byte[] cArrBuffer, IntByReference nBufferLen);
+
+
+    int SaveImage(String cArrFileName);
+
+    void FreeIDCard();
+
+
+    int RecogGeneralMRZCard(boolean bRecogVIZ, int nSaveImageType);
+
+    /**
+     * 加载证件识读选项
+     * @param lpConfigFile
+     * @return 0 成功 其他失败
+     */
+    int SetConfigByFile(WString lpConfigFile);
+
+    /**
+     * 自动处理
+     * @param nCardType 返回证件类型
+     * 1 表示证件带有电子芯片
+     * 2 表示证件不带电子芯片
+     * 4 表示检测到条码
+     * 5 表示证件带有电子芯片且检测到条码证件识别 SDK 开发手册
+     * 6 表示证件不带电子芯片但检测到条码
+     * @return
+     */
+    int AutoProcessIDCard(IntByReference nCardType);
+&#125;</code></pre><h1 id="接口实现"><a href="#接口实现" class="headerlink" title="接口实现"></a>接口实现</h1><pre><code>public class PassportServiceImpl &#123;
+
+    private static int status = 0;
+
+    @Resource
+    private DataExchangeService dataExchangeService;
+
+    private static final String MULTI_BYTE_ENCODING = &quot;UTF-16LE&quot;;
+
+    private WString userId = new WString(&quot;硬件厂商提供的用户ID&quot;);
+    private String libdir;
+
+    @PostConstruct
+    public void init() &#123;
+        ApplicationHome applicationHome = new ApplicationHome();
+        Path libPath = Paths.get(applicationHome.toString(), &quot;cardLib&quot;);
+        libdir = libPath.toString();
+
+        // 初始化
+        int nRet = -1;
+        libdir = StringUtils.isEmpty(libdir) ? &quot;C:\\Users\\Administrator\\Documents\\workspace\\wit-fids\\cardLib&quot; : libdir;
+        WString dir = new WString(libdir);
+        nRet = PassportService.INSTANCE.InitIDCard(userId, 1, dir);
+        if (nRet != 0) &#123;
+            log.error(&quot;初始化护照阅读器错误，nRet=&#123;&#125;&quot;, nRet);
+            return;
+        &#125;
+
+        // 设置配置文件 IDCardConfig.ini
+        Path path = Paths.get(libdir, &quot;IDCardConfig.ini&quot;);
+        nRet = PassportService.INSTANCE.SetConfigByFile(new WString(path.toString()));
+        if (nRet != 0) &#123;
+            log.error(&quot;加载护照配置出错，nRet=&#123;&#125;&quot;, nRet);
+            return;
+        &#125;
+    &#125;
+
+    @PreDestroy
+    public void unInit()&#123;
+        PassportService.INSTANCE.FreeIDCard();
+    &#125;
+
+
+    public void readPassport() &#123;
+        int nRet = -1;
+
+        if (1 == status) &#123;
+            IntByReference intByReference = new IntByReference();
+            nRet = PassportService.INSTANCE.AutoProcessIDCard(intByReference);
+            if (nRet &gt; 0) &#123;
+                log.debug(&quot;检测到护照，nRet=&#123;&#125;&quot;,nRet);
+                readCard();
+            &#125; else &#123;
+                log.debug(&quot;没有读取到护照&quot;);
+            &#125;
+        &#125;
+
+    &#125;
+
+    private void readCard() &#123;
+        JSONObject result = new JSONObject();
+        result.put(&quot;cardNumber&quot;, getPassportField(1));
+        result.put(&quot;name&quot;, getPassportField(2));
+        result.put(&quot;nameEng&quot;, getPassportField(3));
+        result.put(&quot;sex&quot;, getPassportField(4));
+        result.put(&quot;birthday&quot;, getPassportField(5));
+        log.debug(&quot;护照解析结果：：&#123;&#125;&quot;, result);
+        dataExchangeService.send(DataExchangeService.PASSPORT_CMD, result);
+    &#125;
+
+    private String getPassportField(int index) &#123;
+        IntByReference maxNum = new IntByReference(128);
+        byte[] cArrFieldValue = new byte[maxNum.getValue()];
+
+        int nRet = PassportService.INSTANCE.GetRecogResultEx(1, index, cArrFieldValue, maxNum);
+
+        try &#123;
+            String value = new String(cArrFieldValue, MULTI_BYTE_ENCODING);
+            if (StringUtils.isNotEmpty(value)) &#123;
+                value = value.trim();
+            &#125;
+            return value;
+        &#125; catch (UnsupportedEncodingException e) &#123;
+            log.error(&quot;读取证件出错&quot;, e);
+        &#125;
+
+        return null;
+    &#125;
+
+
+    @Scheduled(fixedRate = 200)
+    public void detectPassport() &#123;
+        int s = PassportService.INSTANCE.DetectDocument();
+        if (1 == s) &#123;
+            log.debug(&quot;检测到证件放入&quot;);
+            status=1;
+        &#125;else if(2==s)&#123;
+            log.debug(&quot;检测到证件拿出&quot;);
+            status=0;
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JNA">JNA</a>
+                  &nbsp;
+                
+                  <a class="hover-with-bg" href="/categories/JAVA">JAVA</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E8%AF%BB%E6%8A%A4%E7%85%A7">读护照</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JNA 读取护照&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

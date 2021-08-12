@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>ANGULAR 笔记 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期五, 五月 15日 2020, 9:28 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="1、路由传参"><a href="#1、路由传参" class="headerlink" title="1、路由传参"></a>1、路由传参</h1><h2 id="1-1-传参"><a href="#1-1-传参" class="headerlink" title="1.1 传参"></a>1.1 传参</h2><pre><code>queryParams:
+
+this.router.navigate([&#39;pages/xxlJob/joblog&#39;], &#123;queryParams: &#123;title: &#39;查看调度日志[&#39; + row.jobDesc + &#39;]&#39;, jobId: row.id, jobGroup: row.jobGroup&#125;&#125;);
+</code></pre><h2 id="1-2-接收参数"><a href="#1-2-接收参数" class="headerlink" title="1.2 接收参数"></a>1.2 接收参数</h2><h3 id="1-2-1-构造函数注入-ActivatedRoute"><a href="#1-2-1-构造函数注入-ActivatedRoute" class="headerlink" title="1.2.1 构造函数注入 ActivatedRoute"></a>1.2.1 构造函数注入 ActivatedRoute</h3><pre><code>private activatedRoute: ActivatedRoute</code></pre><h3 id="1-2-2-解析参数"><a href="#1-2-2-解析参数" class="headerlink" title="1.2.2 解析参数"></a>1.2.2 解析参数</h3><pre><code>this.activatedRoute.queryParams.subscribe((value: any) =&gt; &#123;
+       this.jobid = value.jobId;
+       this.jobgroup = value.jobGroup;
+    &#125;);</code></pre><h1 id="2、在当前组件打开一个新的组件"><a href="#2、在当前组件打开一个新的组件" class="headerlink" title="2、在当前组件打开一个新的组件"></a>2、在当前组件打开一个新的组件</h1><p>假设当前组件为 JobLogComponent，要打开的组件为 JobLogDetailComponent</p>
+<h2 id="2-1-父组件模板添加存放子组件的容器"><a href="#2-1-父组件模板添加存放子组件的容器" class="headerlink" title="2.1 父组件模板添加存放子组件的容器"></a>2.1 父组件模板添加存放子组件的容器</h2><pre><code>&lt;ng-container #joblogdetail&gt;&lt;/ng-container&gt;</code></pre><h2 id="2-2-父组件声明子组件容器的引用"><a href="#2-2-父组件声明子组件容器的引用" class="headerlink" title="2.2 父组件声明子组件容器的引用"></a>2.2 父组件声明子组件容器的引用</h2><pre><code>  @ViewChild(&#39;joblogdetail&#39;, &#123; read: ViewContainerRef &#125;)
+  conRef: ViewContainerRef;</code></pre><h2 id="2-3-父组件注入必要的组件"><a href="#2-3-父组件注入必要的组件" class="headerlink" title="2.3 父组件注入必要的组件"></a>2.3 父组件注入必要的组件</h2><pre><code>    private resolver: ComponentFactoryResolver,
+    private injector: Injector,</code></pre><h2 id="2-4-父组件打开子组件的事件"><a href="#2-4-父组件打开子组件的事件" class="headerlink" title="2.4 父组件打开子组件的事件"></a>2.4 父组件打开子组件的事件</h2><pre><code>  public edit(row: any) &#123;
+      this.showLogDetail = true;
+      if (this.conRef) &#123;
+        this.conRef.clear(); // 删除之前的视图
+      &#125;
+      const ss: StandService = new StandService();
+      ss.service = row;
+      const myInjector = Injector.create(&#123; providers: [&#123; provide: StandService, deps: [], useValue: ss&#125;], parent: this.injector &#125;);
+      const factory = this.resolver.resolveComponentFactory(JobLogDetailComponent);
+      const comref: ComponentRef&lt;JobLogDetailComponent&gt; = this.conRef.createComponent(factory, 0, myInjector);
+      comref.instance.backMain.subscribe(() =&gt; &#123;
+        this.conRef.clear();
+        this.showLogDetail = false;
+      &#125;);
+  &#125;
+</code></pre><h2 id="2-5-StandService-自定义参数注入组件"><a href="#2-5-StandService-自定义参数注入组件" class="headerlink" title="2.5 StandService 自定义参数注入组件"></a>2.5 StandService 自定义参数注入组件</h2><pre><code>
+import &#123; Injectable &#125; from &#39;@angular/core&#39;;
+
+@Injectable()
+export class StandService &#123;
+  service: any;
+&#125;</code></pre><h2 id="2-6-子组件声明-点击事件用于返回父组件"><a href="#2-6-子组件声明-点击事件用于返回父组件" class="headerlink" title="2.6 子组件声明 点击事件用于返回父组件"></a>2.6 子组件声明 点击事件用于返回父组件</h2><pre><code>@Output() backMain = new EventEmitter();
+</code></pre><h2 id="2-7-子组件构造函数注入参数，并接受参数"><a href="#2-7-子组件构造函数注入参数，并接受参数" class="headerlink" title="2.7 子组件构造函数注入参数，并接受参数"></a>2.7 子组件构造函数注入参数，并接受参数</h2><p>如果父组件不传参数给子组件可忽略</p>
+<pre><code>    private ss: StandService,
+
+
+    this.executorAddress = ss.service.executorAddress;
+    this.triggerTime = ss.service.triggerTime;
+    this.logId = ss.service.id;
+</code></pre><h2 id="2-8-子组件返回键"><a href="#2-8-子组件返回键" class="headerlink" title="2.8 子组件返回键"></a>2.8 子组件返回键</h2><pre><code>  &lt;button nz-button [nzType]=&quot;&#39;primary&#39;&quot; (click)=&quot;backMain.next()&quot;&gt;
+    &lt;i nz-icon nzType=&quot;arrow-left&quot; nzTheme=&quot;outline&quot;&gt;&lt;/i&gt;
+    返回
+  &lt;/button&gt;
+</code></pre><h1 id="3-angular-升级到-9后，post-中文乱码"><a href="#3-angular-升级到-9后，post-中文乱码" class="headerlink" title="3 angular 升级到 9后，post 中文乱码"></a>3 angular 升级到 9后，post 中文乱码</h1><h2 id="3-1-原发生乱码的代码"><a href="#3-1-原发生乱码的代码" class="headerlink" title="3.1 原发生乱码的代码"></a>3.1 原发生乱码的代码</h2><pre><code>  editRow(rowData: Resource): Observable&lt;any&gt; &#123;
+    const postUrl = this.apiUrl + &#39;resource/edit&#39;;
+
+    let body = &#39;resId=&#39; + rowData.resId
+      + &#39;&amp;resName=&#39; + rowData.resName
+      + &#39;&amp;resType=&#39; + rowData.resType
+      + &#39;&amp;resUrl=&#39; + rowData.resUrl
+      + &#39;&amp;resIcon=&#39; + (rowData.resIcon ? rowData.resIcon : &#39;&#39;)
+      + &#39;&amp;seqSort=&#39; + rowData.seqSort
+      + &#39;&amp;remark=&#39; + (rowData.remark ? rowData.remark : &#39;&#39;);
+
+    if (!(rowData.resPid === null || rowData.resPid === undefined) &amp;&amp; rowData.resPid.toString() !== &#39;null&#39;) &#123;
+      body += &#39;&amp;resPid=&#39; + rowData.resPid;
+    &#125;
+
+    return this.http.post(postUrl, body, &#123;
+      headers: this.headers
+    &#125;);
+  &#125;
+
+</code></pre><h2 id="3-2-修改后的代码"><a href="#3-2-修改后的代码" class="headerlink" title="3.2 修改后的代码"></a>3.2 修改后的代码</h2><pre><code>  editRow(rowData: Resource): Observable&lt;any&gt; &#123;
+    const postUrl = this.apiUrl + &#39;resource/edit&#39;;
+
+    const body = new HttpParams()
+      .set(&#39;resName&#39;, rowData.resName)
+      .set(&#39;resId&#39;, rowData.resId.toString())
+      .set(&#39;resType&#39;, rowData.resType.toString())
+      .set(&#39;resUrl&#39;, rowData.resUrl)
+      .set(&#39;resIcon&#39;, (rowData.resIcon ? rowData.resIcon : &#39;&#39;))
+      .set(&#39;seqSort&#39;, rowData.seqSort.toString())
+      .set(&#39;validity&#39;, (rowData.validity ? rowData.validity : &#39;&#39;))
+      .set(&#39;remark&#39;, (rowData.remark ? rowData.remark : &#39;&#39;));
+
+    if (!(rowData.resPid === null || rowData.resPid === undefined) &amp;&amp; rowData.resPid.toString() !== &#39;null&#39;) &#123;
+      body.set(&#39;resPid&#39;, rowData.resPid.toString());
+    &#125;
+
+    return this.http.post(postUrl, body, &#123;
+      headers: this.headers
+    &#125;);
+  &#125;
+</code></pre><h1 id="4-自定义字段校验规则"><a href="#4-自定义字段校验规则" class="headerlink" title="4 自定义字段校验规则"></a>4 自定义字段校验规则</h1><h2 id="4-1-自定义校验函数"><a href="#4-1-自定义校验函数" class="headerlink" title="4.1 自定义校验函数"></a>4.1 自定义校验函数</h2><pre><code>    confirmPasswd(pwd: string): ValidatorFn &#123;
+        return (control) =&gt; &#123;
+            if (!control.value) &#123;
+                return &#123; error: true, required: true &#125;;
+            &#125; else if (control.value !== control.parent.controls[pwd].value) &#123;
+                return &#123; confirm: true, error: true &#125;;
+            &#125;
+            return &#123;&#125;;
+        &#125;;
+    &#125;
+</code></pre><p>其中 返回 confirm  是要在表单要用到的错误处理字段，为true表示密码不一致,参数表示要与之比较的字段</p>
+<h2 id="4-2-表单定义"><a href="#4-2-表单定义" class="headerlink" title="4.2 表单定义"></a>4.2 表单定义</h2><pre><code>        this.sysAddForm = this.fb.group(&#123;
+            sysId: [&#39;&#39;, [Validators.required]],
+            sysUserPassword: [&#39;&#39;, [Validators.required, Validators.pattern(&#39;(?=.*\\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).&#123;8,30&#125;&#39;)]],
+            sysUserPasswordConfirm: [&#39;&#39;, this.pagesService.confirmPasswd(&#39;sysUserPassword&#39;) ],
+            content: [&#39;&#39;],
+            sysUserName: [&#39;&#39;, Validators.required, Validators.pattern(&#39;^[A-Za-z][A-Za-z_]+[A-Za-z]$&#39;)],
+            id: [null]
+        &#125;);
+
+</code></pre><h2 id="4-3-错误展示"><a href="#4-3-错误展示" class="headerlink" title="4.3 错误展示"></a>4.3 错误展示</h2><pre><code>&lt;nz-form-control [nzSpan]=&quot;18&quot; [nzErrorTip]=&quot;sysUserPasswordConfirm&quot;&gt;
+    &lt;input autocomplete=&quot;new-password&quot; type=&quot;password&quot; nz-input formControlName=&quot;sysUserPasswordConfirm&quot;/&gt;
+    &lt;ng-template #sysUserPasswordConfirm let-control&gt;
+          &lt;ng-container *ngIf=&quot;control.hasError(&#39;required&#39;)&quot;&gt;
+                 确认密码不能为空！
+           &lt;/ng-container&gt;
+           &lt;ng-container *ngIf=&quot;control.hasError(&#39;confirm&#39;)&quot;&gt;
+                                密码不一致！
+            &lt;/ng-container&gt;
+     &lt;/ng-template&gt;
+&lt;/nz-form-control&gt;
+</code></pre><h1 id="5-全局模板"><a href="#5-全局模板" class="headerlink" title="5 全局模板"></a>5 全局模板</h1><p>有时候很多地方会用到同一种模板，这时候有必要创建全局模板，方便管理维护，万一要更改也方便</p>
+<h2 id="5-1-定义全局模板组件"><a href="#5-1-定义全局模板组件" class="headerlink" title="5.1 定义全局模板组件"></a>5.1 定义全局模板组件</h2><pre><code>@Component(&#123;
+  selector: &#39;app-global-templates&#39;,
+  templateUrl: &#39;./global-templates.component.html&#39;,
+  styleUrls: [&#39;./global-templates.component.less&#39;]
+&#125;)
+export class GlobalTemplatesComponent &#123;
+
+    @ViewChild(&#39;rangeTemplate&#39;, &#123;static: true&#125;)
+    rangeTemplate!: TemplateRef&lt;void&gt;;
+
+    @ViewChild(&#39;nzIndicatorTpl&#39;, &#123;static: true&#125;)
+    nzIndicator!: TemplateRef&lt;void&gt;;
+
+&#125;</code></pre><p>html</p>
+<pre><code>&lt;ng-template #nzIndicatorTpl&gt;
+    &lt;div id=&quot;preloader&quot;&gt;
+        &lt;div&gt;
+            &lt;div class=&quot;cares-logo&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/ng-template&gt;
+
+&lt;ng-template #rangeTemplate let-range=&quot;range&quot; let-total&gt;
+    第 &#123;&#123; range[0] &#125;&#125;-&#123;&#123; range[1] &#125;&#125; 条 / 共 &#123;&#123; total &#125;&#125; 条
+&lt;/ng-template&gt;
+
+</code></pre><h2 id="5-2-将模板注入全局service-作为组件的变量"><a href="#5-2-将模板注入全局service-作为组件的变量" class="headerlink" title="5.2  将模板注入全局service 作为组件的变量"></a>5.2  将模板注入全局service 作为组件的变量</h2><pre><code>    indicatorTemplate!: TemplateRef&lt;void&gt;;
+    rangeTemplate!: TemplateRef&lt;void&gt;;</code></pre><h2 id="5-3-全局service实例化模板并赋值"><a href="#5-3-全局service实例化模板并赋值" class="headerlink" title="5.3 全局service实例化模板并赋值"></a>5.3 全局service实例化模板并赋值</h2><pre><code>    constructor(
+                injector: Injector,
+                resolver: ComponentFactoryResolver
+    ) &#123;
+
+        const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
+        const &#123;rangeTemplate&#125; = factory.create(injector).instance;
+        const &#123;nzIndicator&#125; = factory.create(injector).instance;
+        this.rangeTemplate = rangeTemplate;
+        this.indicatorTemplate=nzIndicator;
+    &#125;</code></pre><h2 id="5-4-引用"><a href="#5-4-引用" class="headerlink" title="5.4 引用"></a>5.4 引用</h2><p>配置全局加载指示器</p>
+<pre><code>const nzConfigFactory = (
+    pagesService: PagesService,
+): NzConfig =&gt; &#123;
+    const nzIndicator = pagesService.indicatorTemplate;
+    return &#123;
+        spin: &#123;
+            nzIndicator
+        &#125;,
+        message: &#123;nzTop: 120&#125;,
+        notification: &#123;nzTop: 120&#125;
+    &#125;;
+&#125;;
+
+    providers: [
+        &#123;provide: NZ_CONFIG, useFactory: nzConfigFactory, deps:[PagesService]&#125;,
+        &#123;provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true&#125;,
+    ],
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF">前端</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ANGULAR 笔记&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

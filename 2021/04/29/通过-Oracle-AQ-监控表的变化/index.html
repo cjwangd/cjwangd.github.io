@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>通过 Oracle AQ  监控表的变化 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 四月 29日 2021, 4:43 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    973 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      5 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>之前通过java代码去发送这个变化，这个方案的潜在问题是java代码可能阻塞导致表的数据更新变慢。<br>当然也可以把变化通过 oracle java 代码发送到我们的队列中间件，但是数据库既然有，就用现成的。</p>
+<h2 id="获取相关权限"><a href="#获取相关权限" class="headerlink" title="获取相关权限"></a>获取相关权限</h2><pre><code>grant execute on DBMS_AQ to sia;
+GRANT EXECUTE ANY PROCEDURE TO sia;
+GRANT aq_administrator_role TO sia;
+GRANT aq_user_role TO sia;
+GRANT EXECUTE ON dbms_aqadm TO sia;
+GRANT EXECUTE ON dbms_aq TO sia;
+GRANT EXECUTE ON dbms_aqin TO sia;
+</code></pre><h2 id="创建类型"><a href="#创建类型" class="headerlink" title="创建类型"></a>创建类型</h2><pre><code>create type acdm_upload_queue_payload_type as object (
+msgtype varchar2(20),
+message varchar2(4000)
+);
+</code></pre><h2 id="创建队列表"><a href="#创建队列表" class="headerlink" title="创建队列表"></a>创建队列表</h2><pre><code>begin
+  dbms_aqadm.create_queue_table(
+    queue_table   =&gt; &#39;acdm_upload_queue_table&#39;,
+    queue_payload_type =&gt; &#39;acdm_upload_queue_payload_type&#39;,
+    multiple_consumers =&gt; false
+  );
+end;</code></pre><h2 id="创建队列"><a href="#创建队列" class="headerlink" title="创建队列"></a>创建队列</h2><pre><code>begin
+  dbms_aqadm.create_queue (
+    queue_name  =&gt; &#39;ntfm_acdm_queue&#39;,
+    queue_table =&gt; &#39;acdm_upload_queue_table&#39;
+  );
+
+  dbms_aqadm.start_queue(
+    queue_name  =&gt;  &#39;ntfm_acdm_queue&#39;
+  );
+end;
+</code></pre><h2 id="创建存储过程"><a href="#创建存储过程" class="headerlink" title="创建存储过程"></a>创建存储过程</h2><pre><code>create or replace procedure aq_send_msg(queueName in varchar2,msgType in varchar2,msg in varchar2) is
+  r_enqueue_options DBMS_AQ.ENQUEUE_OPTIONS_T;
+  r_message_properties DBMS_AQ.MESSAGE_PROPERTIES_T;
+  v_message_handle RAW(16);
+  o_payload acdm_upload_queue_payload_type;
+
+begin
+   o_payload := acdm_upload_queue_payload_type(msgType,msg);
+
+  dbms_aq.enqueue(
+    queue_name  =&gt; queueName,
+    enqueue_options =&gt; r_enqueue_options,
+    message_properties =&gt; r_message_properties,
+    payload =&gt; o_payload,
+    msgid =&gt; v_message_handle
+  );
+end aq_send_msg;
+</code></pre><h2 id="创建触发器"><a href="#创建触发器" class="headerlink" title="创建触发器"></a>创建触发器</h2><p>如果只监控指定的列的数据的变化，可以列出要监控的列</p>
+<pre><code>CREATE OR REPLACE TRIGGER TRI_ACDM_TD_FLIGHT
+    AFTER INSERT OR UPDATE OF PLEG_REGNO, PLEG_FLTNO, PLEG_PLANE_TYPE, PLEG_CDM_WAKE, PLEG_VIP, PLEG_TYPE, PLEG_TM_PTD, PLEG_CDM_TOBT, PLEG_PARK_ARR, PLEG_TM_ATA, PLEG_BAG_TRANS_BELT_ARR, PLEG_CDM_AOBT, PLEG_PARK_DEP, PLEG_BRD_GATE, PLEG_TM_ATD ON AOC.TD_PLAN_LEG
+    FOR EACH ROW
+DECLARE
+    -- local variables here
+BEGIN
+    -- 发送空管局
+
+    IF (:NEW.PLEG_CDM_TOBT != :OLD.PLEG_CDM_TOBT) THEN
+
+        AQ_SEND_MSG(&#39;ntfm_acdm_queue&#39;,
+                    &#39;FCDM&#39;,
+                    :NEW.PLEG_ID || &#39;,&#39; || :NEW.PLEG_AP_THR_DEP);
+
+    END IF;
+
+    AQ_SEND_MSG(&#39;ntfm_acdm_queue&#39;,
+                &#39;FLI&#39;,
+                :NEW.PLEG_ID || &#39;,&#39; || :NEW.PLEG_AP_THR_DEP);
+    -- 发送民航局
+    -- aq_send_msg(&#39;osccaac_acdm_queue&#39;,&#39;FLI&#39;,:new.pleg_id||&#39;,&#39;|| :new.pleg_ap_thr_dep);
+END TRI_ACDM_TD_FLIGHT;</code></pre><h2 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h2><pre><code>--- 清空队列
+
+
+-- purge queue
+DECLARE
+    po_t dbms_aqadm.aq$_purge_options_t;
+BEGIN
+    dbms_aqadm.purge_queue_table(&#39;acdm_upload_queue_table&#39;, NULL, po_t);
+END;</code></pre><h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><p>这几个依赖去oracle 安装目录下找</p>
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;com.oracle&lt;/groupId&gt;
+            &lt;artifactId&gt;jmscommon&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;system&lt;/scope&gt;
+            &lt;systemPath&gt;$&#123;project.basedir&#125;/aqlib/jmscommon.jar&lt;/systemPath&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.oracle&lt;/groupId&gt;
+            &lt;artifactId&gt;aqapi&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;system&lt;/scope&gt;
+            &lt;systemPath&gt;$&#123;project.basedir&#125;/aqlib/aqapi_g.jar&lt;/systemPath&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.oracle&lt;/groupId&gt;
+            &lt;artifactId&gt;jta&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;system&lt;/scope&gt;
+            &lt;systemPath&gt;$&#123;project.basedir&#125;/aqlib/jta.jar&lt;/systemPath&gt;
+        &lt;/dependency&gt;
+</code></pre><h2 id="数据类型转换类"><a href="#数据类型转换类" class="headerlink" title="数据类型转换类"></a>数据类型转换类</h2><pre><code>
+public class OracleQueueMsgType implements CustomDatum, CustomDatumFactory &#123;
+    public static final String _SQL_NAME = &quot;OracleQueueMsgType&quot;;
+    public static final int _SQL_TYPECODE = OracleTypes.STRUCT;
+
+    MutableStruct _struct;
+    // 12表示字符串
+    static int[] _sqlType = &#123; 12,12 &#125;;
+    static CustomDatumFactory[] _factory = new CustomDatumFactory[2];
+    static final OracleQueueMsgType _MessageFactory = new OracleQueueMsgType();
+
+    public static CustomDatumFactory getFactory() &#123;
+        return _MessageFactory;
+    &#125;
+
+    public OracleQueueMsgType() &#123;
+        _struct = new MutableStruct(new Object[2], _sqlType, _factory);
+    &#125;
+
+    public Datum toDatum(OracleConnection c) throws SQLException &#123;
+        return _struct.toDatum(c, _SQL_NAME);
+    &#125;
+
+    public CustomDatum create(Datum d, int sqlType) throws SQLException &#123;
+        if (d == null)
+            return null;
+        OracleQueueMsgType o = new OracleQueueMsgType();
+        o._struct = new MutableStruct((STRUCT) d, _sqlType, _factory);
+        return o;
+    &#125;
+
+    public AqMsg getContent() throws SQLException &#123;
+        String msgType = (String) _struct.getAttribute(0);
+        String msg = (String) _struct.getAttribute(1);
+        return new AqMsg(msgType,msg);
+    &#125;
+
+&#125;</code></pre><h2 id="Java-数据类型"><a href="#Java-数据类型" class="headerlink" title="Java 数据类型"></a>Java 数据类型</h2><pre><code>@Data
+@ToString
+public class AqMsg &#123;
+
+    public AqMsg(String msgType, String msg) &#123;
+        this.msgType = msgType;
+        this.msg = msg;
+    &#125;
+
+    private String msgType;
+    private String msg;
+&#125;
+</code></pre><h2 id="消息监听"><a href="#消息监听" class="headerlink" title="消息监听"></a>消息监听</h2><pre><code>public class OracleMessageListener implements MessageListener &#123;
+
+
+    @Resource
+    FplnServiceImpl fplnService;
+
+    @Resource
+    FpdiServiceImpl fpdiService;
+
+    @Resource
+    FpaiServiceImpl fpaiService;
+
+    @Override
+    public void onMessage(Message message) &#123;
+        System.out.println(&quot;ok&quot;);
+
+        AQjmsAdtMessage adtMessage = (AQjmsAdtMessage) message;
+
+        try &#123;
+            OracleQueueMsgType payload = (OracleQueueMsgType) adtMessage.getAdtPayload();
+            AqMsg aqMsg = payload.getContent();
+            if (null == aqMsg) &#123;
+                return;
+            &#125;
+
+            if (AqMsgTypeEnum.AMB.name().equals(aqMsg.getMsgType())) &#123;
+                log.debug(&quot;收到航班动态数据变更通知 ambid=&#123;&#125;&quot;,aqMsg.getMsg());
+                fplnService.processAmb(Long.valueOf(aqMsg.getMsg()));
+            &#125; else if (AqMsgTypeEnum.FLI.name().equals(aqMsg.getMsgType())) &#123;
+                log.debug(&quot;收到航班属性数据的更新通知 msg=&#123;&#125;&quot;,aqMsg);
+                processFlight(aqMsg.getMsg());
+
+            &#125; else if (AqMsgTypeEnum.GUA.name().equals(aqMsg.getMsgType())) &#123;
+                log.debug(&quot;收到航班保障数据的更新通知 msg=&#123;&#125;&quot;,aqMsg);
+                processFlight(aqMsg.getMsg());
+            &#125; else if (AqMsgTypeEnum.FCDM.name().equals(aqMsg.getMsgType())) &#123;
+                log.debug(&quot;收到航班保障数据的更新通知 msg=&#123;&#125;&quot;,aqMsg);
+                fpdiService.processFcdmById(Long.valueOf(aqMsg.getMsg().split(&quot;,&quot;)[0]));
+            &#125;
+
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    private void processFlight(String msg) &#123;
+        String[] msgstr = msg.split(&quot;,&quot;);
+        if (AIRPORT_CODE.equals(msgstr[1])) &#123;
+            fpdiService.processById(Long.valueOf(msgstr[0]));
+        &#125;else&#123;
+            fpaiService.processById(Long.valueOf(msgstr[0]));
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "通过 Oracle AQ  监控表的变化&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>JNI 方式调用瑞为人脸识别SDK ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 四月 21日 2021, 12:51 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.8k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      18 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><p>win10 64位 +  vs2015 + jdk1.8 32位</p>
+<h2 id="目标运行环境"><a href="#目标运行环境" class="headerlink" title="目标运行环境"></a>目标运行环境</h2><p>win7 64位 + jre1.8 32 位</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="瑞为SDK接口"><a href="#瑞为SDK接口" class="headerlink" title="瑞为SDK接口"></a>瑞为SDK接口</h2><pre><code>#ifndef _RECONOVA_FACE_CAMERA_SDK_H_
+#define _RECONOVA_FACE_CAMERA_SDK_H_
+
+#ifdef WIN32
+#ifdef RECONOVAFACECAMERASDK_EXPORTS
+#define RECONOVAFACECAMERASDK_API __declspec(dllexport)
+#else
+#define RECONOVAFACECAMERASDK_API __declspec(dllimport)
+
+#pragma comment(lib, &quot;ReconovaFaceCameraSdk&quot;)
+#endif
+#else
+#define RECONOVAFACECAMERASDK_API
+#endif
+
+#ifdef __cplusplus
+extern &quot;C&quot;
+&#123;
+#endif
+
+/**
+ * 图片信息定义，图片格式BGR24
+ */
+typedef struct ReconovaBGR24Image_s &#123;
+    int            width;                    /* 宽 */
+    int            height;                    /* 高 */
+    int            widthStep;                /* 步长，四字节对齐 */
+    int            imageSize;                /* 图片数据大小 */
+    char        *imageData;                /* 图片数据 */
+&#125; ReconovaBGR24Image_t;
+
+/**
+ * 人脸区域定义，从眉毛到下巴的矩形框
+ */
+typedef struct ReconovaFaceRectInfo_s &#123;
+    int            left;                    /* 左边界值 */
+    int            top;                    /* 上边界值 */
+    int            right;                    /* 右边界值 */
+    int            bottom;                    /* 下边界值 */
+&#125; ReconovaFaceRectInfo_t;
+
+/**
+ * 人脸特征信息
+ */
+typedef struct ReconovaFaceFeature_s &#123;
+    int            featLength;                /* 特征数据长度 */
+    char        *featData;                /* 特征数据 */
+&#125; ReconovaFaceFeature_t;
+
+/**
+ * 人员跟踪信息
+ */
+typedef struct ReconovaPersonTraceInfo_s &#123;
+    unsigned int personId;                /* 人员ID */
+    ReconovaBGR24Image_t frameImage;    /* 当前人脸对应的现场图片 */
+    ReconovaFaceRectInfo_t faceRect;    /* 人脸位置 */
+    ReconovaBGR24Image_t faceImage;        /* 人脸图片 */
+    ReconovaFaceFeature_t faceFeature;    /* 人脸特征信息 */
+&#125; ReconovaPersonTraceInfo_t;
+
+/**
+ * 人员跟踪状态
+ */
+typedef enum ReconovaPersonTraceStatus_e &#123;
+    RECONOVA_PERSON_TRACE_STATUS_ENTER,    /* 人员进去 */
+    RECONOVA_PERSON_TRACE_STATUS_UPDATE,/* 人员更新 */
+    RECONOVA_PERSON_TRACE_STATUS_LEAVE    /* 人员离开 */
+&#125; ReconovaPersonTraceStatus_t;
+
+/**
+ * 视频帧回调 
+ * @param image 视频帧信息
+ * @parma faceList 人脸框列表
+ * @parma faceNum 人脸个数
+ * @parma data 用户自定义数据
+ */
+typedef int (*ReconovaFrameCallBack_t)(ReconovaBGR24Image_t *image, ReconovaFaceRectInfo_t *faceList, int faceNum, void *data);
+
+/**
+ * 人员跟踪信息回调
+ * @param personTraceInfo 人员跟踪信息
+ * @param personTraceStatus 人员跟踪状态
+ * @param data 用户自定义数据
+ */
+typedef int (*ReconovaPersonTraceInfoCallBack_t)(ReconovaPersonTraceInfo_t *personTraceInfo, ReconovaPersonTraceStatus_t personTraceStatus, void *data);
+
+/**
+ * 模块初始化
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkInit(void);
+
+/**
+ * 模块反初始化，释放资源
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkUnInit(void);
+
+/**
+ * 注册视频帧回调
+ * @param callBack[in] 回调函数
+ * @param data[in] 自定义数据
+ *
+ * @note 该接口需要在启动USB像机之前调用
+ *       该接口推送的是BGR24的图片原始数据
+ *
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkRegisterFrameCallBack(ReconovaFrameCallBack_t callBack, void *data);
+
+/**
+ * 注册人员跟踪信息回调
+ * @param callBack[in] 回调函数
+ * @param data[in] 自定义数据
+ *
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkRegisterPersonTraceInfoCallBack(ReconovaPersonTraceInfoCallBack_t callBack, void *data);
+
+/**
+ * 启动人脸摄像头
+ *
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkFaceCameraStart(void);
+
+/**
+ * 停止人脸摄像头
+ *
+ * @return 成功返回0，失败返回负数
+ */
+RECONOVAFACECAMERASDK_API int ReconovaFaceCameraSdkFaceCameraStop(void);
+
+
+#ifdef __cplusplus
+&#125;
+#endif
+
+#endif /* _RECONOVA_FACE_CAMERA_SDK_H_ */
+
+
+</code></pre><h2 id="JAVA-代码"><a href="#JAVA-代码" class="headerlink" title="JAVA 代码"></a>JAVA 代码</h2><h3 id="数据结构定义"><a href="#数据结构定义" class="headerlink" title="数据结构定义"></a>数据结构定义</h3><h4 id="ReconovaBGR24Image"><a href="#ReconovaBGR24Image" class="headerlink" title="ReconovaBGR24Image"></a>ReconovaBGR24Image</h4><pre><code>package com.cares.reconova.model;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:11
+ **/
+public class ReconovaBGR24Image &#123;
+    public int width;                    /* 宽 */
+    public int height;                    /* 高 */
+    public int widthStep;                /* 步长，四字节对齐 */
+    public int imageSize;                /* 图片数据大小 */
+    public byte[] imageData;                /* 图片数据 */
+&#125;
+
+</code></pre><h4 id="ReconovaFaceFeature"><a href="#ReconovaFaceFeature" class="headerlink" title="ReconovaFaceFeature"></a>ReconovaFaceFeature</h4><pre><code>package com.cares.reconova.model;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:12
+ **/
+public class ReconovaFaceFeature &#123;
+    public int featLength;                /* 特征数据长度 */
+    public byte[] featData;                /* 特征数据 */
+&#125;
+</code></pre><h4 id="ReconovaFaceRectInfo"><a href="#ReconovaFaceRectInfo" class="headerlink" title="ReconovaFaceRectInfo"></a>ReconovaFaceRectInfo</h4><pre><code>package com.cares.reconova.model;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:12
+ **/
+public class ReconovaFaceRectInfo &#123;
+    public int left;                    /* 左边界值 */
+    public int top;                    /* 上边界值 */
+    public int right;                    /* 右边界值 */
+    public int bottom;                    /* 下边界值 */
+&#125;
+</code></pre><h4 id="ReconovaPersonTraceInfo"><a href="#ReconovaPersonTraceInfo" class="headerlink" title="ReconovaPersonTraceInfo"></a>ReconovaPersonTraceInfo</h4><pre><code>package com.cares.reconova.model;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:13
+ **/
+public class ReconovaPersonTraceInfo &#123;
+    public int personId;                /* 人员ID */
+    public ReconovaBGR24Image frameImage;    /* 当前人脸对应的现场图片 */
+    public ReconovaFaceRectInfo faceRect;    /* 人脸位置 */
+    public ReconovaBGR24Image faceImage;        /* 人脸图片 */
+    public ReconovaFaceFeature faceFeature;    /* 人脸特征信息 */
+&#125;
+</code></pre><h4 id="ReconovaPersonTraceStatus"><a href="#ReconovaPersonTraceStatus" class="headerlink" title="ReconovaPersonTraceStatus"></a>ReconovaPersonTraceStatus</h4><pre><code>package com.cares.reconova.model;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:14
+ **/
+public enum ReconovaPersonTraceStatus &#123;
+    RECONOVA_PERSON_TRACE_STATUS_ENTER,    /* 人员进去 */
+    RECONOVA_PERSON_TRACE_STATUS_UPDATE,/* 人员更新 */
+    RECONOVA_PERSON_TRACE_STATUS_LEAVE    /* 人员离开 */
+&#125;
+</code></pre><h3 id="回调接口定义"><a href="#回调接口定义" class="headerlink" title="回调接口定义"></a>回调接口定义</h3><h4 id="视频帧回调"><a href="#视频帧回调" class="headerlink" title="视频帧回调"></a>视频帧回调</h4><pre><code>package com.cares.reconova.service;
+
+import com.cares.reconova.model.ReconovaBGR24Image;
+import com.cares.reconova.model.ReconovaFaceRectInfo;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:16
+ **/
+public interface ReconovaFrameCallBack &#123;
+
+    /**
+     * 视频帧回调
+     * @param image 视频帧信息
+     * @parma faceList 人脸框列表
+     * @parma faceNum 人脸个数
+     * @parma data 用户自定义数据
+     */
+    int invoke(ReconovaBGR24Image image, ReconovaFaceRectInfo[] faceList, int faceNum, byte[] data);
+&#125;
+</code></pre><h4 id="人脸跟踪回调"><a href="#人脸跟踪回调" class="headerlink" title="人脸跟踪回调"></a>人脸跟踪回调</h4><pre><code>package com.cares.reconova.service;
+
+import com.cares.reconova.model.ReconovaPersonTraceInfo;
+import com.cares.reconova.model.ReconovaPersonTraceStatus;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:16
+ **/
+public interface ReconovaPersonTraceInfoCallBack &#123;
+    /**
+     * 人员跟踪信息回调
+     * @param personTraceInfo 人员跟踪信息
+     * @param personTraceStatus 人员跟踪状态
+     * @param data 用户自定义数据
+     */
+    int invoke(ReconovaPersonTraceInfo personTraceInfo, ReconovaPersonTraceStatus personTraceStatus, byte[] data);
+&#125;
+</code></pre><h3 id="回调接口实现"><a href="#回调接口实现" class="headerlink" title="回调接口实现"></a>回调接口实现</h3><h4 id="视频帧回调-1"><a href="#视频帧回调-1" class="headerlink" title="视频帧回调"></a>视频帧回调</h4><pre><code>package com.cares.reconova.service;
+
+import com.cares.reconova.model.ReconovaBGR24Image;
+import com.cares.reconova.model.ReconovaFaceRectInfo;
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.opencv_core;
+
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_highgui.*;
+import static org.bytedeco.javacpp.opencv_imgproc.cvRectangle;
+
+public class ReconovaFrameCallBackImpl implements ReconovaFrameCallBack&#123;
+    @Override
+    public int invoke(ReconovaBGR24Image image, ReconovaFaceRectInfo[] faceList, int faceNum, byte[] data) &#123;
+
+
+        opencv_core.IplImage iplImage = cvCreateImageHeader(cvSize(image.width, image.height), IPL_DEPTH_8U, 3);
+        BytePointer bytePointer = new BytePointer(image.imageData);
+        cvSetData(iplImage, bytePointer, ((image.width * 3) + 3) &gt;&gt; 2 &lt;&lt; 2);
+
+        for (int i = 0; i &lt; faceNum; i++) &#123;
+            cvRectangle(iplImage,
+                    cvPoint(faceList[i].left, faceList[i].top),
+                    cvPoint(faceList[i].right, faceList[i].bottom),
+                    CV_RGB(0, 255, 0),
+                    1,
+                    4,
+                    0
+            );
+        &#125;
+
+        cvNamedWindow(&quot;test&quot;,CV_WINDOW_FULLSCREEN);
+        cvResizeWindow(&quot;test&quot;, image.width, image.height);
+        cvShowImage(&quot;test&quot;, iplImage);
+        cvWaitKey(30);
+
+        cvReleaseImageHeader(iplImage);
+
+        return 0;
+    &#125;
+&#125;
+</code></pre><h4 id="人脸跟踪回调-1"><a href="#人脸跟踪回调-1" class="headerlink" title="人脸跟踪回调"></a>人脸跟踪回调</h4><pre><code>package com.cares.reconova.service;
+
+import com.cares.reconova.model.ReconovaPersonTraceInfo;
+import com.cares.reconova.model.ReconovaPersonTraceStatus;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 21:33
+ **/
+
+@Slf4j
+public class ReconovaPersonTraceInfoCallBackImpl implements ReconovaPersonTraceInfoCallBack&#123;
+    @Override
+    public int invoke(ReconovaPersonTraceInfo personTraceInfo, ReconovaPersonTraceStatus personTraceStatus, byte[] data) &#123;
+
+        log.info(&quot;personTraceStatus=&#123;&#125;&quot;,personTraceStatus);
+
+        return 0;
+    &#125;
+&#125;
+</code></pre><h3 id="JAVA-JNI-接口定义"><a href="#JAVA-JNI-接口定义" class="headerlink" title="JAVA JNI 接口定义"></a>JAVA JNI 接口定义</h3><pre><code>package com.cares.reconova;
+
+import com.cares.reconova.service.ReconovaFrameCallBack;
+import com.cares.reconova.service.ReconovaPersonTraceInfoCallBack;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/20 10:10
+ **/
+public class ReconovaFaceCameraSdk &#123;
+
+    public ReconovaFaceCameraSdk() &#123;
+        System.loadLibrary(&quot;ReconovaFaceCameraSdkJNI&quot;);
+    &#125;
+
+    /**
+     * 模块初始化
+     *
+     * @return 成功返回0，失败返回负数
+     */
+    public native int ReconovaFaceCameraSdkInit();
+
+    /**
+     * 模块反初始化，释放资源
+     *
+     * @return 成功返回0，失败返回负数
+     */
+    public native int ReconovaFaceCameraSdkUnInit();
+
+    /**
+     * 注册视频帧回调
+     *
+     * @param callBack[in] 回调函数
+     * @param data[in]     自定义数据
+     * @return 成功返回0，失败返回负数
+     * @note 该接口需要在启动USB像机之前调用
+     * 该接口推送的是BGR24的图片原始数据
+     */
+    public native int ReconovaFaceCameraSdkRegisterFrameCallBack(ReconovaFrameCallBack callBack, byte[] data);
+
+    /**
+     * 注册人员跟踪信息回调
+     *
+     * @param callBack[in] 回调函数
+     * @param data[in]     自定义数据
+     * @return 成功返回0，失败返回负数
+     */
+    public native int ReconovaFaceCameraSdkRegisterPersonTraceInfoCallBack(ReconovaPersonTraceInfoCallBack callBack, byte[] data);
+
+    /**
+     * 启动人脸摄像头
+     *
+     * @return 成功返回0，失败返回负数
+     */
+    public native int ReconovaFaceCameraSdkFaceCameraStart();
+
+    /**
+     * 停止人脸摄像头
+     *
+     * @return 成功返回0，失败返回负数
+     */
+    public native int ReconovaFaceCameraSdkFaceCameraStop();
+&#125;
+</code></pre><h2 id="C-代码"><a href="#C-代码" class="headerlink" title="C++ 代码"></a>C++ 代码</h2><h3 id="工程建立"><a href="#工程建立" class="headerlink" title="工程建立"></a>工程建立</h3><p>1.新建空白win 32 console application,类型为dll，非exe，编译目标为x86</p>
+<p>2.将工程和解决方案命名为 ReconovaFaceCameraSdkJNI或者将targetName 环境变量修改为 ReconovaFaceCameraSdkJNI</p>
+<p>3.VC++ directories 添加jdk目录下的 include 和include/win32,瑞为的sdk inc目录到工程headers 目录</p>
+<p>4.VC++ directories  添加瑞为的 ReconovaFaceCameraSdk.lib文件夹 到工程lib文件夹,或者拷贝ReconovaFaceCameraSdk.lib到工程目录下，用#pragma 处理(#pragma comment(lib, “ReconovaFaceCameraSdk”))</p>
+<p>5.使用javah 将定义的java jni 接口转成头文件</p>
+<p>6.添加实现代码</p>
+<h3 id="JNI-实现"><a href="#JNI-实现" class="headerlink" title="JNI 实现"></a>JNI 实现</h3><p>工程添加Source.cpp</p>
+<pre><code>#include &quot;com_cares_reconova_ReconovaFaceCameraSdk.h&quot;
+#include &lt;ReconovaFaceCameraSdk.h&gt;
+#include &lt;string.h&gt;
+#include &lt;memory.h&gt;
+
+#pragma comment(lib, &quot;ReconovaFaceCameraSdk&quot;)
+
+JavaVM * g_jvm = NULL;
+
+jobject g_framecallbackobj = NULL;
+jobject g_traceInfocallbackobj = NULL;
+
+
+JNIEnv* AttachJava()
+&#123;
+    JavaVMAttachArgs args = &#123; JNI_VERSION_1_8, 0, 0 &#125;;
+    JNIEnv* java;
+    g_jvm-&gt;AttachCurrentThread((void**)&amp;java, &amp;args);
+    return java;
+&#125;
+
+jobject  createReconovaBGR24ImageObjAndSetValue(JNIEnv* g_env, ReconovaBGR24Image_t *image) &#123;
+
+    // 创建对象
+    jclass bgrimgclass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaBGR24Image&quot;);
+
+    jmethodID bgrimgclass_noarg_constructer = g_env-&gt;GetMethodID(bgrimgclass, &quot;&lt;init&gt;&quot;, &quot;()V&quot;);
+
+    jobject obj = g_env-&gt;NewObject(bgrimgclass, bgrimgclass_noarg_constructer);
+
+    // 设置第一个参数  ReconovaBGR24Image
+    jfieldID width = g_env-&gt;GetFieldID(bgrimgclass, &quot;width&quot;, &quot;I&quot;);
+    jfieldID height = g_env-&gt;GetFieldID(bgrimgclass, &quot;height&quot;, &quot;I&quot;);
+    jfieldID widthStep = g_env-&gt;GetFieldID(bgrimgclass, &quot;widthStep&quot;, &quot;I&quot;);
+    jfieldID imageSize = g_env-&gt;GetFieldID(bgrimgclass, &quot;imageSize&quot;, &quot;I&quot;);
+    jfieldID imageData = g_env-&gt;GetFieldID(bgrimgclass, &quot;imageData&quot;, &quot;[B&quot;);
+
+    g_env-&gt;SetIntField(obj, width, image-&gt;width);
+    g_env-&gt;SetIntField(obj, height, image-&gt;height);
+    g_env-&gt;SetIntField(obj, widthStep, image-&gt;widthStep);
+    g_env-&gt;SetIntField(obj, imageSize, image-&gt;imageSize);
+
+    jbyteArray data = g_env-&gt;NewByteArray(image-&gt;imageSize);
+
+    g_env-&gt;SetByteArrayRegion(data, 0, image-&gt;imageSize, (jbyte*)image-&gt;imageData);
+    g_env-&gt;SetObjectField(obj, imageData, data);
+    g_env-&gt;DeleteLocalRef(bgrimgclass);
+
+    return obj;
+&#125;
+
+jobject  createReconovaFaceRectInfoAndSetValue(JNIEnv* g_env, ReconovaFaceRectInfo_t *faceRect) &#123;
+
+    // 创建对象
+    jclass faceRectObjclass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaFaceRectInfo&quot;);
+
+    jmethodID faceRectObjclass_noarg_constructer = g_env-&gt;GetMethodID(faceRectObjclass, &quot;&lt;init&gt;&quot;, &quot;()V&quot;);
+
+    jobject obj = g_env-&gt;NewObject(faceRectObjclass, faceRectObjclass_noarg_constructer);
+
+    jfieldID left = g_env-&gt;GetFieldID(faceRectObjclass, &quot;left&quot;, &quot;I&quot;);
+    jfieldID right = g_env-&gt;GetFieldID(faceRectObjclass, &quot;right&quot;, &quot;I&quot;);
+    jfieldID top = g_env-&gt;GetFieldID(faceRectObjclass, &quot;top&quot;, &quot;I&quot;);
+    jfieldID bottom = g_env-&gt;GetFieldID(faceRectObjclass, &quot;bottom&quot;, &quot;I&quot;);
+
+    g_env-&gt;SetIntField(obj, left, faceRect-&gt;left);
+    g_env-&gt;SetIntField(obj, right, faceRect-&gt;right);
+    g_env-&gt;SetIntField(obj, top, faceRect-&gt;top);
+    g_env-&gt;SetIntField(obj, bottom, faceRect-&gt;bottom);
+
+    g_env-&gt;DeleteLocalRef(faceRectObjclass);
+    return obj;
+
+&#125;
+
+jobjectArray createReconovaFaceRectInfoArrayAndSetValue(JNIEnv* g_env, ReconovaFaceRectInfo_t *faceList, int faceNum) &#123;
+
+
+
+    // 创建对象
+    jclass faceRectObjclass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaFaceRectInfo&quot;);
+
+    jobjectArray faceListObj = g_env-&gt;NewObjectArray(faceNum, faceRectObjclass, nullptr);
+
+    for (int i = 0; i &lt; faceNum; i++) &#123;
+        g_env-&gt;SetObjectArrayElement(faceListObj, i, createReconovaFaceRectInfoAndSetValue(g_env,faceList + i));
+    &#125;
+
+    // 设置第一个参数  ReconovaBGR24Image
+    g_env-&gt;DeleteLocalRef(faceRectObjclass);
+
+    return faceListObj;
+&#125;
+
+jobject createFaceFetureAndSetValue(JNIEnv* g_env, ReconovaFaceFeature_t faceFeature) &#123;
+
+
+    jclass faceFetureClass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaFaceFeature&quot;);
+    jmethodID faceFetureClass_noarg_constructer = g_env-&gt;GetMethodID(faceFetureClass, &quot;&lt;init&gt;&quot;, &quot;()V&quot;);
+    jobject obj = g_env-&gt;NewObject(faceFetureClass, faceFetureClass_noarg_constructer);
+
+    jfieldID featLength = g_env-&gt;GetFieldID(faceFetureClass, &quot;featLength&quot;, &quot;I&quot;);
+    jfieldID featData = g_env-&gt;GetFieldID(faceFetureClass, &quot;featData&quot;, &quot;[B&quot;);
+
+    jbyteArray data = g_env-&gt;NewByteArray(faceFeature.featLength);
+
+    g_env-&gt;SetByteArrayRegion(data, 0, faceFeature.featLength, (jbyte*)faceFeature.featData);
+    g_env-&gt;SetObjectField(obj, featData, data);
+
+    g_env-&gt;SetIntField(obj, featLength, faceFeature.featLength);
+    g_env-&gt;DeleteLocalRef(faceFetureClass);
+    return obj;
+
+&#125;
+
+jobject createReconovaPersonTraceInfoAndSetValue(JNIEnv* g_env, ReconovaPersonTraceInfo_t *personTraceInfo) &#123;
+
+    jclass traceInfoClass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaPersonTraceInfo&quot;);
+    jmethodID traceInfoClass_noarg_constructer = g_env-&gt;GetMethodID(traceInfoClass, &quot;&lt;init&gt;&quot;, &quot;()V&quot;);
+    jobject obj = g_env-&gt;NewObject(traceInfoClass, traceInfoClass_noarg_constructer);
+
+    jfieldID personId = g_env-&gt;GetFieldID(traceInfoClass, &quot;personId&quot;, &quot;I&quot;);
+    jfieldID frameImage = g_env-&gt;GetFieldID(traceInfoClass, &quot;frameImage&quot;, &quot;Lcom/cares/reconova/model/ReconovaBGR24Image;&quot;);
+    jfieldID faceRect = g_env-&gt;GetFieldID(traceInfoClass, &quot;faceRect&quot;, &quot;Lcom/cares/reconova/model/ReconovaFaceRectInfo;&quot;);
+    jfieldID faceImage = g_env-&gt;GetFieldID(traceInfoClass, &quot;faceImage&quot;, &quot;Lcom/cares/reconova/model/ReconovaBGR24Image;&quot;);
+    jfieldID faceFeature = g_env-&gt;GetFieldID(traceInfoClass, &quot;faceFeature&quot;, &quot;Lcom/cares/reconova/model/ReconovaFaceFeature;&quot;);
+
+    jobject frameImageObj =   createReconovaBGR24ImageObjAndSetValue(g_env, &amp;(personTraceInfo-&gt;frameImage));
+
+    jobject faceRectObj = createReconovaFaceRectInfoAndSetValue(g_env, &amp;(personTraceInfo-&gt;faceRect));
+
+    jobject faceImageObj = createReconovaBGR24ImageObjAndSetValue(g_env, &amp;(personTraceInfo-&gt;faceImage));
+
+    jobject faceFeatureObj = createFaceFetureAndSetValue(g_env, personTraceInfo-&gt;faceFeature);
+
+    g_env-&gt;SetIntField(obj, personId, personTraceInfo-&gt;personId);
+    g_env-&gt;SetObjectField(obj, frameImage, frameImageObj);
+    g_env-&gt;SetObjectField(obj, faceRect, faceRectObj);
+    g_env-&gt;SetObjectField(obj, faceImage, faceImageObj);
+    g_env-&gt;SetObjectField(obj, faceFeature, faceFeatureObj);
+
+
+    g_env-&gt;DeleteLocalRef(traceInfoClass);
+
+    return obj;
+
+
+&#125;
+
+jobject createStatus(JNIEnv* g_env, ReconovaPersonTraceStatus_t personTraceStatus) &#123;
+
+    jclass statusClass = g_env-&gt;FindClass(&quot;com/cares/reconova/model/ReconovaPersonTraceStatus&quot;);
+    jobject statusobj;
+    jfieldID jfieldID_RECONOVA_PERSON_TRACE_STATUS_ENTER = g_env-&gt;GetStaticFieldID(statusClass, &quot;RECONOVA_PERSON_TRACE_STATUS_ENTER&quot;, &quot;Lcom/cares/reconova/model/ReconovaPersonTraceStatus;&quot;);
+    jfieldID jfieldID_RECONOVA_PERSON_TRACE_STATUS_UPDATE = g_env-&gt;GetStaticFieldID(statusClass, &quot;RECONOVA_PERSON_TRACE_STATUS_UPDATE&quot;, &quot;Lcom/cares/reconova/model/ReconovaPersonTraceStatus;&quot;);
+    jfieldID jfieldID_RECONOVA_PERSON_TRACE_STATUS_LEAVE = g_env-&gt;GetStaticFieldID(statusClass, &quot;RECONOVA_PERSON_TRACE_STATUS_LEAVE&quot;, &quot;Lcom/cares/reconova/model/ReconovaPersonTraceStatus;&quot;);
+
+    switch (personTraceStatus) &#123;
+    case RECONOVA_PERSON_TRACE_STATUS_ENTER:
+        statusobj = g_env-&gt;GetStaticObjectField(statusClass, jfieldID_RECONOVA_PERSON_TRACE_STATUS_ENTER);
+        break;
+    case RECONOVA_PERSON_TRACE_STATUS_UPDATE:
+        statusobj = g_env-&gt;GetStaticObjectField(statusClass, jfieldID_RECONOVA_PERSON_TRACE_STATUS_UPDATE);
+        break;
+    case RECONOVA_PERSON_TRACE_STATUS_LEAVE:
+        statusobj = g_env-&gt;GetStaticObjectField(statusClass, jfieldID_RECONOVA_PERSON_TRACE_STATUS_LEAVE);
+        break;
+    default:
+        statusobj = nullptr;
+    &#125;
+    g_env-&gt;DeleteLocalRef(statusClass);
+
+    return statusobj;
+&#125;
+
+
+int  ReconovaFrameCallBack(ReconovaBGR24Image_t *image, ReconovaFaceRectInfo_t *faceList, int faceNum, void *data) &#123;
+    JNIEnv* g_env = AttachJava();
+    // 调用 g_traceInfocallbackobj 中的方法
+    jclass javacallbakimplclass = g_env-&gt;GetObjectClass(g_framecallbackobj);
+    jmethodID invoke = g_env-&gt;GetMethodID(javacallbakimplclass, &quot;invoke&quot;, &quot;(Lcom/cares/reconova/model/ReconovaBGR24Image;[Lcom/cares/reconova/model/ReconovaFaceRectInfo;I[B)I&quot;);
+    jobject ReconovaBGR24Image = createReconovaBGR24ImageObjAndSetValue(g_env,image);
+    jobjectArray ReconovaFaceRectInfo = createReconovaFaceRectInfoArrayAndSetValue(g_env, faceList, faceNum);
+    g_env-&gt;CallObjectMethod(g_framecallbackobj, invoke, ReconovaBGR24Image, ReconovaFaceRectInfo, faceNum, data);
+    g_jvm-&gt;DetachCurrentThread();
+    return 0;
+
+&#125;
+
+
+int ReconovaPersonTraceInfoCallBack(ReconovaPersonTraceInfo_t *personTraceInfo, ReconovaPersonTraceStatus_t personTraceStatus, void *data) &#123;
+    JNIEnv* g_env = AttachJava();
+    // 调用 g_framecallbackobj 中的方法
+
+
+    jclass traceInfocallbackobjimplclass = g_env-&gt;GetObjectClass(g_traceInfocallbackobj);
+    jmethodID invoke = g_env-&gt;GetMethodID(traceInfocallbackobjimplclass, &quot;invoke&quot;, &quot;(Lcom/cares/reconova/model/ReconovaPersonTraceInfo;Lcom/cares/reconova/model/ReconovaPersonTraceStatus;[B)I&quot;);
+    jobject personTraceInfoObj = createReconovaPersonTraceInfoAndSetValue(g_env, personTraceInfo);
+    jobject status = createStatus(g_env, personTraceStatus);
+    g_env-&gt;CallObjectMethod(g_traceInfocallbackobj, invoke, personTraceInfoObj, status, data);
+
+    g_jvm-&gt;DetachCurrentThread();
+
+    return 0;
+&#125;
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkInit
+(JNIEnv *, jobject) &#123;
+    return ReconovaFaceCameraSdkInit();
+&#125;
+
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkUnInit
+(JNIEnv *, jobject) &#123;
+    return ReconovaFaceCameraSdkUnInit();
+&#125;
+
+// 帧回调
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkRegisterFrameCallBack
+(JNIEnv *env, jobject sdkclass, jobject framecallbackobj, jbyteArray data) &#123;
+    JNIEnv* g_env = AttachJava();
+    g_framecallbackobj = env-&gt;NewGlobalRef(framecallbackobj);
+    int res = ReconovaFaceCameraSdkRegisterFrameCallBack(ReconovaFrameCallBack, NULL);
+    return res;
+&#125;
+
+// 跟踪信息回调
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkRegisterPersonTraceInfoCallBack
+(JNIEnv *env, jobject sdkclass, jobject traceInfocallbackobj, jbyteArray data) &#123;
+    g_traceInfocallbackobj = env-&gt;NewGlobalRef(traceInfocallbackobj);
+    int res= ReconovaFaceCameraSdkRegisterPersonTraceInfoCallBack(ReconovaPersonTraceInfoCallBack, NULL);
+    return res;
+&#125;
+
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkFaceCameraStart
+(JNIEnv *, jobject) &#123;
+    return ReconovaFaceCameraSdkFaceCameraStart();
+&#125;
+
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkFaceCameraStop
+(JNIEnv *, jobject) &#123;
+    return ReconovaFaceCameraSdkFaceCameraStop();
+&#125;
+
+
+
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) &#123;
+    JNIEnv *env = NULL;
+    jint result = -1;
+
+    if (jvm-&gt;GetEnv((void **)&amp;env, JNI_VERSION_1_4) != JNI_OK) &#123;
+        return -1;
+    &#125;
+    g_jvm = jvm;
+
+    result = JNI_VERSION_1_8;
+
+    printf(&quot;JNI_OnLoad sucess\n&quot;);
+    fflush(stdout);
+    return result;
+&#125;
+
+</code></pre><h1 id="JNI-调用总结"><a href="#JNI-调用总结" class="headerlink" title="JNI 调用总结"></a>JNI 调用总结</h1><h2 id="回调函数的全局对象变量"><a href="#回调函数的全局对象变量" class="headerlink" title="回调函数的全局对象变量"></a>回调函数的全局对象变量</h2><p>java将回调函数作为jobject 传到jni，在瑞为的本地回调函数我们要去调用这个对象里面的方法，必须要将这个回调类对象保存为全局变量，直接赋值是不行的，会被jvm回收掉。</p>
+<pre><code>
+jobject g_framecallbackobj = NULL; // 全局变量
+
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkRegisterFrameCallBack
+(JNIEnv *env, jobject sdkclass, jobject framecallbackobj, jbyteArray data) &#123;
+    g_framecallbackobj = env-&gt;NewGlobalRef(framecallbackobj); // 正确方式全局引用
+   //  g_framecallbackobj=framecallbackobj; // 错误方式
+   ...
+&#125;
+</code></pre><h2 id="JNI-打印信息到控制台"><a href="#JNI-打印信息到控制台" class="headerlink" title="JNI 打印信息到控制台"></a>JNI 打印信息到控制台</h2><pre><code>printf(&quot;JNI_OnLoad sucess\n&quot;);
+fflush(stdout);
+</code></pre><h2 id="多线程获取-JNIEnv"><a href="#多线程获取-JNIEnv" class="headerlink" title="多线程获取 JNIEnv *"></a>多线程获取 JNIEnv *</h2><p>瑞为本地sdk回调是在一个线程内调用，注册回调时把 JNIEnv * 保存为全局变量是不对的，会导致jvm crash</p>
+<pre><code>JNIEnv* g_env = NULL; // 全局变量
+
+
+JNIEXPORT jint JNICALL Java_com_cares_reconova_ReconovaFaceCameraSdk_ReconovaFaceCameraSdkRegisterFrameCallBack
+(JNIEnv *env, jobject sdkclass, jobject framecallbackobj, jbyteArray data) &#123;
+   //  g_env =env; // 错误方式
+   ...
+&#125;
+
+</code></pre><p>正确的方法</p>
+<p>1、代码实现添加 JNI_OnLoad，jvm在加载dll成功后会调用这个函数，这时我们可以吧  jvm作为全局变量保存起来，以便获取到<br>JNIEnv*</p>
+<pre><code>JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) &#123;
+    JNIEnv *env = NULL;
+    jint result = -1;
+
+    if (jvm-&gt;GetEnv((void **)&amp;env, JNI_VERSION_1_8) != JNI_OK) &#123;
+        return -1;
+    &#125;
+    g_jvm = jvm;
+
+    result = JNI_VERSION_1_8;
+
+    printf(&quot;JNI_OnLoad sucess\n&quot;);
+    fflush(stdout);
+    return result;
+&#125;</code></pre><p>2、获取</p>
+<pre><code>JNIEnv* AttachJava()
+&#123;
+    JavaVMAttachArgs args = &#123; JNI_VERSION_1_8, 0, 0 &#125;;
+    JNIEnv* java;
+    g_jvm-&gt;AttachCurrentThread((void**)&amp;java, &amp;args); // g_jvm  全局变量
+    return java;
+&#125;
+</code></pre><p>3、重点，JNIEnv* 获取后在不用的时候要 释放。以本列来说，本地回调函数的开始获取JNIEnv* ，本地回调函数调用完java回调函数后需要释放  JNIEnv*</p>
+<pre><code>g_jvm-&gt;DetachCurrentThread();
+</code></pre><h2 id="C-枚举到JAVA枚举的转换"><a href="#C-枚举到JAVA枚举的转换" class="headerlink" title="C++枚举到JAVA枚举的转换"></a>C++枚举到JAVA枚举的转换</h2><p>参考  c++ 实现代码  createStatus函数</p>
+<h2 id="查看-java的方法签名和字段签名"><a href="#查看-java的方法签名和字段签名" class="headerlink" title="查看 java的方法签名和字段签名"></a>查看 java的方法签名和字段签名</h2><p>JNI在获取方法、设置字段值的时候需要签名</p>
+<pre><code>javap -s &quot;your java class full packagename.your classname&quot;
+</code></pre><p>javap 会把类中的所有方法和字段的签名打印出来，我们赋值粘贴就好。</p>
+<p>基本类型参考官方文档</p>
+<h2 id="jni-调试"><a href="#jni-调试" class="headerlink" title="jni 调试"></a>jni 调试</h2><p>调试可以加快效率</p>
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><p>1、在java代码打断点，启动程序<br>2、打开vs工程 ，选择  attach 到本地进程，由于java进程都是java.exe 分不清，可以用jvisualvm 或者  jps命令查看<br>3、在vs要调试的代码打断点，打好后放开java断点</p>
+<h3 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h3><p>由于java代码运行在虚拟机，本列采用远程调试，<br>1、远程机器开启 C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Remote Debugger\x64\msvsmon.exe<br>这时vs的一个工具，设置为不需要验证，在options设置任意用户可以连接</p>
+<p>2、调试端选择attach to  process,transport 在弹出框选择远程，然后点击find（注意防火墙）</p>
+<p>3、剩余步骤参考本地调试</p>
+<h2 id="异常检查"><a href="#异常检查" class="headerlink" title="异常检查"></a>异常检查</h2><p>每一次JNI 方法调用完，都要去检查异常</p>
+<p>检查-》描述-》清除异常-》抛出异常</p>
+<pre><code>
+    if (env-&gt;ExceptionCheck()) &#123;
+        env-&gt;ExceptionDescribe();
+        env-&gt;ExceptionClear();//清除引发的异常，在Java层不会打印异常堆栈信息，如果不清除，后面的调用ThrowNew抛出的异常堆栈信息会
+                              //覆盖前面的异常信息
+        jclass cls_exception = env-&gt;FindClass(&quot;java/lang/Exception&quot;);
+        env-&gt;ThrowNew(cls_exception, &quot;call java static method ndk error&quot;);
+        return;
+    &#125;
+
+    if (env-&gt;ExceptionOccurred()) &#123;
+        env-&gt;ExceptionDescribe();
+        env-&gt;ExceptionClear();
+        jclass cls_exception = env-&gt;FindClass(&quot;java/lang/Exception&quot;);
+        env-&gt;ThrowNew(cls_exception, &quot;call java static method ndk error&quot;);
+        return;
+    &#125;
+</code></pre><h2 id="FindClass-找不到类的问题"><a href="#FindClass-找不到类的问题" class="headerlink" title="FindClass 找不到类的问题"></a>FindClass 找不到类的问题</h2><p>比如springboot 打包jar后，FindClass 会找不到除jdk类外的任何类，应为springboot jar是用户自定义classloader</p>
+<p>解决办法</p>
+<p>1、JNI找到加载的classloader,调用classloader的方法去加载jar包中的类</p>
+<p>2、将java中的对象作为object 传入 JNI，这样JNI就不用去findClass 了</p>
+<p>3、将springboot 打包成资源分离方式 通过java -classpath  mainClass 的方式启动。这样所有的jar和类都会通过系统AppClassLoader 去加载，FindClass 就不会返回空值（推荐，资源分离方式打包，更新比较方便，springboot jar包可能会很大）</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>如果是小库使用JNA去调用即可，如果像是人脸sdk库文件很大最好用jni。JNA性能不行</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JNI">JNI</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/JNI">JNI</a>
+                
+                  <a class="hover-with-bg" href="/tags/JNI%20%E8%B0%83%E7%91%9E%E4%B8%BASDK">JNI 调瑞为SDK</a>
+                
+                  <a class="hover-with-bg" href="/tags/JNI%20%20%E6%80%BB%E7%BB%93">JNI  总结</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JNI 方式调用瑞为人脸识别SDK&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

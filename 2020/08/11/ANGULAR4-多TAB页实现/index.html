@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>ANGULAR4 多TAB页实现 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 八月 11日 2020, 10:56 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>1、背景：本来angular，vue，react是专门做单页应用的，奈何客户觉得单页面不行要传统的多tab</p>
+<p>2、现状：项目已经基于多模块和嵌套路由完成</p>
+<p>3、实现思路：1、路由复用策略。2、路由结合动态组件</p>
+<p>3.1 最先尝试的路由复用策略，此方案最终被放弃</p>
+<pre><code>1、首先是路由复用策略不是很稳定的一个特性
+2、路由复用和模块懒加载有冲突
+3、最主要的路由复用的页面如果嵌入了iframe，那么每次打开该页面iframe都会重新加载，这不是客户希望看到的结果。</code></pre><p>3.2 路由结合动态组件 </p>
+<p>项目已经是基于路由，只需稍稍改动就行</p>
+<pre><code>1、新增一个多tab组件，</code></pre><p>具体tab实现采用阿里ng-zorro，封装一下</p>
+<pre><code>&lt;div class=&quot;dsptab&quot; #dsptabs&gt;
+  &lt;p-contextMenu [model]=&quot;items&quot; class=&quot;tree-context-menu-tab&quot;&gt;&lt;/p-contextMenu&gt;
+  &lt;nz-tabset
+  [nzType]=&quot;&#39;card&#39;&quot;
+  [nzAnimated]=&quot;true&quot;
+  [nzSelectedIndex]=&quot;currentIndex&quot;
+  (nzSelectChange)=&quot;nzSelectChange($event)&quot;
+  &gt;
+
+      &lt;nz-tab *ngFor=&quot;let tab of menuList; let idx=index&quot; &gt;
+
+      &lt;ng-template #nzTabHeading&gt;
+      &lt;div class=&quot;dsp-anticon&quot; (contextmenu)=&quot;contextmenu($event)&quot;&gt;
+      &#123;&#123;tab.title&#125;&#125;
+      &lt;i *ngIf=&quot;tab.close&quot; class=&quot;fa fa-times&quot; (click)=&quot;closeUrl(tab.url)&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      &lt;/ng-template&gt;
+
+      &lt;ng-container *ngComponentOutlet=&quot;tab.component&quot;&gt;&lt;/ng-container&gt;
+      &lt;/nz-tab&gt;
+  &lt;/nz-tabset&gt;
+&lt;/div&gt;
+</code></pre><pre><code>import &#123;AfterViewChecked, Component, HostListener, Injector, OnInit, ReflectiveInjector, ViewChild&#125; from &#39;@angular/core&#39;;
+import &#123;ActivatedRoute, NavigationEnd, Router&#125; from &#39;@angular/router&#39;;
+import &#123;Title&#125; from &#39;@angular/platform-browser&#39;;
+import &#123;PagesService&#125; from &#39;../../pages.service&#39;;
+import &#39;rxjs/add/operator/filter&#39;;
+import &#39;rxjs/add/operator/map&#39;;
+import &#39;rxjs/add/operator/mergeMap&#39;;
+import &#123;API_URL&#125; from &#39;../../pages.const&#39;;
+import &#123;ContextMenu&#125; from &#39;primeng/components/contextmenu/contextmenu&#39;;
+
+@Component(&#123;
+selector: &#39;app-multi-tabs&#39;,
+templateUrl: &#39;./multi-tabs.component.html&#39;,
+styleUrls: [&#39;./multi-tabs.component.css&#39;]
+&#125;)
+    export class MultiTabsComponent implements OnInit, AfterViewChecked &#123;
+
+    private apiUrl: string = API_URL;
+
+    @ViewChild(ContextMenu)contexMenu: ContextMenu;
+
+
+    // 路由列表
+    menuList = [];
+    // 当前选择的tab index
+    currentIndex: number = -1;
+    items = [];
+
+    constructor(private router: Router,
+    private inj: Injector,
+    private pagesService: PagesService,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title) &#123;
+
+
+
+    // 路由事件
+    this.router.events.filter(event =&gt; event instanceof NavigationEnd)
+    .map(() =&gt; this.activatedRoute)
+    .map(route =&gt; &#123;
+      while (route.firstChild) &#123;
+          route = route.firstChild;
+      &#125;
+      return route;
+    &#125;)
+    .filter(route =&gt; route.outlet === &#39;primary&#39;)
+    .subscribe((event) =&gt; &#123;
+
+        this.pagesService.hideMask();
+
+        const menu: any = &#123;&#125;;
+        const title = event.queryParams[&#39;value&#39;].title;
+        const component = event.component;
+        menu.title = title;
+        menu.url = this.router.url;
+
+        menu.data = event.params[&#39;_value&#39;];
+
+
+
+        if (title !== &#39;首页&#39;) &#123;
+            menu.close = true;
+        &#125;
+        menu.component = component;
+        if ( (!this.menuList || this.menuList.length === 0) &amp;&amp; title !== &#39;首页&#39; ) &#123;
+          this.router.navigate([&#39;/pages/monitor/welcome&#39;], &#123;queryParams: &#123;title: &#39;首页&#39;&#125;&#125;);
+          return;
+        &#125;
+
+        if ( /\/pages\/leaderView\/*/.test(this.router.url) ) &#123;
+          const url = this.apiUrl + &#39;reportUrlManager/getUrl?URLCode=&#39; + menu.data.page + &#39;&amp;timeStamp=&#39; + (new Date()).getTime();
+          window.open(url, &#39;_blank&#39;);
+          const cm = this.menuList[this.currentIndex];
+          return;
+        &#125;
+
+        if (title &amp;&amp; component) &#123;
+          const idx = this.menuList.findIndex(value =&gt; value.url === menu.url);
+          if (idx &gt;= 0) &#123;
+              this.currentIndex = idx;
+          &#125;else &#123;
+            this.menuList.push(menu);
+            this.currentIndex = this.menuList.length - 1;
+          &#125;
+
+        &#125;
+
+        &#125;);
+    &#125;
+
+    ngOnInit(): void &#123;
+      this.items = [
+      &#123;label: &#39;关闭所有&#39;, icon: &#39;fa-window-close&#39;, command: (event) =&gt; this.closeAllTab()&#125;,
+      &#123;label: &#39;关闭当前&#39;, icon: &#39;fa-remove&#39;, command: (event) =&gt; this.closeCurrTab()&#125;
+      ];
+    &#125;
+
+    closeAllTab() &#123;
+      this.currentIndex = 0;
+      this.menuList.forEach(value =&gt; &#123;
+      if (value.title !== &#39;首页&#39;) &#123;
+      &#125;
+      &#125;);
+      this.menuList.splice(1);
+      const menu = this.menuList[0];
+      this.router.navigate([menu.url.split(&#39;?&#39;)[0]], &#123;queryParams: &#123;title: menu.title&#125;&#125;);
+      &#125;
+
+      closeCurrTab() &#123;
+      const tab = this.menuList[this.currentIndex];
+      if (tab.title !== &#39;首页&#39;) &#123;
+          this.closeUrl(tab.url);
+      &#125;
+    &#125;
+
+    createInjector(tab) &#123;
+
+    if (!tab.data) &#123;
+        return null;
+    &#125;
+
+    const inputProviders = Object.keys(tab.data).map(
+    (inputName) =&gt; &#123;
+    return &#123;
+    provide: inputName, useValue: tab.data[inputName]
+    &#125;;
+    &#125;);
+    const resolvedInputs = ReflectiveInjector.resolve(inputProviders);
+    const injector = ReflectiveInjector.resolve(inputProviders);
+    return injector;
+    &#125;
+
+    // 关闭选项标签
+    closeUrl(tab: any) &#123;
+      // 当前关闭的是第几个路由
+      const index = this.menuList.findIndex(p =&gt; p.url === tab);
+      // 如果只有一个不可以关闭
+      if (this.menuList.length === 1) &#123;
+          return;
+      &#125;
+      this.menuList.splice(index, 1);
+      // 如果当前删除的对象是当前选中的，那么需要跳转
+      if (this.currentIndex === index) &#123;
+        // 显示上一个选中
+        let menu = this.menuList[index - 1];
+        if (!menu) &#123;// 如果上一个没有下一个选中
+            menu = this.menuList[index];
+        &#125;
+      &#125;
+    &#125;
+
+    /**
+    * tab发生改变
+    */
+    nzSelectChange(e) &#123;
+      if (e.tab) &#123;
+        this.currentIndex = e.index;
+        const menu = this.menuList[this.currentIndex];
+        this.router.navigateByUrl(menu.url);
+      &#125;
+    &#125;
+
+    ngAfterViewChecked(): void &#123;
+    &#125;
+
+    contextmenu(event) &#123;
+      event.preventDefault();
+      this.contexMenu.toggle(event);
+    &#125;
+
+    @HostListener(&#39;contextmenu&#39;, [&#39;$event&#39;]) ban(event) &#123;&#125;
+
+&#125;</code></pre><p>4、将封装的组件放入内容展示区</p>
+<pre><code>&lt;ba-sidebar&gt;&lt;/ba-sidebar&gt;
+&lt;ba-page-top&gt;&lt;/ba-page-top&gt;
+&lt;div class=&quot;al-main&quot;
+[ngClass]=&quot;&#123;&#39;collapsed&#39;:!_sideIsCollapsed&#125;&quot;&gt;
+  &lt;div class=&quot;al-content&quot;&gt;
+  &lt;app-multi-tabs&gt;
+      &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  &lt;/app-multi-tabs&gt;
+  &lt;/div&gt;
+&lt;/div&gt; 
+</code></pre><p>5、在内容展示区所在模块引入各个子模块，在各个子模块中将视图组件（即完整的页面组件）放入该子模块的entryComponents</p>
+<p><img src="/images/pasted-145.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p><img src="/images/pasted-146.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p>6、按以上步骤修改其他子模块，修改完成完美实现 angular 多窗口 ，iframe也不会每次刷新</p>
+<p><img src="/images/pasted-147.png" srcset="/img/loading.gif" alt="upload successful"></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF">前端</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/angular4">angular4</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%A4%9Atab">多tab</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ANGULAR4 多TAB页实现&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

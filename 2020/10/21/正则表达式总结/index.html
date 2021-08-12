@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>正则表达式总结 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十月 21日 2020, 1:38 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      12 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="分组的引入"><a href="#分组的引入" class="headerlink" title="分组的引入"></a>分组的引入</h2><p>  对于要重复单个字符，非常简单，直接在字符后卖弄加上限定符即可，例如 a+ 表示匹配1个或一个以上的a，a?表示匹配0个或1个a。这些限定符如下所示： </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X?</td>
+<td>X ，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X *</td>
+<td>X ，零次或多次</td>
+</tr>
+<tr>
+<td>X +</td>
+<td>X ，一次或多次</td>
+</tr>
+<tr>
+<td>X { n }</td>
+<td>X ，恰好 n 次</td>
+</tr>
+<tr>
+<td>X { n ,}</td>
+<td>X ，至少 n 次</td>
+</tr>
+<tr>
+<td>X { n , m }</td>
+<td>X ，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<p>但是我们如果要对多个字符进行重复怎么办呢？此时我们就要用到分组，我们可以使用小括号”()”来指定要重复的子表达式，然后对这个子表达式进行重复，例如：(abc)? 表示0个或1个abc 这里一 个括号的表达式就表示一个分组 。</p>
+<p> 分组可以分为两种形式，捕获组和非捕获组。 </p>
+<h2 id="捕获组"><a href="#捕获组" class="headerlink" title="捕获组"></a>捕获组</h2><p>捕获组可以通过从左到右计算其开括号来编号 。例如，在表达式 (A)(B(C)) 中，存在四个这样的组：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>(A)(B(C))</td>
+</tr>
+<tr>
+<td>1</td>
+<td>(A)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(B(C))</td>
+</tr>
+<tr>
+<td>3</td>
+<td>(C)</td>
+</tr>
+</tbody></table>
+<p>组零始终代表整个表达式</p>
+<p>之所以这样命名捕获组是因为在匹配中，保存了与这些组匹配的输入序列的每个子序列。捕获的子序列稍后可以通过 Back 引用（反向引用） 在表达式中使用，也可以在匹配操作完成后从匹配器检索。 </p>
+<h3 id="Back-引用"><a href="#Back-引用" class="headerlink" title="Back 引用"></a>Back 引用</h3><p> 是说在后面的表达式中我们可以使用组的编号来引用前面的表达式所捕获到的文本序列。注意：反向引用，引用的是前面捕获组中的文本而不是正则，也就是说反向引用处匹配的文本应和前面捕获组中的文本相同，这一点很重要。 </p>
+<p> 【例】([“‘]).*\1  </p>
+<p>其中使用了分组，\1就是对引号这个分组的引用，它匹配包含在两个引号或者两个单引号中的所有字符串，如，”abc” 或 “ ‘ “ 或 ‘ “ ‘  ，但是请注意，它并不会对” a’或者 ‘a”匹配。原因上面已经说明，Back引用只是引用文本而不是表达式。 </p>
+<h3 id="分组举列"><a href="#分组举列" class="headerlink" title="分组举列"></a>分组举列</h3><p>先来看第一个作用，对于IP地址的匹配，简单的可以写为如下形式：</p>
+<pre><code> \d&#123;1,3&#125;.\d&#123;1,3&#125;.\d&#123;1,3&#125;.\d&#123;1,3&#125;
+</code></pre><p>但仔细观察，我们可以发现一定的规律，可以把.\d{1,3}看成一个整体，也就是把他们看成一组，再把这个组重复3次即可。表达式如下：</p>
+<pre><code> \d&#123;1,3&#125;(.\d&#123;1,3&#125;)&#123;3&#125;
+</code></pre><p> 再来看第二个作用，就拿匹配<title>xxx</title>标签来说，简单的正则可以这样写：</p>
+<pre><code>&lt;title&gt;.*&lt;/title&gt;</code></pre><p>可以看出，上边表达式中有两个title，完全一样，其实可以通过分组简写。表达式如下：</p>
+<p>&lt;(title)&gt;.*&lt;/\1&gt;<br>对于分组而言，整个表达式永远算作第0组，在本例中，第0组是&lt;(title)&gt;.*&lt;/\1&gt;，然后从左到右，依次为分组编号，因此，(title)是第1组。</p>
+<p>注意：</p>
+<p>用\1这种语法，可以引用某组的文本内容，但不能引用正则表达式。</p>
+<p>例如刚刚的IP地址正则表达式为\d{1,3}(.\d{1,3}){3}，里边的\d{1,3}重复了两次，如果利用后向引用简化，表达式如下：</p>
+<pre><code> (\d&#123;1,3&#125;)(.\1)&#123;3&#125;</code></pre><p>经过实际测试，会发现这样写是错误的，为什么呢？</p>
+<p>后向引用，引用的仅仅是文本内容，而不是正则表达式！</p>
+<p>也就是说，组中的内容一旦匹配成功，后向引用，引用的就是匹配成功后的内容，引用的是结果，而不是表达式。</p>
+<p>因此，(\d{1,3})(.\1){3}这个表达式实际上匹配的是四个数都相同的IP地址，比如：123.123.123.123。</p>
+<h2 id="非捕获组"><a href="#非捕获组" class="headerlink" title="非捕获组"></a>非捕获组</h2><pre><code>  以 (?) 开头的组是纯的非捕获 组，它不捕获文本 ，也不针对组合计进行计数。就是说，如果小括号中以?号开头，那么这个分组就不会捕获文本，当然也不会有组的编号，因此也不存在Back 引用。</code></pre><p>我们通过捕获组就能够得到我们想要匹配的内容了，那为什么还要有非捕获组呢？原因是捕获组捕获的内容是被存储在内存中，可供以后使用，比如反向引用就是引用的内存中存储的捕获组中捕获的内容。而非捕获组则不会捕获文本，也不会将它匹配到的内容单独分组来放到内存中。所以，使用非捕获组较使用捕获组更节省内存。在实际情况中我们要酌情选用。 </p>
+<h3 id="1、非捕获组-Pattern"><a href="#1、非捕获组-Pattern" class="headerlink" title="1、非捕获组(?:Pattern)"></a>1、非捕获组(?:Pattern)</h3><p>它的作用就是匹配Pattern字符，好处就是不捕获文本，不将匹配到的字符存储到内存中，从而节省内存。</p>
+<p>【例】匹配indestry或者indestries</p>
+<p>我们可以使用indestr(y|ies)或者indestr(?:y|ies)</p>
+<p>【例】(?:a|A)123(?:b)可以匹配a123b或者A123b </p>
+<p>非捕获组有很多种形式，其中包括：零宽度断言和模式修正符</p>
+<h3 id="2、零宽度断言"><a href="#2、零宽度断言" class="headerlink" title="2、零宽度断言"></a>2、零宽度断言</h3><p>这四个非捕获组用于匹配表达式X，但是不包含表达式的文本。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(?=X )</td>
+<td>零宽度正先行断言。仅当子表达式 X 在此位置的右侧匹配时才继续匹配。也就是说要使此零宽度断言起到我们想要的效果的话，就必须把这个非捕获组放在整个表达式的右侧。例如，/w+(?=/d) 与后跟数字的单词匹配，而不与该数字匹配。此构造不会回溯。</td>
+</tr>
+<tr>
+<td>(?!X)</td>
+<td>零宽度负先行断言。仅当子表达式 X 不在此位置的右侧匹配时才继续匹配。例如，例如，/w+(?!/d) 与后不跟数字的单词匹配，而不与该数字匹配 。</td>
+</tr>
+<tr>
+<td>(?&lt;=X)</td>
+<td>零宽度正后发断言。仅当子表达式 X 在此位置的左侧匹配时才继续匹配。例如，(?&lt;=19)99 与跟在 19 后面的 99 的实例匹配。此构造不会回溯。</td>
+</tr>
+<tr>
+<td>(?&lt;!X)</td>
+<td>零宽度负后发断言。仅当子表达式 X 不在此位置的左侧匹配时才继续匹配。例如，(?&lt;!19)99 与不跟在 19 后面的 99 的实例匹配</td>
+</tr>
+</tbody></table>
+<p> 上面都是理论性的介绍，这里就使用一些例子来说明一下问题：</p>
+<p>【例1】正则表达式 (?&lt;!4)56(?=9)</p>
+<p>含义：查找56，要求前面不能是4，后面必须是9。因此，可以匹配如下文本 5569  ，与4569不匹配。</p>
+<p> 【例2】提取字符串 da12bka3434bdca4343bdca234bm中包含在字符a和b之间的数字，但是这个a之前的字符不能是c；b后面的字符必须是d才能提取。</p>
+<p>显然，这里就只有3434这个数字满足要求。那么我们怎么提取呢？</p>
+<p>首先，我们写出含有捕获组的正则表达式：[^c]a\d<em>bd 然后我们再将其变为非捕获组的正则表达式：(?&lt;=[^c]a)\d</em>(?=bd) </p>
+<h3 id="3、模式修正符"><a href="#3、模式修正符" class="headerlink" title="3、模式修正符"></a>3、模式修正符</h3><p>以(?)开头的非捕获组除了零宽度断言之外，还有模式修正符。</p>
+<p>正则表达式中常用的模式修正符有i、g、m、s、x、e等。它们之间可以组合搭配使用。</p>
+<p>(?imnsx-imnsx: ) 应用或禁用子表达式中指定的选项。例如，(?i-s: ) 将打开不区分大小写并禁用单行模式。关闭不区分大小写的开关可以使用(?-i)。有关更多信息，请参阅正则表达式选项。</p>
+<p>【例1】(?i)ab</p>
+<p>表示对(?i)后的所有字符都开启不区分大小写的开关。故它可以匹配ab、aB、Ab、AB</p>
+<p>【例2】(?i:a)b</p>
+<p>它表示只对a开启不区分大小写的开关。故它可以匹配ab和Ab。不能匹配aB和AB。 </p>
+<h3 id="4、-gt-Pattern-等同于侵占模式"><a href="#4、-gt-Pattern-等同于侵占模式" class="headerlink" title="4、(?&gt;Pattern)等同于侵占模式"></a>4、(?&gt;Pattern)等同于侵占模式</h3><p>匹配成功不进行回溯，这个比较复杂，与侵占量词“+”可以通用，比如：\d++ 可以写为 (?&gt;\d+)。 </p>
+<p>【例】将一些多位的小数截短到三位小数：\d+.\d\d[1-9]?\d+</p>
+<p>在这种条件下 6.625 能进行匹配，这样做没有必要，因为它本身就是三位小数。最后一个“5”本来是给 [1-9] 匹配的，但是后面还有一个 \d+ 所以，[1-9] 由于是“?”可以不匹配所以只能放弃当前的匹配，将这个“5”送给 \d+ 去匹配，如果改为：</p>
+<pre><code>\d+\.\d\d[1-9]?+\d+</code></pre><p>的侵占形式，在“5”匹配到 [1-9] 时，由于是侵占式的，所以不会进行回溯，后面的 \d+ 就匹配不到任东西了，所以导致 6.625 匹配失败。</p>
+<p>这种情况，在替换时就有效了，比如把数字截短到小数点后三位，如果正好是三位小数的，就可以不用替换了，可以提高效率，侵占量词基本上就是用来提高匹配效率的。</p>
+<p>把 <code>\d+\.\d\d[1-9]?+\d+</code> 改为 <code>\d+\.\d\d(?&gt;[1-9]?)\d+</code> 这样是一样的。 </p>
+<p>【补充】js获取分组内容的方法：（可参考JS正则实例）</p>
+<p>1、<code>arr[n] = str.match(reg);</code>    或者      <code>arr[n] = reg.exec(str);</code><br>返回的匹配数组arr[n]中，arr[0]表示整个匹配，arr[1],arr[2]…….分别表示各个分组的匹配结果</p>
+<p>2、通过RegExp对象的静态属性来获取<br>RegExp.1,RegExp.2………RegExp.$9  分别表示匹配到的第一个分组至第九个分组的内容 </p>
+<p>例：</p>
+<pre><code>var str = &quot;adfasd324232sdfas&quot;;
+alert(str);
+var reg = new RegExp(&quot;([a-z]*)(\\d*)([a-z]*)&quot;);
+var arr = str.match(reg);
+alert(arr[0] + &quot;===&quot; + arr[1] + &quot;===&quot; + arr[2] + &quot;===&quot; + arr[3]);
+alert(RegExp.$1 + &quot;-----&quot; + RegExp.$2 + &quot;----&quot; + RegExp.$3);        </code></pre><h2 id="Group-分组"><a href="#Group-分组" class="headerlink" title="Group 分组"></a>Group 分组</h2><p>在一个正则表达式中，如果要提取出多个不同的部分（子表达式项），需要用到分组功能。</p>
+<p>在 C# 正则表达式中，Regex 成员关系如下，其中 Group 是其分组处理类。</p>
+<p>Regex –&gt; MatcheCollection (匹配项集合)</p>
+<pre><code>      –&gt; Match (单匹配项 内容)
+
+            –&gt; GroupCollection (单匹配项中包含的 &quot;(分组/子表达式项)&quot; 集合)
+
+                  –&gt; Group ( &quot;(分组/子表达式项)&quot; 内容)
+
+                        –&gt; CaputerCollection (分组项内容显示基础？)
+
+                              –&gt; Caputer</code></pre><p>Group 对分组有两种访问方式：</p>
+<h3 id="1、数组下标访问"><a href="#1、数组下标访问" class="headerlink" title="1、数组下标访问"></a>1、数组下标访问</h3><p>在 ((\d+)([a-z]))\s+ 这个正则表达式里总共包含了四个分组，按照默认的从左到右的匹配方式，</p>
+<p>Groups[0]    代表了匹配项本身，也就是整个整个表达式 ((\d+)([a-z]))\s+</p>
+<p>Groups[1]    代表了子表达式项 ((\d+)([a-z]))</p>
+<p>Groups[2]    代表了子表达式项 (\d+)</p>
+<p>Groups[3]    代表了子表达式项 ([a-z])</p>
+<pre><code>string text = &quot;1A 2B 3C 4D 5E 6F 7G 8H 9I 10J 11Q 12J 13K 14L 15M 16N ffee80 #800080&quot;;
+Response.Write(text + &quot;&lt;br/&gt;&quot;);
+
+string strPatten = @&quot;((\d+)([a-z]))\s+&quot;;
+Regex rex = new Regex(strPatten, RegexOptions.IgnoreCase);
+MatchCollection matches = rex.Matches(text);
+
+//提取匹配项
+foreach (Match match in matches)
+&#123;
+    GroupCollection groups = match.Groups;
+    Response.Write(string.Format(&quot;&lt;br/&gt;&#123;0&#125; 共有 &#123;1&#125; 个分组：&#123;2&#125;&lt;br/&gt;&quot;
+                                 , match.Value, groups.Count, strPatten));
+
+    //提取匹配项内的分组信息
+    for (int i = 0; i &lt; groups.Count; i++)
+    &#123;
+        Response.Write(
+            string.Format(&quot;分组 &#123;0&#125; 为 &#123;1&#125;，位置为 &#123;2&#125;，长度为 &#123;3&#125;&lt;br/&gt;&quot;
+                          , i
+                          , groups[i].Value
+                          , groups[i].Index
+                          , groups[i].Length));
+    &#125;
+&#125;
+
+/*
+ * 输出：
+1A 2B 3C 4D 5E 6F 7G 8H 9I 10J 11Q 12J 13K 14L 15M 16N ffee80 #800080
+
+1A 共有 4 个分组：((\d+)([a-z]))\s+
+分组 0 为 1A ，位置为 0，长度为 3
+分组 1 为 1A，位置为 0，长度为 2
+分组 2 为 1，位置为 0，长度为 1
+分组 3 为 A，位置为 1，长度为 1
+ ....
+ */
+</code></pre><h3 id="2、命名访问"><a href="#2、命名访问" class="headerlink" title="2、命名访问"></a>2、命名访问</h3><p>利用 (?<xxx>子表达式) 定义分组别名，这样就可以利用 Groups[“xxx”] 进行访问分组/子表达式内容。</p>
+<pre><code>string text = &quot;I&#39;ve found this amazing URL at http://www.sohu.com, and then find ftp://ftp.sohu.comisbetter.&quot;;
+Response.Write(text + &quot;&lt;br/&gt;&quot;);
+
+string pattern = @&quot;\b(?&lt;protocol&gt;\S+)://(?&lt;address&gt;\S+)\b&quot;;
+Response.Write(pattern.Replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;).Replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);
+
+MatchCollection matches = Regex.Matches(text, pattern);
+foreach (Match match in matches)
+&#123;
+    GroupCollection groups = match.Groups;
+    Response.Write(string.Format(
+                       &quot;URL: &#123;0&#125;； Protocol: &#123;1&#125;； Address: &#123;2&#125; &lt;br/&gt;&quot;
+                       , match.Value
+                       , groups[&quot;protocol&quot;].Value
+                       , groups[&quot;address&quot;].Value));
+&#125;
+
+/*
+ * 输出
+ I&#39;ve found this amazing URL at http://www.sohu.com, and then find ftp://ftp.sohu.comisbetter.
+    \b(?&lt;protocol&gt;\S+)://(?&lt;address&gt;\S+)\b
+
+    URL: http://www.sohu.com； Protocol: http； Address: www.sohu.com
+    URL: ftp://ftp.sohu.comisbetter； Protocol: ftp； Address: ftp.sohu.comisbetter
+
+ */
+</code></pre><h2 id="贪心和懒惰匹配"><a href="#贪心和懒惰匹配" class="headerlink" title="贪心和懒惰匹配"></a>贪心和懒惰匹配</h2><p> ZCZCqweqwNNNNZCZCqweq23123NNNN</p>
+<h3 id="贪心匹配"><a href="#贪心匹配" class="headerlink" title="贪心匹配"></a>贪心匹配</h3><pre><code> ZCZC.*NNNN</code></pre><p> 将匹配整个字符串</p>
+<h3 id="懒惰匹配"><a href="#懒惰匹配" class="headerlink" title="懒惰匹配"></a>懒惰匹配</h3><pre><code> ZCZC.*?NNNN</code></pre><p> 将匹配 ZCZCqweqwNNNN 和ZCZCqweq23123NNNN</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "正则表达式总结&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

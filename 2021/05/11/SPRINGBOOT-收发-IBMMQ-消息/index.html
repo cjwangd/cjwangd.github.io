@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>SPRINGBOOT 收发 IBMMQ 消息 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 五月 11日 2021, 9:17 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.7k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      10 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>1，IBMMQ 9.1</p>
+<p>2,SPRINGBOOT 2.3.1.RELEASE</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;com.ibm.mq&lt;/groupId&gt;
+            &lt;artifactId&gt;com.ibm.mq.allclient&lt;/artifactId&gt;
+            &lt;version&gt;9.1.1.0&lt;/version&gt;
+        &lt;/dependency&gt;</code></pre><h2 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h2><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>package cn.sh.cares.exec.config;
+
+import com.ibm.mq.MQEnvironment;
+import com.ibm.mq.MQQueueManager;
+import com.ibm.mq.constants.CMQC;
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.mq.jms.MQQueueConnectionFactory;
+import com.ibm.msg.client.wmq.WMQConstants;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.connection.JmsTransactionManager;
+import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter;
+import org.springframework.jms.core.JmsOperations;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.jms.JMSException;
+
+import static com.ibm.msg.client.wmq.common.CommonConstants.WMQ_CLIENT_RECONNECT;
+
+
+@Slf4j
+@Configuration
+public class IbmMqConfig &#123;
+
+    @Value(&quot;$&#123;ibm.host&#125;&quot;)
+    private String host;
+
+    @Value(&quot;$&#123;ibm.port&#125;&quot;)
+    private Integer port;
+
+    @Value(&quot;$&#123;ibm.channel&#125;&quot;)
+    private String channel;
+
+    @Value(&quot;$&#123;ibm.queue_manager&#125;&quot;)
+    private String queue_manager;
+
+    @Value(&quot;$&#123;ibm.userId&#125;&quot;)
+    private String userId;
+
+    @Value(&quot;$&#123;ibm.password&#125;&quot;)
+    private String password;
+
+    @Value(&quot;$&#123;ibm.ccsid&#125;&quot;)
+    private String ccsid;
+
+
+    @Bean(name=&quot;mqQueueConnectionFactoryUp&quot;)
+    public MQQueueConnectionFactory mqQueueConnectionFactory()&#123;
+        MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
+        mqQueueConnectionFactory.setHostName(host);
+        try &#123;
+            mqQueueConnectionFactory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
+            mqQueueConnectionFactory.setCCSID(Integer.valueOf(ccsid));
+            mqQueueConnectionFactory.setChannel(channel);
+            mqQueueConnectionFactory.setPort(port);
+            mqQueueConnectionFactory.setClientReconnectOptions(WMQ_CLIENT_RECONNECT);
+            mqQueueConnectionFactory.setClientReconnectTimeout(60);
+            mqQueueConnectionFactory.setQueueManager(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueueConnectionFactory;
+    &#125;
+    @Bean(name=&quot;userCredentialsConnectionFactoryAdapterUp&quot;)
+    public UserCredentialsConnectionFactoryAdapter userCredentialsConnectionFactoryAdapter(@Qualifier(&quot;mqQueueConnectionFactoryUp&quot;) MQQueueConnectionFactory mqQueueConnectionFactory)&#123;
+        UserCredentialsConnectionFactoryAdapter userCredentialsConnectionFactoryAdapter = new UserCredentialsConnectionFactoryAdapter();
+        userCredentialsConnectionFactoryAdapter.setUsername(userId);
+        userCredentialsConnectionFactoryAdapter.setPassword(password);
+        userCredentialsConnectionFactoryAdapter.setTargetConnectionFactory(mqQueueConnectionFactory);
+        return userCredentialsConnectionFactoryAdapter;
+    &#125;
+
+    @Bean(name=&quot;cachingConnectionFactory&quot;)
+    public CachingConnectionFactory cachingConnectionFactory(@Qualifier(&quot;userCredentialsConnectionFactoryAdapterUp&quot;) UserCredentialsConnectionFactoryAdapter userCredentialsConnectionFactoryAdapter)&#123;
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
+        cachingConnectionFactory.setTargetConnectionFactory(userCredentialsConnectionFactoryAdapter);
+        cachingConnectionFactory.setSessionCacheSize(5);
+        cachingConnectionFactory.setReconnectOnException(true);
+        return cachingConnectionFactory;
+    &#125;
+    @Bean(name=&quot;jmsTransactionManager&quot;)
+    public PlatformTransactionManager jmsTransactionManager(CachingConnectionFactory cachingConnectionFactory)&#123;
+        JmsTransactionManager jmsTransactionManager = new JmsTransactionManager();
+        jmsTransactionManager.setConnectionFactory(cachingConnectionFactory);
+        return jmsTransactionManager;
+    &#125;
+    @Bean(name=&quot;jmsOperations&quot;)
+    public JmsOperations jmsOperations(CachingConnectionFactory cachingConnectionFactory)&#123;
+        JmsTemplate jmsTemplate = new JmsTemplate(cachingConnectionFactory);
+        jmsTemplate.setReceiveTimeout(60000);
+        return jmsTemplate;
+    &#125;
+
+&#125;
+
+</code></pre><h3 id="发送消息-1"><a href="#发送消息-1" class="headerlink" title="发送消息"></a>发送消息</h3><pre><code>package cn.sh.cares.exec.service.impl;
+
+import cn.sh.cares.exec.message.struct.Mqmessage;
+import cn.sh.cares.exec.service.JaxbService;
+import cn.sh.cares.exec.service.MessageSender;
+import com.xxl.job.core.log.XxlJobLogger;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsOperations;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.jms.TextMessage;
+import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+
+@Slf4j
+@Service
+public class MessageSenderImpl implements MessageSender &#123;
+
+    @Resource
+    private JmsOperations jmsOperations;
+
+    @Resource
+    private JaxbService jaxbService;
+
+    @Value(&quot;$&#123;apoi.log.msg&#125;&quot;)
+    private String msgPath;
+
+    @Value(&quot;$&#123;ibm.queue_name&#125;&quot;)
+    private String queueName;
+
+    @Override
+    public void send(Mqmessage mqmessage) &#123;
+
+        log.debug(&quot;开始发送&quot;);
+
+        String msg = jaxbService.serializeMsg(mqmessage);
+
+        if (StringUtils.isEmpty(msg)) &#123;
+            log.debug(&quot;消息为空&quot;);
+            return;
+        &#125;
+
+        XxlJobLogger.log(StringEscapeUtils.escapeXml10(msg));
+
+        log.debug(msg);
+
+        try &#123;
+            jmsOperations.send(queueName, session -&gt; &#123;
+                TextMessage textMessage = session.createTextMessage();
+                textMessage.setText(msg);
+                return textMessage;
+            &#125;);
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            log.error(&quot;消息发送失败 msg=&#123;&#125;,error=&#123;&#125;&quot;, msg, e.getMessage());
+        &#125; finally &#123;
+            writeToFile(msg);
+        &#125;
+    &#125;
+
+    private void writeToFile(String msg) &#123;
+
+        Path path = Paths.get(msgPath, DateFormatUtils.format(new Date(), &quot;yyyy-MM-dd&quot;));
+
+        try &#123;
+            if (!path.toFile().exists()) &#123;
+                if (!path.toFile().getParentFile().exists()) &#123;
+                    path.toFile().getParentFile().mkdirs();
+                &#125;
+                path.toFile().createNewFile();
+            &#125;
+            FileWriter printWriter = new FileWriter(path.toFile(), true);
+            printWriter.append(msg).append(&quot;\n&quot;);
+            printWriter.flush();
+            printWriter.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+</code></pre><h2 id="监听队列消息"><a href="#监听队列消息" class="headerlink" title="监听队列消息"></a>监听队列消息</h2><h3 id="监听配置"><a href="#监听配置" class="headerlink" title="监听配置"></a>监听配置</h3><pre><code>package cn.sh.cares.exec.config;
+
+import cn.sh.cares.exec.service.impl.NtfmDlndErrorHandle;
+import cn.sh.cares.exec.service.impl.NtfmDlndMsgErrorListener;
+import cn.sh.cares.exec.service.impl.NtfmDlndMsgListener;
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.mq.jms.MQQueueConnectionFactory;
+import com.ibm.msg.client.wmq.WMQConstants;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
+
+import javax.annotation.Resource;
+import javax.jms.JMSException;
+
+import static com.ibm.msg.client.wmq.common.CommonConstants.WMQ_CLIENT_RECONNECT_Q_MGR;
+
+
+@Slf4j
+@Configuration
+public class IbmMqDownConfig &#123;
+
+    @Value(&quot;$&#123;ibm.host.down&#125;&quot;)
+    private String host;
+
+    @Value(&quot;$&#123;ibm.channel.down&#125;&quot;)
+    private String channel;
+
+    @Value(&quot;$&#123;ibm.queue_manager.down&#125;&quot;)
+    private String queue_manager;
+
+    @Value(&quot;$&#123;ibm.userId.down&#125;&quot;)
+    private String userId;
+
+    @Value(&quot;$&#123;ibm.password.down&#125;&quot;)
+    private String password;
+
+    @Value(&quot;$&#123;ibm.ccsid.down&#125;&quot;)
+    private String ccsid;
+
+    @Resource
+    NtfmDlndMsgErrorListener ntfmDlndMsgErrorListener;
+
+    @Resource
+    NtfmDlndErrorHandle ntfmDlndErrorHandle;
+
+    /**=======================MQ 通道工厂============================**/
+    @Bean(name=&quot;mqQueueConnectionFactory&quot;)
+    public MQQueueConnectionFactory mqQueueConnectionFactory()&#123;
+        MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
+        try &#123;
+            mqQueueConnectionFactory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
+            mqQueueConnectionFactory.setCCSID(Integer.valueOf(ccsid));
+            mqQueueConnectionFactory.setChannel(channel);
+            mqQueueConnectionFactory.setConnectionNameList(host);
+            mqQueueConnectionFactory.setClientReconnectOptions(WMQ_CLIENT_RECONNECT_Q_MGR);
+            mqQueueConnectionFactory.setQueueManager(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueueConnectionFactory;
+    &#125;
+    @Bean(name=&quot;userCredentialsConnectionFactoryAdapter&quot;)
+    public UserCredentialsConnectionFactoryAdapter userCredentialsConnectionFactoryAdapter(@Qualifier(&quot;mqQueueConnectionFactory&quot;) MQQueueConnectionFactory mqQueueConnectionFactory)&#123;
+        UserCredentialsConnectionFactoryAdapter userCredentialsConnectionFactoryAdapter = new UserCredentialsConnectionFactoryAdapter();
+        userCredentialsConnectionFactoryAdapter.setUsername(userId);
+        userCredentialsConnectionFactoryAdapter.setPassword(password);
+        userCredentialsConnectionFactoryAdapter.setTargetConnectionFactory(mqQueueConnectionFactory);
+        return userCredentialsConnectionFactoryAdapter;
+    &#125;
+
+    /**============================MQ 消息监听接收=============================**/
+    //队列连接
+    @Bean(name=&quot;FCTI&quot;)
+    public MQQueue mqueueFCTI()&#123;
+        MQQueue mqQueue = new MQQueue();
+        try &#123;
+            mqQueue.setBaseQueueName(&quot;FCTI.TO.ZSJN&quot;);
+            mqQueue.setBaseQueueManagerName(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueue;
+    &#125;
+
+    //对队列进行监听
+    @Bean(name=&quot;FCTI-MsgContainer&quot;)
+    public DefaultMessageListenerContainer msgContainerFCTI(@Qualifier(&quot;userCredentialsConnectionFactoryAdapter&quot;) UserCredentialsConnectionFactoryAdapter adapter,
+                                                       @Qualifier(value = &quot;FCTI&quot;) MQQueue mqQueue,
+                                                       NtfmDlndMsgListener listener)&#123;
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(adapter);
+        defaultMessageListenerContainer.setDestination(mqQueue);
+        defaultMessageListenerContainer.setMessageListener(listener);
+        defaultMessageListenerContainer.setExceptionListener(ntfmDlndMsgErrorListener);
+        defaultMessageListenerContainer.setErrorHandler(ntfmDlndErrorHandle);
+        defaultMessageListenerContainer.setConcurrentConsumers(1);
+        defaultMessageListenerContainer.setConcurrency(&quot;1&quot;);
+        return defaultMessageListenerContainer;
+    &#125;
+
+
+    @Bean(name=&quot;MDRS&quot;)
+    public MQQueue mqueueMDRS()&#123;
+        MQQueue mqQueue = new MQQueue();
+        try &#123;
+            mqQueue.setBaseQueueName(&quot;MDRS.TO.ZSJN&quot;);
+            mqQueue.setBaseQueueManagerName(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueue;
+    &#125;
+
+    //对队列进行监听
+    @Bean(name=&quot;MDRS-MsgContainer&quot;)
+    public DefaultMessageListenerContainer msgContainerMDRS(@Qualifier(&quot;userCredentialsConnectionFactoryAdapter&quot;) UserCredentialsConnectionFactoryAdapter adapter,
+                                                       @Qualifier(value = &quot;MDRS&quot;) MQQueue mqQueue,
+                                                       NtfmDlndMsgListener listener)&#123;
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(adapter);
+        defaultMessageListenerContainer.setDestination(mqQueue);
+        defaultMessageListenerContainer.setMessageListener(listener);
+        defaultMessageListenerContainer.setExceptionListener(ntfmDlndMsgErrorListener);
+        defaultMessageListenerContainer.setErrorHandler(ntfmDlndErrorHandle);
+        defaultMessageListenerContainer.setConcurrentConsumers(1);
+        defaultMessageListenerContainer.setConcurrency(&quot;1&quot;);
+        return defaultMessageListenerContainer;
+    &#125;
+
+
+    @Bean(name=&quot;PADR&quot;)
+    public MQQueue mqueuePADR()&#123;
+        MQQueue mqQueue = new MQQueue();
+        try &#123;
+            mqQueue.setBaseQueueName(&quot;PADR.TO.ZSJN&quot;);
+            mqQueue.setBaseQueueManagerName(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueue;
+    &#125;
+
+    //对队列进行监听
+    @Bean(name=&quot;PADR-MsgContainer&quot;)
+    public DefaultMessageListenerContainer msgContainerPADR(@Qualifier(&quot;userCredentialsConnectionFactoryAdapter&quot;) UserCredentialsConnectionFactoryAdapter adapter,
+                                                           @Qualifier(value = &quot;PADR&quot;) MQQueue mqQueue,
+                                                           NtfmDlndMsgListener listener)&#123;
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(adapter);
+        defaultMessageListenerContainer.setDestination(mqQueue);
+        defaultMessageListenerContainer.setMessageListener(listener);
+        defaultMessageListenerContainer.setExceptionListener(ntfmDlndMsgErrorListener);
+        defaultMessageListenerContainer.setErrorHandler(ntfmDlndErrorHandle);
+        defaultMessageListenerContainer.setConcurrentConsumers(1);
+        defaultMessageListenerContainer.setConcurrency(&quot;1&quot;);
+        return defaultMessageListenerContainer;
+    &#125;
+
+    @Bean(name=&quot;APFE&quot;)
+    public MQQueue mqueueAPFE()&#123;
+        MQQueue mqQueue = new MQQueue();
+        try &#123;
+            mqQueue.setBaseQueueName(&quot;APFE.TO.ZSJN&quot;);
+            mqQueue.setBaseQueueManagerName(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueue;
+    &#125;
+
+    //对队列进行监听
+    @Bean(name=&quot;APFE-MsgContainer&quot;)
+    public DefaultMessageListenerContainer msgContainerAPFE(@Qualifier(&quot;userCredentialsConnectionFactoryAdapter&quot;) UserCredentialsConnectionFactoryAdapter adapter,
+                                                           @Qualifier(value = &quot;APFE&quot;) MQQueue mqQueue,
+                                                           NtfmDlndMsgListener listener)&#123;
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(adapter);
+        defaultMessageListenerContainer.setDestination(mqQueue);
+        defaultMessageListenerContainer.setMessageListener(listener);
+        defaultMessageListenerContainer.setExceptionListener(ntfmDlndMsgErrorListener);
+        defaultMessageListenerContainer.setErrorHandler(ntfmDlndErrorHandle);
+        defaultMessageListenerContainer.setConcurrentConsumers(1);
+        defaultMessageListenerContainer.setConcurrency(&quot;1&quot;);
+        return defaultMessageListenerContainer;
+    &#125;
+
+    @Bean(name=&quot;FTMI&quot;)
+    public MQQueue mqueueFTMI()&#123;
+        MQQueue mqQueue = new MQQueue();
+        try &#123;
+            mqQueue.setBaseQueueName(&quot;FTMI.TO.ZSJN&quot;);
+            mqQueue.setBaseQueueManagerName(queue_manager);
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return mqQueue;
+    &#125;
+
+    //对队列进行监听
+    @Bean(name=&quot;FTMI-MsgContainer&quot;)
+    public DefaultMessageListenerContainer msgContainerFTMI(@Qualifier(&quot;userCredentialsConnectionFactoryAdapter&quot;) UserCredentialsConnectionFactoryAdapter adapter,
+                                                            @Qualifier(value = &quot;FTMI&quot;) MQQueue mqQueue,
+                                                            NtfmDlndMsgListener listener)&#123;
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(adapter);
+        defaultMessageListenerContainer.setDestination(mqQueue);
+        defaultMessageListenerContainer.setMessageListener(listener);
+        defaultMessageListenerContainer.setExceptionListener(ntfmDlndMsgErrorListener);
+        defaultMessageListenerContainer.setErrorHandler(ntfmDlndErrorHandle);
+        defaultMessageListenerContainer.setConcurrentConsumers(1);
+        defaultMessageListenerContainer.setConcurrency(&quot;1&quot;);
+        return defaultMessageListenerContainer;
+    &#125;
+&#125;
+
+
+</code></pre><h3 id="消息处理"><a href="#消息处理" class="headerlink" title="消息处理"></a>消息处理</h3><pre><code>package cn.sh.cares.exec.service.impl;
+
+import cn.sh.cares.exec.service.NtfmDlndMsgPersist;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.jms.*;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/5/10 15:11
+ **/
+@Slf4j
+@Service
+public class NtfmDlndMsgListener implements MessageListener &#123;
+
+    @Resource
+    NtfmDlndMsgPersist msgPersist;
+
+    @Override
+    public void onMessage(Message message) &#123;
+        String str = null;
+        // 1、读取报文
+        try &#123;
+            if (message instanceof BytesMessage) &#123;
+                BytesMessage bm = (BytesMessage) message;
+                byte[] bys = null;
+                bys = new byte[(int) bm.getBodyLength()];
+                bm.readBytes(bys);
+                str = new String(bys, StandardCharsets.UTF_8);
+            &#125; else &#123;
+                str = ((TextMessage) message).getText();
+            &#125;
+        &#125; catch (JMSException e) &#123;
+            e.printStackTrace();
+        &#125;
+
+        log.debug(&quot;收到下行消息 ：：&#123;&#125;&quot;, str);
+
+        // TODO 消息解析入库
+        try &#123;
+            msgPersist.storeMsg(str);
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;下行消息持久化异常&quot;, e);
+        &#125;
+    &#125;
+&#125;
+
+</code></pre><h2 id="断线重连测试"><a href="#断线重连测试" class="headerlink" title="断线重连测试"></a>断线重连测试</h2><p>消息监听容器使用 DefaultMessageListenerContainer 而不是 SimpleMessageListenerContainer，<br>SimpleMessageListenerContainer 无法断线重连。</p>
+<p>DefaultMessageListenerContainer 断线后默认是5秒重连一次，时间间隔可设置</p>
+<pre><code>单位 ：毫秒
+defaultMessageListenerContainer.setRecoveryInterval(6000);</code></pre><p>搭建docker环境测试</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/SPRINGBOOT%20">SPRINGBOOT </a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IBMMQ">IBMMQ</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%8F%91%E9%80%81IBMMQ">发送IBMMQ</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E7%9B%91%E5%90%ACIBMMQ">监听IBMMQ</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "SPRINGBOOT 收发 IBMMQ 消息&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

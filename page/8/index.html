@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/SPRING-BOOT-%E7%9B%91%E5%90%ACSESSION-%E4%BA%8B%E4%BB%B6/">
+        <p class="h4 index-header">SPRING BOOT 监听SESSION 事件</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">/**
+* Redis内session过期事件监听
+*
+* @param expiredEvent
+*/
+@EventListener
+public void onSessionExpired(SessionExpiredEvent expiredEvent) &#123;
+  logLoginService.doExit(expiredEvent.getSessionId());
+  LogLoginVO logLoginVO = logLoginService.querySessionId(expiredEvent.getSessionId());
+
+  if (null != logLoginVO) &#123;
+    SmsUtils.sendMsg(MsgType.TIMEOUT_MSG, &quot;timeout&quot;, logLoginVO.getUsrId().toString());
+    logger.debug(&quot;用户&#123;&#125;登录超时&quot;, UserCache.getUserName(logLoginVO.getUsr</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/SPRINGBOOT">SPRINGBOOT</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/SESSION">SESSION</a>&nbsp;
+          
+            <a href="/tags/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC">事件监听</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/KETTLE-%E6%97%A5%E5%BF%97%E5%86%99%E5%85%A5XXL-JOB-%E6%96%87%E4%BB%B6/">
+        <p class="h4 index-header">KETTLE 日志写入XXL JOB 文件</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> kettle日志默认打印到控制台，无法在XXL JOB 框架查看kettle 日志
+1、自定义kettle日志监听package com.xxl.job.executor.service;
+
+import com.xxl.job.core.log.XxlJobLogger;
+import org.pentaho.di.core.logging.KettleLogStore;
+import org.pentaho.di.core.logging.KettleLoggingEvent;
+import org.pentaho.di.core.logging.LoggingPlugin;
+import org.pentaho.di.core.logging.LoggingPluginInterface;
+
+/**
+* kettle 日志和XXL JOB 集成
+* @author 王长金
+*/
+@LoggingPlugin(id=&quot;KettleLogListener&quot;, isSeparateClassLoaderNeeded=true)
+public class Kettl</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/kettle">kettle</a>&nbsp;
+          
+            <a href="/tags/xxljob">xxljob</a>&nbsp;
+          
+            <a href="/tags/%E6%97%A5%E5%BF%97">日志</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/java%E7%A8%8B%E5%BA%8F%E5%9C%A8windows%E5%90%8E%E5%8F%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E5%8A%9E%E6%B3%95/">
+        <p class="h4 index-header">java程序在windows后台执行的办法</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、新建run.txt文件2、在文件中输入一下内容：@echo off
+start javaw -jar xx.jar
+exit3、保存，修改文件名为run.bat4、双击即可5、删除windows后台程序tasklist                                                      查看进程
+taskkill  /?                                                 查看杀进程命令的帮助
+
+taskkill /pid  进程号                                    杀死该进程
+错误：无法种子PID为 xxxx 的进程。
+原因：只能强行终止这个进程（带 /F 选项 ）
+taskkill -F /pid  进程号                               强制杀死该进程
+成功：已终止PID为xxxx的进程5、linux  后台启动 nohup java -jar xx.jar  &gt; /dev/null 2&gt;&amp;1 &amp;因为 s</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8">后台启动</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/%E7%AE%97%E6%9C%AF%E9%AA%8C%E8%AF%81%E7%A0%81/">
+        <p class="h4 index-header">算术验证码</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、引入依赖&lt;dependency&gt;
+  &lt;groupId&gt;com.github.whvcse&lt;/groupId&gt;
+  &lt;artifactId&gt;easy-captcha&lt;/artifactId&gt;
+  &lt;version&gt;1.6.2&lt;/version&gt;
+&lt;/dependency&gt;
+2、验证码请求接口@RequestMapping(&quot;/captcha&quot;)
+@ResponseBody
+public JSONObject captcha(HttpServletRequest request, HttpServletResponse response) throws Exception &#123;
+    ArithmeticCaptcha captcha = new ArithmeticCaptcha(130, 48);
+    String key = UUID.randomUUID().toString();
+    captcha.setLen(3);
+    captch</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E7%AE%97%E6%9C%AF%E9%AA%8C%E8%AF%81%E7%A0%81">算术验证码</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/SPTING-CLOUD-GATEWAY-%E7%A6%81%E6%AD%A2%E5%90%8E%E6%96%B9%E5%BA%94%E7%94%A8302/">
+        <p class="h4 index-header">SPTING CLOUD GATEWAY 禁止后方应用302</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">@Bean
+public RouteLocator customRouteLocator(RouteLocatorBuilder builder) &#123;
+      return builder.routes()
+
+      // 数据共享服务限流
+      .route(&quot;web_limit&quot;, r -&gt; r.path(&quot;/palm/**&quot;)
+
+      .filters(f -&gt; &#123;
+          f.hystrix(c -&gt; c.setName(&quot;slowcmd&quot;).setFallbackUri(&quot;forward:/fallback&quot;));
+          f.preserveHostHeader();  //   禁止后方302 关键代码
+          return f;
+      &#125;)
+      .uri(&quot;lb://system-manager&quot;)
+      )
+      .build();
+&#12</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/SPRING%20CLOUD">SPRING CLOUD</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE">路由配置</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/IBMMQ-%E5%BE%AA%E7%8E%AF%E8%AF%BB%E5%8F%96%E6%B6%88%E6%81%AF/">
+        <p class="h4 index-header">IBMMQ 循环读取消息</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、配置package cn.sh.cares.exec.config;
+
+import cn.sh.cares.exec.constant.Constants;
+import com.ibm.mq.MQEnvironment;
+import com.ibm.mq.MQQueue;
+import com.ibm.mq.MQQueueManager;
+import com.ibm.mq.constants.CMQC;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+@Slf4j
+@Configuration
+public class IbmMqConfig &#123;
+
+    @Value(&quot;$&#123;ibm</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IBMMQ">IBMMQ</a>&nbsp;
+          
+            <a href="/tags/%E6%B6%88%E6%81%AF%E8%AF%BB%E5%8F%96">消息读取</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/10/JAVA-%E8%BF%9B%E7%A8%8B%E8%B0%83%E8%AF%95%E5%8F%82%E6%95%B0/">
+        <p class="h4 index-header">JAVA 进程调试参数</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-Xdebug -Xrunjdwp:transport=dt_socket,address=8888,server=y,suspend=y
+suspend=y 表示服务进程阻塞直到调试端口连接上suspend=y 表示服务进程不等待调试端口连接
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/06/IBMMQ-9-%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/">
+        <p class="h4 index-header">IBMMQ 9 配置使用</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、安装1.1 拉取镜像docker pull store/ibmcorp/mqadvanced-server-dev:9.1.0.01.2 启动mqdocker run \
+  --name IBMMQ \
+  --env LICENSE=accept \
+  --env MQ_QMGR_NAME=ZSJN \
+  --env MQ_ADMIN_PASSWORD=123 \
+  --env MQ_APP_PASSWORD=123 \
+  --publish 1414:1414 \
+  --publish 9443:9443 \
+  --detach \
+  store/ibmcorp/mqadvanced-server-dev:9.1.0.0docker ps
+2、配置2.1 配置用户[root@localhost ibmmq]# docker exec -it IBMMQ bash  
+(mq:9.1.0.0)root@f970f0efcb12:/# useradd ZSJN
+(mq:9.1.0.0)root@f970f0efcb12:/# passwd ZSJN
+Enter ne</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/05/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9/">
+        <p class="h4 index-header">网络知识点</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、查看路由windows route print
+linux  route
+2、端口转发2.1 windowsnetsh interface portproxy add v4tov4 listenaddress=localaddress listenport=localport connectaddress=destaddress connectport=destport2.2 linuxfirewall-cmd –permanent –zone=public –add-forward-port=port=8087:proto=tcp:toaddr=10.60.73.146:toport=70253、添加路由3.1 windowsroute add  192.168.53.0 mask 255.255.255.0  192.168.52.1 IF devicecodedevicecode 为网卡设备号，可通过route print查看
+
+192.168.52.1 为 devicecode 网卡对应的网关，同一个网络可设置为要转到的ip地址如192.168.53.12
+3.2 linu</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%BD%91%E7%BB%9C">网络</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/05/OSB-PIPELINE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+        <p class="h4 index-header">OSB PIPELINE 错误处理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">OSB 默认错误返回是包含error-code 和error-msg 的json格式报文，一般情况下对于客户来说这个格式跟系统是不统一的 ，此时需要自定义错误处理，根据不同错误码返回不同的自定义格式报文
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/OSB">OSB</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/7/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

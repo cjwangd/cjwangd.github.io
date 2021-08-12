@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>基于docker 搭建 mysql innodb cluster 集群 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 四月 11日 2020, 11:18 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      18 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="1、构建mysql-shell-镜像"><a href="#1、构建mysql-shell-镜像" class="headerlink" title="1、构建mysql-shell 镜像"></a>1、构建mysql-shell 镜像</h1><p>由于没有好用的mysql-shell镜像，这里先手工构建一个</p>
+<h2 id="1-1-下载-mysql-shell"><a href="#1-1-下载-mysql-shell" class="headerlink" title="1.1 下载 mysql-shell"></a>1.1 下载 mysql-shell</h2><p>fedora 32 版本</p>
+<p>下载  mysql-shell-8.0.22-1.fc32.x86_64.rpm<br>下载地址</p>
+<pre><code>https://dev.mysql.com/downloads/shell/</code></pre><h2 id="1-2-编写docker-file"><a href="#1-2-编写docker-file" class="headerlink" title="1.2 编写docker file"></a>1.2 编写docker file</h2><pre><code>
+FROM fedora
+
+MAINTAINER Wang Changjin &lt;wangcj@cares.sh.cn&gt;
+ADD mysql-shell-8.0.22-1.fc32.x86_64.rpm /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
+COPY cluster.js /
+RUN rpm -ivh /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
+
+ENTRYPOINT [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;while true; do  sleep 1; done&quot;]
+</code></pre><h2 id="1-3-集群创建脚本-cluster-js"><a href="#1-3-集群创建脚本-cluster-js" class="headerlink" title="1.3 集群创建脚本 cluster.js"></a>1.3 集群创建脚本 cluster.js</h2><pre><code>
+try &#123;
+
+   print(&#39;Setting up InnoDB cluster...\n&#39;);
+   shell.connect(&#39;root@mysqldb3:3306&#39;, &#39;123456&#39;);
+
+   var cluster = dba.createCluster(&quot;test&quot;,&#123;autoRejoinTries:1000&#125;);
+
+   print(&#39;Adding instances to the cluster.&#39;);
+   cluster.addInstance(&#123;user: &quot;root&quot;, host: &quot;mysqldb1&quot;, port: 3306, password: &#39;123456&#39;&#125;);
+   print(&#39;.&#39;);
+   cluster.addInstance(&#123;user: &quot;root&quot;, host: &quot;mysqldb2&quot;, port: 3306, password: &#39;123456&#39;&#125;);
+   print(&#39;.\nInstances successfully added to the cluster.&#39;);
+
+   print(&#39;\nInnoDB cluster deployed successfully.\n&#39;);
+&#125; catch(e) &#123;
+   print(&#39;\nThe InnoDB cluster could not be created.\n\nError: &#39; +
+   + e.message + &#39;\n&#39;);
+&#125;
+</code></pre><h2 id="1-4-目录结构"><a href="#1-4-目录结构" class="headerlink" title="1.4 目录结构"></a>1.4 目录结构</h2><p><img src="/images/pasted-49.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h2 id="1-5-软件版本"><a href="#1-5-软件版本" class="headerlink" title="1.5 软件版本"></a>1.5 软件版本</h2><pre><code>操作系统：Fedora release 31 (Thirty One)
+
+docker : 19.03.8
+
+docker-compose : 1.25.4
+</code></pre><h1 id="2-启动-mysql-innodb-cluster-集群"><a href="#2-启动-mysql-innodb-cluster-集群" class="headerlink" title="2 启动 mysql innodb cluster 集群"></a>2 启动 mysql innodb cluster 集群</h1><h2 id="2-1-mysqld-配置"><a href="#2-1-mysqld-配置" class="headerlink" title="2.1 mysqld 配置"></a>2.1 mysqld 配置</h2><p>总共启动三个实例，保证server_id 不同</p>
+<pre><code>[mysqld]
+
+
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+symbolic-links=0
+
+
+server_id=1
+max_connections=4096
+character-set-server=utf8mb4
+default_authentication_plugin=mysql_native_password
+default_storage_engine=INNODB
+innodb_buffer_pool_size=2G
+innodb_log_file_size=256M
+innodb_log_buffer_size=12M
+innodb_flush_log_at_trx_commit=2
+lower_case_table_names=1
+gtid_mode=ON
+enforce_gtid_consistency=ON
+binlog_checksum=NONE
+master_info_repository=TABLE
+relay_log_info_repository=TABLE
+transaction_write_set_extraction=XXHASH64
+binlog_checksum=NONE
+log_slave_updates=ON
+binlog_format=ROW
+expire_logs_days=1
+skip-host-cache
+skip-name-resolve
+</code></pre><h2 id="2-2-compose-文件"><a href="#2-2-compose-文件" class="headerlink" title="2.2 compose 文件"></a>2.2 compose 文件</h2><pre><code>version: &quot;3.7&quot;
+services: 
+    mysql1:
+        image: mysql
+        volumes:
+            - /root/mysql_cluster/config/mysql1.cnf:/etc/mysql/my.cnf
+            - /etc/localtime:/etc/localtime
+        environment: 
+            MYSQL_ROOT_PASSWORD: 123456
+        hostname: mysqldb1
+        container_name: mysqldb1
+        restart: always
+        networks:
+            mysql_cluster:
+                ipv4_address: 172.20.1.4
+        extra_hosts:
+          - &quot;mysqldb2:172.20.1.2&quot;
+          - &quot;mysqldb3:172.20.1.3&quot;
+    mysql2:
+        image: mysql
+        restart: always
+        volumes:
+            - /root/mysql_cluster/config/mysql2.cnf:/etc/mysql/my.cnf
+            - /etc/localtime:/etc/localtime
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+        hostname: mysqldb2
+        container_name: mysqldb2
+        networks:
+            mysql_cluster:
+                ipv4_address: 172.20.1.2
+        extra_hosts:
+          - &quot;mysqldb1:172.20.1.4&quot;
+          - &quot;mysqldb3:172.20.1.3&quot;
+    mysql3:
+        image: mysql
+        restart: always
+        volumes:
+            - /root/mysql_cluster/config/mysql3.cnf:/etc/mysql/my.cnf
+            - /etc/localtime:/etc/localtime
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+        hostname: mysqldb3
+        container_name: mysqldb3
+        networks:
+            mysql_cluster:
+                ipv4_address: 172.20.1.3
+        extra_hosts:
+          - &quot;mysqldb1:172.20.1.4&quot;
+          - &quot;mysqldb2:172.20.1.2&quot;
+    mysql-shell:
+        build:
+            context: .
+        volumes:
+            - /etc/localtime:/etc/localtime
+        container_name: mysql-shell
+        networks:
+            mysql_cluster:
+                ipv4_address: 172.20.1.5
+        extra_hosts:
+          - &quot;mysqldb1:172.20.1.4&quot;
+          - &quot;mysqldb2:172.20.1.2&quot;
+          - &quot;mysqldb3:172.20.1.3&quot;
+
+    mysql-router:
+        image: mysql/mysql-router
+        restart: always
+        environment:
+            MYSQL_HOST: mysqldb1
+            MYSQL_PORT: 3306
+            MYSQL_USER: root
+            MYSQL_PASSWORD: 123456
+        ports:
+            - &quot;6446-6447:6446-6447&quot;
+        depends_on:
+            - mysql1
+            - mysql2
+            - mysql3
+        volumes:
+            - /etc/localtime:/etc/localtime
+        container_name: mysql-router
+        networks:
+            mysql_cluster:
+                ipv4_address: 172.20.1.6
+        extra_hosts:
+          - &quot;mysqldb1:172.20.1.4&quot;
+          - &quot;mysqldb2:172.20.1.2&quot;
+          - &quot;mysqldb3:172.20.1.3&quot;
+
+networks:
+  mysql_cluster:
+    ipam:
+      driver: default
+      config:
+        - subnet: &quot;172.20.1.0/24&quot;</code></pre><h2 id="2-3-集群配置"><a href="#2-3-集群配置" class="headerlink" title="2.3 集群配置"></a>2.3 集群配置</h2><h3 id="2-3-1-启动脚本-start"><a href="#2-3-1-启动脚本-start" class="headerlink" title="2.3.1 启动脚本 start"></a>2.3.1 启动脚本 start</h3><pre><code>docker-compose -f mysql.yaml up -d
+
+
+check()&#123;
+
+   ret=1
+   while [[ $ret != 0 ]]
+   do
+      sleep 1s
+      echo &quot;wait for $1&quot;
+      docker logs  $1 &gt; aa 2&gt;&amp;1
+      cat aa|grep &#39;port: 3306  MySQL Community Server - GPL&#39; &gt; /dev/null
+      ret=$?
+   done
+
+&#125;
+
+check  &#39;mysqldb1&#39;
+docker exec -i  mysql-shell mysqlsh --uri=&#39;root:123456@mysqldb1:3306&#39; &lt;&lt; EOF
+dba.checkInstanceConfiguration()
+dba.configureLocalInstance()
+EOF
+
+check &#39;mysqldb2&#39;
+docker exec -i  mysql-shell mysqlsh --uri=&#39;root:123456@mysqldb2:3306&#39;  &lt;&lt; EOF
+dba.checkInstanceConfiguration()
+dba.configureLocalInstance()
+EOF
+
+check &#39;mysqldb3&#39;
+docker exec -i  mysql-shell mysqlsh --uri=&#39;root:123456@mysqldb3:3306&#39; &lt;&lt; EOF
+dba.checkInstanceConfiguration()
+dba.configureLocalInstance()
+EOF
+
+docker exec -i mysql-shell mysqlsh  -f /cluster.js &lt;&lt; EOF
+C
+C
+EOF
+
+rm -fr aa &gt; /dev/null 2&gt;&amp;1
+</code></pre><h3 id="2-3-2-执行启动脚本"><a href="#2-3-2-执行启动脚本" class="headerlink" title="2.3.2 执行启动脚本"></a>2.3.2 执行启动脚本</h3><pre><code>
+ [root@localhost mysql_cluster]# ./start 
+Creating network &quot;mysql_cluster_mysql_cluster&quot; with the default driver
+Creating mysql_cluster_mysql3_1 ... done
+Creating mysql-shell            ... done
+Creating mysql_cluster_mysql2_1 ... done
+Creating mysql_cluster_mysql1_1 ... done
+Creating mysql-router           ... done
+Logger: Tried to log to an uninitialized logger.
+WARNING: Using a password on the command line interface can be insecure.
+Validating MySQL instance at mysqldb1:3306 for use in an InnoDB cluster...
+
+This instance reports its own address as mysqldb1:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+
+Checking whether existing tables comply with Group Replication requirements...
+No incompatible tables detected
+
+Checking instance configuration...
+Instance configuration is compatible with InnoDB cluster
+The instance &#39;mysqldb1:3306&#39; is valid to be used in an InnoDB cluster.
+
+
+Configuring MySQL instance at mysqldb1:3306 for use in an InnoDB cluster...
+
+This instance reports its own address as mysqldb1:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+The instance &#39;mysqldb1:3306&#39; is valid to be used in an InnoDB cluster.
+The instance &#39;mysqldb1:3306&#39; is already ready to be used in an InnoDB cluster.
+
+Logger: Tried to log to an uninitialized logger.
+WARNING: Using a password on the command line interface can be insecure.
+Validating MySQL instance at mysqldb2:3306 for use in an InnoDB cluster...
+This instance reports its own address as mysqldb2:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+
+
+Checking whether existing tables comply with Group Replication requirements...
+No incompatible tables detected
+
+Checking instance configuration...
+
+
+Instance configuration is compatible with InnoDB cluster
+The instance &#39;mysqldb2:3306&#39; is valid to be used in an InnoDB cluster.
+Configuring MySQL instance at mysqldb2:3306 for use in an InnoDB cluster...
+
+This instance reports its own address as mysqldb2:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+The instance &#39;mysqldb2:3306&#39; is valid to be used in an InnoDB cluster.
+The instance &#39;mysqldb2:3306&#39; is already ready to be used in an InnoDB cluster.
+
+Logger: Tried to log to an uninitialized logger.
+WARNING: Using a password on the command line interface can be insecure.
+Validating MySQL instance at mysqldb3:3306 for use in an InnoDB cluster...
+This instance reports its own address as mysqldb3:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+
+
+Checking whether existing tables comply with Group Replication requirements...
+No incompatible tables detected
+
+Checking instance configuration...
+
+
+Instance configuration is compatible with InnoDB cluster
+The instance &#39;mysqldb3:3306&#39; is valid to be used in an InnoDB cluster.
+Configuring MySQL instance at mysqldb3:3306 for use in an InnoDB cluster...
+
+This instance reports its own address as mysqldb3:3306
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+The instance &#39;mysqldb3:3306&#39; is valid to be used in an InnoDB cluster.
+The instance &#39;mysqldb3:3306&#39; is already ready to be used in an InnoDB cluster.
+
+Logger: Tried to log to an uninitialized logger.
+Setting up InnoDB cluster...
+A new InnoDB cluster will be created on instance &#39;mysqldb3:3306&#39;.
+
+Validating instance configuration at mysqldb3:3306...
+
+This instance reports its own address as mysqldb3:3306
+
+Instance configuration is suitable.
+NOTE: Group Replication will communicate with other members using &#39;mysqldb3:33061&#39;. Use the localAddress option to override.
+
+Creating InnoDB cluster &#39;test&#39; on &#39;mysqldb3:3306&#39;...
+
+Adding Seed Instance...
+
+Adding instances to the cluster.Cluster successfully created. Use Cluster.addInstance() to add MySQL instances.
+At least 3 instances are needed for the cluster to be able to withstand up to
+one server failure.
+
+WARNING: A GTID set check of the MySQL instance at &#39;mysqldb1:3306&#39; determined that it contains transactions that do not originate from the cluster, which must be discarded before it can join the cluster.
+
+mysqldb1:3306 has the following errant GTIDs that do not exist in the cluster:
+c821ff23-89fa-11ea-a385-0242ac140104:1-5
+
+WARNING: Discarding these extra GTID events can either be done manually or by completely overwriting the state of mysqldb1:3306 with a physical snapshot from an existing cluster member. To use this method by default, set the &#39;recoveryMethod&#39; option to &#39;clone&#39;.
+
+Having extra GTID events is not expected, and it is recommended to investigate this further and ensure that the data can be removed prior to choosing the clone recovery method.
+
+NOTE: Group Replication will communicate with other members using &#39;mysqldb1:33061&#39;. Use the localAddress option to override.
+
+Validating instance configuration at mysqldb1:3306...
+
+This instance reports its own address as mysqldb1:3306
+
+Instance configuration is suitable.
+A new instance will be added to the InnoDB cluster. Depending on the amount of
+data on the cluster this might take from a few seconds to several hours.
+
+
+Adding instance to the cluster...
+Monitoring recovery process of the new cluster member. Press ^C to stop monitoring and let it continue in background.
+Clone based state recovery is now in progress.
+
+NOTE: A server restart is expected to happen as part of the clone process. If the
+server does not support the RESTART command or does not come back after a
+while, you may need to manually start it back.
+
+* Waiting for clone to finish...
+NOTE: mysqldb1:3306 is being cloned from mysqldb3:3306
+** Stage DROP DATA: Completed
+** Stage FILE COPY: Completed
+** Stage PAGE COPY: Completed
+** Stage REDO COPY: Completed
+** Stage FILE SYNC: Completed
+** Stage RESTART: Not Started
+
+NOTE: mysqldb1:3306 is shutting down...
+
+* mysqldb1:3306 has restarted, waiting for clone to finish...
+* Clone process has finished: 69.05 MB transferred in about 1 second (~1.00 B/s)
+
+State recovery already finished for &#39;mysqldb1:3306&#39;
+
+
+.The instance &#39;mysqldb1:3306&#39; was successfully added to the cluster.
+WARNING: A GTID set check of the MySQL instance at &#39;mysqldb2:3306&#39; determined that it contains transactions that do not originate from the cluster, which must be discarded before it can join the cluster.
+
+mysqldb2:3306 has the following errant GTIDs that do not exist in the cluster:
+c756c519-89fa-11ea-b9b6-0242ac140102:1-5
+
+WARNING: Discarding these extra GTID events can either be done manually or by completely overwriting the state of mysqldb2:3306 with a physical snapshot from an existing cluster member. To use this method by default, set the &#39;recoveryMethod&#39; option to &#39;clone&#39;.
+
+Having extra GTID events is not expected, and it is recommended to investigate this further and ensure that the data can be removed prior to choosing the clone recovery method.
+
+
+NOTE: Group Replication will communicate with other members using &#39;mysqldb2:33061&#39;. Use the localAddress option to override.
+
+Validating instance configuration at mysqldb2:3306...
+This instance reports its own address as mysqldb2:3306
+
+Instance configuration is suitable.
+
+
+
+A new instance will be added to the InnoDB cluster. Depending on the amount of
+data on the cluster this might take from a few seconds to several hours.
+Adding instance to the cluster...
+Monitoring recovery process of the new cluster member. Press ^C to stop monitoring and let it continue in background.
+Clone based state recovery is now in progress.
+
+NOTE: A server restart is expected to happen as part of the clone process. If the
+server does not support the RESTART command or does not come back after a
+while, you may need to manually start it back.
+
+* Waiting for clone to finish...
+NOTE: mysqldb2:3306 is being cloned from mysqldb3:3306
+** Stage DROP DATA: Completed
+** Stage FILE COPY: Completed
+** Stage PAGE COPY: Completed
+** Stage REDO COPY: Completed
+** Stage FILE SYNC: Completed
+** Stage RESTART: Not Started
+
+NOTE: mysqldb2:3306 is shutting down...
+
+* Waiting for server restart... ready
+* mysqldb2:3306 has restarted, waiting for clone to finish...
+* Clone process has finished: 69.05 MB transferred in about 1 second (~1.00 B/s)
+
+State recovery already finished for &#39;mysqldb2:3306&#39;
+
+
+The instance &#39;mysqldb2:3306&#39; was successfully added to the cluster.
+.
+Instances successfully added to the cluster.
+InnoDB cluster deployed successfully.
+* Waiting for server restart... ready
+</code></pre><h3 id="2-3-3-查看集群状态"><a href="#2-3-3-查看集群状态" class="headerlink" title="2.3.3 查看集群状态"></a>2.3.3 查看集群状态</h3><p><img src="/images/pasted-46.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p><img src="/images/pasted-47.png" srcset="/img/loading.gif" alt="upload successful"><br>可以看到集群起来了</p>
+<h1 id="3-配置mysql-router-进行连接"><a href="#3-配置mysql-router-进行连接" class="headerlink" title="3 配置mysql router 进行连接"></a>3 配置mysql router 进行连接</h1><h2 id="3-1-连接-6446-端口-mysql-router"><a href="#3-1-连接-6446-端口-mysql-router" class="headerlink" title="3.1 连接 6446 端口 mysql-router"></a>3.1 连接 6446 端口 mysql-router</h2><p><img src="/images/pasted-42.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p><img src="/images/pasted-45.png" srcset="/img/loading.gif" alt="upload successful"><br>可以看到路由到 mysqldb3</p>
+<h2 id="3-2-关闭mysqldb3，查看连接情况"><a href="#3-2-关闭mysqldb3，查看连接情况" class="headerlink" title="3.2 关闭mysqldb3，查看连接情况"></a>3.2 关闭mysqldb3，查看连接情况</h2><pre><code>[root@localhost mysql_cluster]# docker stop mysql_cluster_mysql3_1 
+mysql_cluster_mysql3_1
+[root@localhost mysql_cluster]# docker exec -it mysql-shell mysqlsh --uri &#39;root@mysqldb1:3306&#39;
+Logger: Tried to log to an uninitialized logger.
+Please provide the password for &#39;root@mysqldb1:3306&#39;: ******
+MySQL Shell 8.0.19
+
+Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type &#39;\help&#39; or &#39;\?&#39; for help; &#39;\quit&#39; to exit.
+Creating a session to &#39;root@mysqldb1:3306&#39;
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 60
+Server version: 8.0.19 MySQL Community Server - GPL
+No default schema selected; type \use &lt;schema&gt; to set one.
+ MySQL  mysqldb1:3306 ssl  JS &gt; var c = dba.getCluster(&#39;test&#39;)
+ MySQL  mysqldb1:3306 ssl  JS &gt; c.status()
+&#123;
+    &quot;clusterName&quot;: &quot;test&quot;, 
+    &quot;defaultReplicaSet&quot;: &#123;
+        &quot;name&quot;: &quot;default&quot;, 
+        &quot;ssl&quot;: &quot;REQUIRED&quot;, 
+        &quot;status&quot;: &quot;OK_NO_TOLERANCE&quot;, 
+        &quot;statusText&quot;: &quot;Cluster is NOT tolerant to any failures. 1 member is not active&quot;, 
+        &quot;topology&quot;: &#123;
+            &quot;mysqldb1:3306&quot;: &#123;
+                &quot;address&quot;: &quot;mysqldb1:3306&quot;, 
+                &quot;mode&quot;: &quot;R/W&quot;, 
+                &quot;readReplicas&quot;: &#123;&#125;, 
+                &quot;replicationLag&quot;: null, 
+                &quot;role&quot;: &quot;HA&quot;, 
+                &quot;status&quot;: &quot;ONLINE&quot;, 
+                &quot;version&quot;: &quot;8.0.19&quot;
+            &#125;, 
+            &quot;mysqldb2:3306&quot;: &#123;
+                &quot;address&quot;: &quot;mysqldb2:3306&quot;, 
+                &quot;mode&quot;: &quot;R/W&quot;, 
+                &quot;readReplicas&quot;: &#123;&#125;, 
+                &quot;replicationLag&quot;: null, 
+                &quot;role&quot;: &quot;HA&quot;, 
+                &quot;status&quot;: &quot;ONLINE&quot;, 
+                &quot;version&quot;: &quot;8.0.19&quot;
+            &#125;, 
+            &quot;mysqldb3:3306&quot;: &#123;
+                &quot;address&quot;: &quot;mysqldb3:3306&quot;, 
+                &quot;mode&quot;: &quot;n/a&quot;, 
+                &quot;readReplicas&quot;: &#123;&#125;, 
+                &quot;role&quot;: &quot;HA&quot;, 
+                &quot;shellConnectError&quot;: &quot;MySQL Error 2003 (HY000): Can&#39;t connect to MySQL server on &#39;mysqldb3&#39; (110)&quot;, 
+                &quot;status&quot;: &quot;(MISSING)&quot;
+            &#125;
+        &#125;, 
+        &quot;topologyMode&quot;: &quot;Multi-Primary&quot;
+    &#125;, 
+    &quot;groupInformationSourceMember&quot;: &quot;mysqldb1:3306&quot;
+&#125;
+ MySQL  mysqldb1:3306 ssl  JS &gt; 
+</code></pre><p>可以看到mysqldb3 不在线</p>
+<p><img src="/images/pasted-44.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<p>mysqlrouter 连接到了mysqldb1</p>
+<h1 id="4-故障恢复"><a href="#4-故障恢复" class="headerlink" title="4 故障恢复"></a>4 故障恢复</h1><h2 id="4-1-集群某个节点实例关闭"><a href="#4-1-集群某个节点实例关闭" class="headerlink" title="4.1 集群某个节点实例关闭"></a>4.1 集群某个节点实例关闭</h2><p>1、启动掉线节点实例<br>2、集群会自动加入掉线的节点</p>
+<h2 id="4-2-集群断电全部关闭"><a href="#4-2-集群断电全部关闭" class="headerlink" title="4.2 集群断电全部关闭"></a>4.2 集群断电全部关闭</h2><p>1、启动集群所有实例<br>2、dba.rebootClusterFromCompleteOutage()</p>
+<h2 id="4-3-集群某个节点掉线的情况下，然后整个集群断电关闭"><a href="#4-3-集群某个节点掉线的情况下，然后整个集群断电关闭" class="headerlink" title="4.3 集群某个节点掉线的情况下，然后整个集群断电关闭"></a>4.3 集群某个节点掉线的情况下，然后整个集群断电关闭</h2><p>1、启动集群所有实例<br>2、dba.rebootClusterFromCompleteOutage()<br>3、将断线的节点从集群删除重新加入</p>
+<h2 id="4-4-集群某个节点网络断开，实例正常"><a href="#4-4-集群某个节点网络断开，实例正常" class="headerlink" title="4.4 集群某个节点网络断开，实例正常"></a>4.4 集群某个节点网络断开，实例正常</h2><p>1、恢复网络连接<br>2、Cluster.rejoinInstance(如果集群创建指定了自动加入重试次数，会自动加入)</p>
+<p>3、设置 自动加入重试   c.setOption(‘autoRejoinTries’,1000)</p>
+<h2 id="4-5-强制删除节点"><a href="#4-5-强制删除节点" class="headerlink" title="4.5 强制删除节点"></a>4.5 强制删除节点</h2><p>强制删除挂掉的实例<br>cluster.removeInstance(‘root@mysql4:3310’,{force:1})</p>
+<p>增加实例<br>cluster.addInstance(‘root@mysql4:3310’)</p>
+<h1 id="5-组复制参数设置"><a href="#5-组复制参数设置" class="headerlink" title="5 组复制参数设置"></a>5 组复制参数设置</h1><h2 id="group-replication-bootstrap-group-ON"><a href="#group-replication-bootstrap-group-ON" class="headerlink" title="group_replication_bootstrap_group=ON"></a>group_replication_bootstrap_group=ON</h2><p>作用：集群全部节点挂掉后，重启节点能自动拉起集群，不需要手动去dba.rebootClusterFromCompleteOutage()</p>
+<p>设置方式：<br>按照常规方式安装好集群，选择其中一台机器作为bootstrap节点，将上述配置写入my.cnf</p>
+<p>注意：集群安装好之前不能将此项配置写入my.cnf,否则mysql实例无法启动</p>
+<p>bootstrap 节点挂掉后，集群会选择其他节点写入，但是尽快恢复bootstrap节点到正常状态</p>
+<h2 id="group-replication-transaction-size-limit-150000000"><a href="#group-replication-transaction-size-limit-150000000" class="headerlink" title="group_replication_transaction_size_limit=150000000"></a>group_replication_transaction_size_limit=150000000</h2><p>组复制事务大小限制。默认为145M，可调大到1450M<br>注意：集群安装好之前不能将此项配置写入my.cnf,否则mysql实例无法启动</p>
+<h2 id="group-replication-member-expel-timeout-5"><a href="#group-replication-member-expel-timeout-5" class="headerlink" title="group_replication_member_expel_timeout=5"></a>group_replication_member_expel_timeout=5</h2><p>成员恢复等待时间默认5秒，最大3600秒<br>注意：集群安装好之前不能将此项配置写入my.cnf,否则mysql实例无法启动</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "基于docker 搭建 mysql innodb cluster 集群&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>FABRIC 背书交易 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 一月 15日 2020, 4:04 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.9k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      23 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="1-基础目录网盘地址"><a href="#1-基础目录网盘地址" class="headerlink" title="1,基础目录网盘地址"></a>1,基础目录网盘地址</h1><p>链接：<a target="_blank" rel="noopener" href="https://share.weiyun.com/5jn0Kzf">https://share.weiyun.com/5jn0Kzf</a> 密码：tcvgxn</p>
+<p>为减少体积，blockchain-explorer node_modules 全部删除，需要npm install</p>
+<pre><code>cd $BLOCKCHAIN_EXPLORER/
+npm install</code></pre><pre><code>cd $BLOCKCHAIN_EXPLORER/client
+npm install</code></pre><pre><code>cd $BLOCKCHAIN_EXPLORER/
+./start.sh</code></pre><p>链码实例化指定背书策略是全员背书<br>第三个组织加入前的策略</p>
+<pre><code>&quot;AND (&#39;airwh.member&#39;,&#39;njairport.member&#39;)&quot;</code></pre><p>第三个组织加入后的策略</p>
+<pre><code>&quot;AND (&#39;njairport.member&#39;,&#39;airwh.member&#39;,&#39;tna.member&#39;)&quot;</code></pre><h1 id="2-自动化脚本"><a href="#2-自动化脚本" class="headerlink" title="2,自动化脚本"></a>2,自动化脚本</h1><pre><code>
+testret()&#123;
+
+   if [ $1 -ne 0 ]; then
+      exit 1;
+   fi
+   printf  &quot;[\033[36m %s \033[0m]\n&quot;   &quot;OK&quot; 
+
+&#125;
+
+unsetenv()&#123;
+   unset FABRIC_CFG_PATH
+   unset CORE_PEER_LOCALMSPID
+   unset CORE_PEER_ADDRESS
+   unset CORE_PEER_MSPCONFIGPATH
+&#125;
+
+
+printf &quot;\n&quot;
+
+TEST_HOME=$(cd $(dirname $0); pwd)
+ROOT_MSP=$TEST_HOME/certs/root
+mkdir -p $ROOT_MSP
+FABRIC_CA=http://admin:admin@orderer.cares.com:5054
+
+
+
+
+
+printf  &#39;%-70s&#39;   &#39;clear certs&#39;
+
+rm -fr $TEST_HOME/certs/*
+testret $?
+
+
+if [ -d &quot;$TEST_HOME/logs&quot; ];then
+    rm -fr $TEST_HOME/logs/*
+else
+    mkdir -p $TEST_HOME/logs    
+fi
+
+if [ -d &quot;$TEST_HOME/tmp&quot; ];then
+   rm -fr $TEST_HOME/tmp/*
+else
+   mkdir -p $TEST_HOME/tmp
+fi
+
+
+
+printf  &#39;%-70s&#39;   &#39;start FABRIC-CA&#39;
+$TEST_HOME/server/start
+testret $?
+
+
+reqcerts()&#123;
+    name=$1
+    type=$2
+    CERT_DIR=ordererOrgs
+    NODE_DIR=orderers
+
+    if [ &quot;$type&quot; = &quot;peer&quot; ]; then
+        CERT_DIR=&quot;peerOrgs&quot;
+        NODE_DIR=&quot;peers&quot;
+    fi    
+
+
+    printf &quot;\t%-62s&quot; &quot;get cacert of $name&quot;
+    mkdir -p $TEST_HOME/certs/$CERT_DIR/$name/msp/
+    fabric-ca-client getcacert -M $TEST_HOME/certs/$CERT_DIR/$name/msp/ -H $TEST_HOME/certs/root/ -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+    testret $?
+
+
+    printf  &#39;\t%-62s&#39;   &quot;register orgAdmin of  $name&quot;
+    fabric-ca-client register --id.name Admin@$name.cares.com \
+                              --id.secret 111111 \
+                              --id.type client \
+                              --id.affiliation com.cares.$name \
+                              --id.attrs &#39;&quot;hf.Registrar.Roles=client,orderer,peer,user&quot;,&quot;hf.Registrar.DelegateRoles=client,orderer,peer,user&quot;,hf.Registrar.Attributes=*,hf.GenCRL=true,hf.Revoker=true,hf.AffiliationMgr=true,role=admin:ecert&#39; \
+-H $TEST_HOME/certs/root/ \
+-u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+    testret $?
+
+    sleep 1s   
+    printf &#39;\t%-62s&#39;   &quot;enroll orgAdmin of  $name&quot;
+    fabric-ca-client enroll -u http://Admin@$name.cares.com:111111@localhost:5054  -H $TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+    testret $?
+
+    printf &#39;\t%-62s&#39;   &quot;copy admin certs of  $name&quot;
+    mkdir -p $TEST_HOME/certs/$CERT_DIR/$name/msp/admincerts
+    ADMINCERTFROM=$TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com/msp/signcerts/*
+    ADMINCERTTO=$TEST_HOME/certs/$CERT_DIR/$name/msp/admincerts/
+    cp $ADMINCERTFROM $ADMINCERTTO
+    testret $?
+
+    mkdir -p $TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com/msp/admincerts
+    cp $ADMINCERTFROM $TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com/msp/admincerts
+
+    printf &#39;\t%-62s\n&#39;   &quot;register subAccount using admin of $2&quot;
+
+    accounts=$3
+    if [ ! -n &quot;$accounts&quot; ];then
+         accounts=1
+    fi
+
+
+    for((i=0;i&lt;$accounts;i++));
+    do
+        fabric-ca-client register -u http://localhost:5054 --id.name $type$i@$name.cares.com --id.secret 111111 --id.type $type \
+--id.affiliation com.cares.$name --id.attrs &quot;role=$type:ecert&quot;   -H $TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+        fabric-ca-client enroll -u http://orderer1@orderer.cares.com:111111@localhost:5054  -H $TEST_HOME/certs/$CERT_DIR/$name/$NODE_DIR/$type$i@$name.cares.com -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+        mkdir -p $TEST_HOME/certs/$CERT_DIR/$name/$NODE_DIR/$type$i@$name.cares.com/msp/admincerts
+        cp $TEST_HOME/certs/$CERT_DIR/$name/users/Admin@$name.cares.com/msp/signcerts/cert.pem  $TEST_HOME/certs/$CERT_DIR/$name/$NODE_DIR/$type$i@$name.cares.com/msp/admincerts
+    done
+
+
+&#125;
+
+
+
+delaffiliation()&#123;
+         fabric-ca-client affiliation list --affiliation $1   -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+     if [ $? -eq 0 ];then
+       printf  &#39;\t%-62s&#39;   &quot; delete org $1&quot;
+       fabric-ca-client affiliation remove $1 --force  -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1 
+       testret $?
+     fi
+&#125;
+
+
+
+
+printf  &#39;%-70s&#39;   &#39; wait FABRIC-CA process to be startup&#39;
+LISTENSTATUS=1
+
+while [ $LISTENSTATUS -ne 0 ]
+do
+   sleep 0.1s
+   netstat -an|grep 5054|grep LISTEN &gt; /dev/null 2&gt;&amp;1
+   LISTENSTATUS=$?
+done
+
+testret 0
+
+mkdir -p $ROOT_MSP
+printf  &#39;%-70s&#39;   &#39;register  MSP ROOT&#39;
+fabric-ca-client enroll  -u $FABRIC_CA -H $ROOT_MSP  &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s\n&#39;   &#39;delete orgs affiliations&#39;
+delaffiliation com
+
+
+
+printf &#39;%-70s&#39; &quot;WORK DIR:$TEST_HOME&quot;
+testret 0
+
+
+PEER_PIDS=$(ps -ef|grep &#39;peer node start&#39;|grep -v grep|awk &#39;&#123;print $2&#125;&#39;)
+
+if [ -n &quot;$PEER_PIDS&quot; ]; then
+  printf  &#39;%-70s&#39;   &#39;stop peers processes&#39;
+  kill -9 $PEER_PIDS
+  testret $?
+fi
+sleep 1s
+
+
+ORDER_PID=$(ps -ef|grep &#39;orderer start&#39;|grep -v grep|awk &#39;&#123;print $2&#125;&#39;)
+
+if [ -n &quot;$ORDER_PID&quot; ]; then
+  printf  &#39;%-70s&#39;   &#39;stop orderer process&#39;
+  kill -9 $ORDER_PID
+  testret $?
+fi
+sleep 1s
+
+
+EXPLORE_PID=$(ps -ef|grep &#39;node main.js name - hyperledger-explorer&#39;|grep -v grep|awk &#39;&#123;print $2&#125;&#39;)
+
+if [ -n &quot;$EXPLORE_PID&quot; ]; then
+  printf  &#39;%-70s&#39;   &#39;stop FABRIC EXPPLORER&#39;
+  cd $TEST_HOME/blockchain-explorer
+  nohup ./stop.sh &gt; /dev/null 2&gt;&amp;1 &amp;
+  testret $?
+fi
+sleep 2s
+
+printf  &#39;%-70s&#39;   &#39;clear data files&#39;
+rm -rf rm -fr $TEST_HOME/test/data/*
+testret $?
+
+
+IMG_IDS=$(docker ps -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $1&#125;&#39;)
+if [ -n &quot;$IMG_IDS&quot; ]; then
+    printf  &#39;%-70s&#39;   &#39;stop chaincode containers&#39;
+    docker stop  $(docker ps -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $1&#125;&#39;) &gt; /dev/null 2&gt;&amp;1    
+    testret $?
+fi
+
+
+
+
+IMG_IDS=$(docker ps -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $1&#125;&#39;)
+if [ -n &quot;$IMG_IDS&quot; ]; then
+    printf  &#39;%-70s&#39;   &#39;remove chaincode containers&#39;
+    docker rm  $(docker ps -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $1&#125;&#39;) &gt; /dev/null 2&gt;&amp;1
+    testret $?
+
+fi
+
+
+
+IMG_IDS=$(docker images -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $3&#125;&#39;)
+if [ -n &quot;$IMG_IDS&quot; ]; then
+    printf  &#39;%-70s&#39;   &#39;remove chaincode images&#39;
+    docker rmi  $(docker images -a|grep -E &#39;dev-peer|devairwh-peer&#39;|awk &#39;&#123;print $3&#125;&#39;) &gt; /dev/null 2&gt;&amp;1    
+    testret $?
+fi
+
+
+mkdir -p $ROOT_MSP
+
+printf  &#39;%-70s\n&#39;   &#39;register org affiliations&#39;
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com&#39;
+fabric-ca-client affiliation add com -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;%-70s\n&#39;   &#39;register org affiliations&#39;
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com.cares&#39;
+fabric-ca-client affiliation add com.cares -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;%-70s\n&#39;   &#39;register org affiliations&#39;
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com.cares.orderer&#39;
+fabric-ca-client affiliation add com.cares.orderer -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com.cares.nkg&#39;
+fabric-ca-client affiliation add com.cares.nkg -H $ROOT_MSP -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com.cares.weh&#39;
+fabric-ca-client affiliation add com.cares.weh -H $ROOT_MSP  -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;\t%-62s&#39;   &#39;register affiliations com.cares.tna&#39;
+fabric-ca-client affiliation add com.cares.tna -H $ROOT_MSP  -u $FABRIC_CA &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+mkdir -p $TEST_HOME/certs/&#123;peerOrgs,ordererOrgs&#125;
+
+
+printf &#39;%-70s\n&#39;   &quot;get cert of orderer&quot;
+reqcerts orderer  orderer
+printf &#39;%-70s\n&#39;   &quot;get cert of nkg&quot;
+reqcerts nkg  peer
+printf &#39;%-70s\n&#39;   &quot;get cert of weh&quot;
+reqcerts weh  peer
+printf &#39;%-70s\n&#39;   &quot;get cert of tna&quot;
+reqcerts tna  peer
+
+
+if [ &quot;$1&quot; = &quot;down&quot; ];then
+   exit 0
+fi
+
+
+printf  &#39;%-70s&#39;  &#39;1,create system genesis&#39;
+
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/cfg
+configtxgen  -profile SampleSingleMSPSolo -outputBlock $TEST_HOME/test/data/orderer.genesis.block -channelID sys-security &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;2,create channel genesis&#39;
+configtxgen  -profile SampleSingleMSPSoloChannel -outputCreateChannelTx $TEST_HOME/test/data/securityCheck.channel.tx -channelID securitycheck &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+
+printf  &#39;%-70s&#39;  &#39;3,create anchor njairport&#39;
+configtxgen  -profile SampleSingleMSPSoloChannel -outputAnchorPeersUpdate $TEST_HOME/test/data/njairportMSPanchors.tx -channelID securitycheck -asOrg njairport &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;4,create anchor airwh&#39;
+configtxgen  -profile SampleSingleMSPSoloChannel -outputAnchorPeersUpdate $TEST_HOME/test/data/airwhMSPanchors.tx -channelID securitycheck -asOrg airwh &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;%-70s&#39;  &#39;5,start orderer&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/order
+nohup orderer start &gt; $TEST_HOME/logs/orderer.log 2&gt;&amp;1 &amp;
+testret $?
+
+
+
+printf  &#39;%-70s&#39;  &#39;6,start peer0 njairport&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg/
+nohup peer node start &gt; $TEST_HOME/logs/njairport-peer0.log 2&gt;&amp;1 &amp;
+testret $?
+
+
+
+printf  &#39;%-70s&#39;  &#39;7,start peer0 airwh&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+nohup peer node start &gt; $TEST_HOME/logs/airwh-peer0.log 2&gt;&amp;1 &amp;
+testret $?
+
+printf  &#39;%-70s\n\t%-62s&#39;  &#39;8,create ledger channel &#39; &#39;wait orderer process&#39;
+
+LISTENSTATUS=1
+
+while [ $LISTENSTATUS -ne 0 ]
+do
+   sleep 1s
+   netstat -an|grep 7050|grep LISTEN &gt; /dev/null 2&gt;&amp;1
+   LISTENSTATUS=$?
+done
+unsetenv
+
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer channel create -o orderer.cares.com:7050 -c securitycheck -f $TEST_HOME/test/data/securityCheck.channel.tx  --outputBlock $TEST_HOME/test/data/securitycheck.block &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;%-70s&#39;  &#39;9,nkg peer0 join channel&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer channel join -b $TEST_HOME/test/data/securitycheck.block &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;10,weh peer0 join channel&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer channel join -b $TEST_HOME/test/data/securitycheck.block &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;11,update anchor njairport&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer channel update -o orderer.cares.com:7050 -c securitycheck -f $TEST_HOME/test/data/njairportMSPanchors.tx &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;12,update anchor airwh&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer channel update -o orderer.cares.com:7050 -c securitycheck -f $TEST_HOME/test/data/airwhMSPanchors.tx &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+## java 链码部署需要下载依赖，编译较慢 这里用go链码快速演示 go链码依赖于 $GOPATH
+printf  &#39;%-70s&#39;  &#39;13,install chaincode peer0 njairport&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer chaincode install  -n test -v 1.0 -p  chaincode_example02 -l golang &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;14,install chaincode peer0 airwh&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer chaincode install  -n test -v 1.0 -p  chaincode_example02 -l golang &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+
+printf  &#39;%-70s&#39;  &#39;15, instantiate chaincode peer0 njairport a=200,b=200&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer chaincode instantiate -o orderer.cares.com:7050 -C securitycheck -n test -l golang -v 1.0 -c &#39;&#123;&quot;Args&quot;:[&quot;init&quot;,&quot;a&quot;,&quot;200&quot;,&quot;b&quot;,&quot;200&quot;]&#125;&#39; -P &quot;AND (&#39;airwh.member&#39;,&#39;njairport.member&#39;)&quot; &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+printf  &#39;%-70s\n&#39;  &#39;16, peer0 njairport a transfer 5 to b&#39; 
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+IMGSTATUS=1
+printf  &#39;\t%-62s&#39;  &#39;wait chaincode container up&#39;
+while [ $IMGSTATUS -ne 0 ]
+do
+   ps -ef|grep &#39;chaincode -peer.address=&#39;|grep -v grep  &gt; /dev/null 2&gt;&amp;1
+   IMGSTATUS=$?
+done
+
+sleep 5s
+
+peer chaincode invoke -o orderer.cares.com:7050  -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;5&quot;]&#125;&#39; --peerAddresses peer0.nkg.cares.com:7051 --peerAddresses peer0.weh.cares.com:7053 --waitForEvent &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf  &#39;%-70s&#39;  &#39;17,peer0 njairport query value of a&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/nkg
+sleep 3s
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+
+
+
+printf  &#39;%-70s&#39;  &#39;18,peer0 njairport query value of b&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+
+
+printf  &#39;%-70s&#39;  &#39;19,peer0 airwh query value of a&#39;
+unsetenv
+export FABRIC_CFG_PATH=$TEST_HOME/config/peers/weh
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39; 
+
+
+printf  &#39;%-70s&#39;  &#39;20,peer0 airwh query value of b&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+
+
+docker ps|grep &#39;hyperledger/explorer-db&#39; &gt; /dev/null
+if [ $? -eq 0 ]; then
+
+    docker exec -it -u postgres  postgresql dropdb fabricexplorer &gt; /dev/null
+    sleep 1s
+    docker exec -it -u postgres  postgresql /opt/createdb.sh &gt; /dev/null
+    sleep 1s
+    rm -fr $TEST_HOME/blockchain-explorer/wallet/*
+    rm -fr $TEST_HOME/blockchain-explorer/logs/*
+    PRE_KEY=`cat $TEST_HOME/blockchain-explorer/app/platform/fabric/connection-profile/first-network.json|grep -o &#39;keystore/.*sk&#39;|awk -F / &#39;&#123;print $2&#125;&#39;`
+    if [ -n &quot;$PRE_KEY&quot; ]; then
+        CUR_KEY=`ls $TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp/keystore/`
+        sed -i &quot;s#$PRE_KEY#$CUR_KEY#g&quot;  $TEST_HOME/blockchain-explorer/app/platform/fabric/connection-profile/first-network.json
+        cd $TEST_HOME/blockchain-explorer
+        nohup ./start.sh &gt; /dev/null 2&gt;&amp;1 &amp;
+
+    fi
+
+fi
+
+
+printf  &#39;%-70s\n&#39;  &#39;Hyperledger Fabric CA 简易网络 搭建成功&#39;
+
+if [ &quot;$1&quot; != &quot;add&quot; ];then
+  exit 0
+fi
+
+printf  &#39;%-70s\n&#39;  &#39;动态组织加入 济南机场&#39;
+export FABRIC_LOGGING_SPEC=ERROR
+mkdir -p $TEST_HOME/tmp
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/cfg/tna
+printf  &#39;%-70s&#39; &#39;Generating TNA config material&#39;
+configtxgen -printOrg tna &gt; $TEST_HOME/tmp/tna.json
+testret $?
+
+printf  &#39;%-70s&#39; &#39;Fetching the most recent configuration block for the channel&#39;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer channel fetch config $TEST_HOME/tmp/config_block.pb -o orderer.cares.com:7050 -c securitycheck
+testret $?
+
+printf &#39;%-70s&#39; &#39;Decoding config block to JSON&#39;
+configtxlator proto_decode --input $TEST_HOME/tmp/config_block.pb --type common.Block | jq .data.data[0].payload.data.config &gt; $TEST_HOME/tmp/config.json
+testret $?
+
+printf &#39;%-70s&#39; &#39;Modify the configuration to append the new org&#39;
+jq -s &#39;.[0] * &#123;&quot;channel_group&quot;:&#123;&quot;groups&quot;:&#123;&quot;Application&quot;:&#123;&quot;groups&quot;: &#123;&quot;tna&quot;:.[1]&#125;&#125;&#125;&#125;&#125;&#39; $TEST_HOME/tmp/config.json $TEST_HOME/tmp/tna.json &gt; $TEST_HOME/tmp/modified_config.json
+testret $?
+
+printf &#39;%-70s&#39; &#39;write it as a transaction&#39;
+configtxlator proto_encode --input $TEST_HOME/tmp/config.json  --type common.Config &gt;  $TEST_HOME/tmp/original_config.pb 
+
+configtxlator proto_encode --input $TEST_HOME/tmp/modified_config.json --type common.Config &gt; $TEST_HOME/tmp/modified_config.pb
+
+configtxlator compute_update --channel_id securitycheck --original $TEST_HOME/tmp/original_config.pb --updated $TEST_HOME/tmp/modified_config.pb &gt; $TEST_HOME/tmp/config_update.pb
+
+configtxlator proto_decode --input $TEST_HOME/tmp/config_update.pb --type common.ConfigUpdate &gt; $TEST_HOME/tmp/config_update.json
+
+echo &#39;&#123;&quot;payload&quot;:&#123;&quot;header&quot;:&#123;&quot;channel_header&quot;:&#123;&quot;channel_id&quot;:&quot;&#39;securitycheck&#39;&quot;, &quot;type&quot;:2&#125;&#125;,&quot;data&quot;:&#123;&quot;config_update&quot;:&#39;$(cat $TEST_HOME/tmp/config_update.json)&#39;&#125;&#125;&#125;&#39; | jq . &gt; $TEST_HOME/tmp/config_update_in_envelope.json
+configtxlator proto_encode --input $TEST_HOME/tmp/config_update_in_envelope.json --type common.Envelope &gt; $TEST_HOME/tmp/org3_update_in_envelope.pb
+
+testret $?
+
+
+
+printf &#39;%-70s&#39; &#39;Signing config transaction&#39;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer channel signconfigtx -f $TEST_HOME/tmp/org3_update_in_envelope.pb
+testret $?
+
+printf &#39;%-70s&#39; &#39;Submit config  transaction&#39;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer channel update -f $TEST_HOME/tmp/org3_update_in_envelope.pb -c securitycheck -o orderer.cares.com:7050
+testret $?
+
+
+printf &#39;%-70s&#39; &#39;startup peer0 of tna&#39;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+nohup peer node start &gt;  $TEST_HOME/logs/peer0.tna.log 2&gt;&amp;1 &amp;
+testret $?
+
+
+printf &#39;%-70s\n&#39;  &#39;Have Org3 peers join network&#39;
+printf &#39;\t%-62s&#39; &quot;Fetching channel config block from orderer...&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/tna/users/Admin@tna.cares.com/msp
+peer channel fetch 0 $TEST_HOME/tmp/securitycheck.block -o orderer.cares.com:7050 -c securitycheck  &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+export FABRIC_LOGGING_SPEC=ERROR
+printf &#39;\t%-62s&#39; &quot;JOIN channel...&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/tna/users/Admin@tna.cares.com/msp
+sleep 5s
+peer channel join -b $TEST_HOME/tmp/securitycheck.block &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf &#39;\t%-62s&#39; &quot;tna install chaincode test 2.0&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/tna/users/Admin@tna.cares.com/msp
+peer chaincode install -n test -v 2.0  -l golang -p chaincode_example02 &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf &#39;%-70s\n&#39; &quot;Upgrade chaincode to have Org3 peers on the network&quot;
+
+printf &#39;\t%-62s&#39; &quot;nkg install chaincode test 2.0&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer chaincode install -n test -v 2.0  -l golang -p chaincode_example02 &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf &#39;\t%-62s&#39; &quot;weh install chaincode test 2.0&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/weh
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/weh/users/Admin@weh.cares.com/msp
+peer chaincode install -n test -v 2.0  -l golang -p chaincode_example02 &gt; /dev/null 2&gt;&amp;1
+testret $?
+
+
+printf &#39;\t%-62s&#39; &quot;nkg upgrade chaincode test 2.0, initial a=90,b=210&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/nkg
+export CORE_PEER_MSPCONFIGPATH=$TEST_HOME/certs/peerOrgs/nkg/users/Admin@nkg.cares.com/msp
+peer chaincode upgrade -o orderer.cares.com:7050 -C securitycheck -n test -v 2.0 -c &#39;&#123;&quot;Args&quot;:[&quot;init&quot;,&quot;a&quot;,&quot;90&quot;,&quot;b&quot;,&quot;210&quot;]&#125;&#39; -P &quot;AND (&#39;njairport.member&#39;,&#39;airwh.member&#39;,&#39;tna.member&#39;)&quot; &gt; /dev/null
+testret $?
+
+sleep 3s
+
+printf &#39;%-70s\n&#39; &quot;test chaincode after tna join network&quot;
+
+
+printf &#39;\t%-62s\n&#39; &quot;tna query a b value&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+sleep 2s
+
+
+printf &#39;\t%-62s&#39; &quot;tna do transaction a transfer 10 to b&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+peer chaincode invoke -o orderer.cares.com:7050 -C securitycheck -n test  -c &#39;&#123;&quot;Args&quot;:[&quot;invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;10&quot;]&#125;&#39; --peerAddresses peer0.nkg.cares.com:7051 --peerAddresses peer0.weh.cares.com:7053 --peerAddresses peer0.tna.cares.com:8051 --waitForEvent &gt; /dev/null 2&gt;&amp;1
+testret $?
+sleep 2s
+
+
+printf &#39;\t%-62s\n&#39; &quot;tna query a b value&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/tna
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+sleep 2s
+
+printf &#39;\t%-62s\n&#39; &quot;nkg query a b value&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/nkg
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+sleep 2s
+
+
+printf &#39;\t%-62s\n&#39; &quot;weh query a b value&quot;
+unsetenv
+export FABRIC_CFG_PATH=/home/wangcj/workspace/ca_solo/config/peers/weh
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;b&quot;]&#125;&#39;
+
+
+printf &#39;%-70s\n&#39; &quot;济南机场成功加入&quot;
+</code></pre><h1 id="3-区块链浏览器查看背书交易详情"><a href="#3-区块链浏览器查看背书交易详情" class="headerlink" title="3,区块链浏览器查看背书交易详情"></a>3,区块链浏览器查看背书交易详情</h1><h2 id="3-1-第三个组织加入前"><a href="#3-1-第三个组织加入前" class="headerlink" title="3.1 第三个组织加入前"></a>3.1 第三个组织加入前</h2><p><img src="/images/pasted-29.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h2 id="3-2-第三个组织加入后"><a href="#3-2-第三个组织加入后" class="headerlink" title="3.2 第三个组织加入后"></a>3.2 第三个组织加入后</h2><p><img src="/images/pasted-30.png" srcset="/img/loading.gif" alt="upload successful"></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+                  <a class="hover-with-bg" href="/tags/endorsement">endorsement</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%8A%A8%E6%80%81%E7%BB%84%E7%BB%87%E5%8A%A0%E5%85%A5">动态组织加入</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "FABRIC 背书交易&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

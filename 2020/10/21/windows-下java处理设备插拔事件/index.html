@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>windows 下java处理设备插拔事件 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十月 21日 2020, 2:12 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    653 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h3><p>创建隐藏window<br>实现 winproc函数<br>注册设备通知，调用winproc处理</p>
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+    &lt;artifactId&gt;jna-platform&lt;/artifactId&gt;
+    &lt;version&gt;5.6.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+    &lt;artifactId&gt;jna&lt;/artifactId&gt;
+    &lt;version&gt;5.6.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>package com.cares.vip.front.service;
+
+import com.sun.jna.platform.win32.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+
+import static com.sun.jna.platform.win32.WinUser.WM_DEVICECHANGE;
+
+/**
+ * 监听串口设备拔出、插入
+ */
+@Slf4j
+public class SpDeviceChangeService implements WinUser.WindowProc, InitializingBean &#123;
+
+    private SerialportService serialportService;
+
+    public void setup() &#123;
+
+        serialportService.openSerialPort();
+
+        // define new window class
+        String windowClass = &quot;MyWindowClass&quot;;
+        WinDef.HMODULE hInst = Kernel32.INSTANCE.GetModuleHandle(&quot;&quot;);
+
+        WinUser.WNDCLASSEX wClass = new WinUser.WNDCLASSEX();
+        wClass.hInstance = hInst;
+        wClass.lpfnWndProc = this;
+        wClass.lpszClassName = windowClass;
+
+        // register window class
+        User32.INSTANCE.RegisterClassEx(wClass);
+        getLastError();
+
+        // create new window
+        WinDef.HWND hWnd = User32.INSTANCE
+                .CreateWindowEx(
+                        User32.WS_EX_TOPMOST,
+                        windowClass,
+                        &quot;hidden window to catch the windows events&quot;,
+                        0, 0, 0, 0, 0,
+                        null, // WM_DEVICECHANGE contradicts parent=HWND_MESSAGE
+                        null, hInst, null);
+
+        getLastError();
+        log.info(&quot;window sucessfully created! window hwnd: &quot; + hWnd.getPointer().toString());
+
+        Wtsapi32.INSTANCE.WTSRegisterSessionNotification(hWnd,
+                Wtsapi32.NOTIFY_FOR_THIS_SESSION);
+
+        /* this filters for all usb device classes */
+        DBT.DEV_BROADCAST_DEVICEINTERFACE notificationFilter = new DBT.DEV_BROADCAST_DEVICEINTERFACE();
+        notificationFilter.dbcc_size = notificationFilter.size();
+        notificationFilter.dbcc_devicetype = DBT.DBT_DEVTYP_PORT;
+        notificationFilter.dbcc_classguid = DBT.GUID_DEVINTERFACE_HID;
+
+        WinUser.HDEVNOTIFY hDevNotify = User32.INSTANCE.RegisterDeviceNotification(
+                hWnd, notificationFilter, User32.DEVICE_NOTIFY_WINDOW_HANDLE);
+
+        getLastError();
+        if (hDevNotify != null)
+            log.info(&quot;RegisterDeviceNotification was sucessfully!&quot;);
+
+        WinUser.MSG msg = new WinUser.MSG();
+        while (User32.INSTANCE.GetMessage(msg, hWnd, 0, 0) != 0) &#123;
+            User32.INSTANCE.TranslateMessage(msg);
+            User32.INSTANCE.DispatchMessage(msg);
+        &#125;
+
+        User32.INSTANCE.UnregisterDeviceNotification(hDevNotify);
+        Wtsapi32.INSTANCE.WTSUnRegisterSessionNotification(hWnd);
+        User32.INSTANCE.UnregisterClass(windowClass, hInst);
+        User32.INSTANCE.DestroyWindow(hWnd);
+
+        log.info(&quot;program exit!&quot;);
+    &#125;
+
+    /**
+     * 实现 WinUser.WindowProc 的callback 接口
+     */
+    public WinDef.LRESULT callback(WinDef.HWND hwnd, int uMsg, WinDef.WPARAM wParam, WinDef.LPARAM lParam) &#123;
+        switch (uMsg) &#123;
+            case WM_DEVICECHANGE: &#123;
+                WinDef.LRESULT lResult = this.onDeviceChange(wParam, lParam);
+                return lResult != null ? lResult :
+                        User32.INSTANCE.DefWindowProc(hwnd, uMsg, wParam, lParam);
+            &#125;
+            default:
+                return User32.INSTANCE.DefWindowProc(hwnd, uMsg, wParam, lParam);
+        &#125;
+    &#125;
+
+    public int getLastError() &#123;
+        int rc = Kernel32.INSTANCE.GetLastError();
+
+        if (rc != 0)
+            log.error(&quot;error: &quot; + rc);
+
+        return rc;
+    &#125;
+
+    protected WinDef.LRESULT onDeviceChange(WinDef.WPARAM wParam, WinDef.LPARAM lParam) &#123;
+        switch (wParam.intValue()) &#123;
+            case DBT.DBT_DEVICEARRIVAL: &#123;
+
+                return onDeviceChangeArrival(lParam);
+            &#125;
+            case DBT.DBT_DEVICEREMOVECOMPLETE: &#123;
+
+                return onDeviceChangeRemoveComplete(lParam);
+            &#125;
+            case DBT.DBT_DEVNODES_CHANGED: &#123;
+                return onDeviceChangeNodesChanged();
+            &#125;
+            default:
+                log.info(&quot;Message WM_DEVICECHANGE message received, value unhandled.&quot;);
+        &#125;
+        return null;
+    &#125;
+
+    protected WinDef.LRESULT onDeviceChangeArrivalOrRemoveComplete(WinDef.LPARAM lParam, String action) &#123;
+        DBT.DEV_BROADCAST_HDR bhdr = new DBT.DEV_BROADCAST_HDR(lParam.longValue());
+        switch (bhdr.dbch_devicetype) &#123;
+            case DBT.DBT_DEVTYP_DEVICEINTERFACE: &#123;
+                DBT.DEV_BROADCAST_DEVICEINTERFACE bdif = new DBT.DEV_BROADCAST_DEVICEINTERFACE(bhdr.getPointer());
+                log.info(&quot;BROADCAST_DEVICEINTERFACE: &quot; + action);
+                log.info(&quot;dbcc_devicetype: &quot; + bdif.dbcc_devicetype);
+                log.info(&quot;dbcc_name: &quot; + bdif.getDbcc_name());
+                log.info(&quot;dbcc_classguid: &quot;
+                        + bdif.dbcc_classguid.toGuidString());
+                if (&quot;insert&quot;.equals(action)) &#123;
+                    serialportService.openSerialPort();
+
+                &#125;
+                break;
+            &#125;
+            case DBT.DBT_DEVTYP_PORT: &#123;
+                if (&quot;insert&quot;.equals(action)) &#123;
+                    serialportService.openSerialPort();
+
+                &#125;
+                log.info(&quot;BROADCAST_PORT: &quot; + action);
+                break;
+            &#125;
+            default:
+                return null;
+        &#125;
+        return new WinDef.LRESULT(1);
+    &#125;
+
+    protected WinDef.LRESULT onDeviceChangeArrival(WinDef.LPARAM lParam) &#123;
+        return onDeviceChangeArrivalOrRemoveComplete(lParam, &quot;insert&quot;);
+    &#125;
+
+    protected WinDef.LRESULT onDeviceChangeRemoveComplete(WinDef.LPARAM lParam) &#123;
+        return onDeviceChangeArrivalOrRemoveComplete(lParam, &quot;remove&quot;);
+    &#125;
+
+    protected WinDef.LRESULT onDeviceChangeNodesChanged() &#123;
+        log.info(&quot;Message DBT_DEVNODES_CHANGED&quot;);
+        return new WinDef.LRESULT(1);
+    &#125;
+
+    public void setSerialportService(SerialportService serialportService) &#123;
+        this.serialportService = serialportService;
+    &#125;
+
+    @Override
+    public void afterPropertiesSet() throws Exception &#123;
+        setup();
+    &#125;
+&#125;
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JNA">JNA</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/jna">jna</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E7%9B%91%E5%90%AC%E8%AE%BE%E5%A4%87%E6%8F%92%E6%8B%94">监听设备插拔</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "windows 下java处理设备插拔事件&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

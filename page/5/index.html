@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/12/SPRINGBOOT-%E5%AE%89%E8%A3%85%E4%B8%BAsystemd%E6%9C%8D%E5%8A%A1/">
+        <p class="h4 index-header">SPRINGBOOT 安装为systemd服务</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">复制官方，略有改动
+
+[Unit]
+Description=telegram app
+After=syslog.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/java -jar /root/telegram.jar
+SuccessExitStatus=143
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-12&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/SPRINGBOOT">SPRINGBOOT</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/11/WINDOWS-%E4%BD%BF%E7%94%A8JNA%E6%93%8D%E4%BD%9C%E6%B3%A8%E5%86%8C%E8%A1%A8/">
+        <p class="h4 index-header">WINDOWS 使用JNA操作注册表</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">环境
+windows 10
+springboot 2
+jna
+        &lt;dependency&gt;
+            &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+            &lt;artifactId&gt;jna-platform&lt;/artifactId&gt;
+            &lt;version&gt;5.6.0&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+            &lt;artifactId&gt;jna&lt;/artifactId&gt;
+            &lt;version&gt;5.6.0&lt;/version&gt;
+        &lt;/dependency&gt; private String runReg = &</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JNA">JNA</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/11/WINDOWS-%E6%9F%A5%E7%9C%8BJAVA%E8%BF%9B%E7%A8%8B%E5%8F%82%E6%95%B0/">
+        <p class="h4 index-header">WINDOWS 查看JAVA进程参数</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">wmic process where name=&quot;javaw.exe&quot; get CommandLine,ProcessId
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/WINDOWS">WINDOWS</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/09/mysql-8-0-%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">
+        <p class="h4 index-header">mysql 8.0.22 源码编译</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">获取源码下载地址： https://dev.mysql.com/downloads/mysql/
+
+安装源码rpm -ivh mysql-community-8.0.22-1.el7.src.rpm  ncurses.tar.gz
+默认安装到  $HOME/rpmbuild
+编译环境安装 虚拟机安装类型：开发环境+平台开发
+版本：centos 7.8
+[wangcj@localhost ~]$ cat /etc/redhat-release 
+CentOS Linux release 7.8.2003 (Core)
+[wangcj@localhost ~]$安装c++ 库和头文件yum install glibc-headers
+
+yum install gcc-c++ 
+安装cmake下载地址：https://cmake.org/download/
+chmod +x cmake-3.19.0-rc3-Linux-x86_64.sh
+./cmake-3.19.0-rc3-Linux-x86_64.sh --prefix=/usr/local/cmake
+cmake 加入path
+vi </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-09&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91">源码编译</a>&nbsp;
+          
+            <a href="/tags/mysql8-0.22">mysql8.0.22</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/31/%E6%9E%97%E5%BD%AA%E8%A6%81%E6%9A%97%E6%9D%80%E6%AF%9B%E6%B3%BD%E4%B8%9C%E7%9A%84%E7%9C%9F%E6%AD%A3%E5%8E%9F%E5%9B%A0/">
+        <p class="h4 index-header">林彪要暗杀毛泽东的真正原因</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">毛泽东主席不会想到——追随他出生入死立下赫赫战功的林彪后来会精心谋划暗杀他，当时的林彪也想不到自己会有一天“调转枪口”成为“遗臭万年”的政变者，一世英名毁于一旦…
+林彪暗杀毛泽东是制度的悲剧
+1955年9月27日，中南海怀仁堂，中华人民共和国主席授衔授勋典礼在这里隆重举行，这一天有十位开国功臣被授予元帅军衔，其中最年轻的是林彪，时年49岁。
+这一天，毛泽东主席不会想到——追随他出生入死立下赫赫战功的林彪后来会精心谋划暗杀他，当时的林彪也想不到自己会有一天“调转枪口”成为“遗臭万年”的政变者，一世英名毁于一旦。
+林彪在学习毛泽东着作(资料图片)
+1969年4月1日至24日，中共“九大”在北京召开。在“九大”通过的党章总纲中有这样一段堪称经典的文字：“林彪同志一贯高举毛泽东思想伟大红旗，最忠诚、最坚定地扞卫毛泽东同志的无产阶级革命路线，林彪同志是毛泽东同志的亲密战友和接班人。”
+这个被党纲确立为接班人的林彪，谁也没想到他会准备发动武装政变以暗杀毛泽东的方式“接班”。
+1971年3月，林彪集团策划了一个“571工程”计划。所谓“571”，即“武装起义”的谐音，图谋“夺取全国政权”。由于阴谋败</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-31&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%8E%86%E5%8F%B2">历史</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/31/%E6%B3%BD%E4%B8%9C%E9%80%BC%E5%87%BA%E6%9D%A5%E7%9A%84%E6%9E%97%E5%BD%AA%E5%87%BA%E9%80%83%E4%BA%8B%E4%BB%B6/">
+        <p class="h4 index-header">毛泽东逼出来的林彪出逃事件</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">一、政治报告　　之前，并未看过报告的内容。汪东兴说：“由于林彪对‘九大’的政治报告改用张春桥、姚文元起草的稿子不满，在‘九大’上，他只是照着稿子念了一遍，敷衍了事[11]。”林彪甚至还对叶群说：“多念错一点才好[12]。”林彪对得到毛泽东肯定的张、姚起草的报告的厌恶之情，可见一斑。综上所述，在起草“九大”政治报告这件事上，无论是林彪还是陈伯达，并没有什么“反党”主张或“反党罪行”。他们只不过是未能像张春桥那样善于理解毛泽东深藏心中的真实想法，又对深受毛泽东宠信的张春桥有所不满而已，结果林彪与陈伯达竟因此获罪。
+二、“九届二中全会”上的所谓“八月逆流”　　毛泽东在1971年夏的南巡讲话中曾挑明了他要打击林彪的真正原因：“他们名为反张春桥实际上反我”，“这次庐山会议，是两个司令部的斗争 [13]。”在未公开的《姚文元日记》中，姚文元提到，毛泽东称“九届二中全会”上发生了“八月逆流”。“八月逆流”到底“逆”了什么？至今未见任何相关资料公布于众，而这个钦定名称也从来没有见诸史书。
+　　现在来看，所谓的“八月逆流”不过是出席中央全会的代表在小组讨论中发表自己的看法罢了。这些意见主要是两方面：一是</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-31&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%8E%86%E5%8F%B2">历史</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/21/windows-%E4%B8%8Bjava%E5%A4%84%E7%90%86%E8%AE%BE%E5%A4%87%E6%8F%92%E6%8B%94%E4%BA%8B%E4%BB%B6/">
+        <p class="h4 index-header">windows 下java处理设备插拔事件</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本思路创建隐藏window实现 winproc函数注册设备通知，调用winproc处理
+引入依赖&lt;dependency&gt;
+    &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+    &lt;artifactId&gt;jna-platform&lt;/artifactId&gt;
+    &lt;version&gt;5.6.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+    &lt;artifactId&gt;jna&lt;/artifactId&gt;
+    &lt;version&gt;5.6.0&lt;/version&gt;
+&lt;/dependency&gt;代码实现package com.cares.vip.front.service;
+
+import com.sun.jna.platform.win32.*;
+import lo</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JNA">JNA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/jna">jna</a>&nbsp;
+          
+            <a href="/tags/%E7%9B%91%E5%90%AC%E8%AE%BE%E5%A4%87%E6%8F%92%E6%8B%94">监听设备插拔</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/21/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%80%BB%E7%BB%93/">
+        <p class="h4 index-header">正则表达式总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">分组的引入  对于要重复单个字符，非常简单，直接在字符后卖弄加上限定符即可，例如 a+ 表示匹配1个或一个以上的a，a?表示匹配0个或1个a。这些限定符如下所示： 
+
+
+
+
+
+
+
+
+X?
+X ，一次或一次也没有
+
+
+X *
+X ，零次或多次
+
+
+X +
+X ，一次或多次
+
+
+X { n }
+X ，恰好 n 次
+
+
+X { n ,}
+X ，至少 n 次
+
+
+X { n , m }
+X ，至少 n 次，但是不超过 m 次
+
+
+但是我们如果要对多个字符进行重复怎么办呢？此时我们就要用到分组，我们可以使用小括号”()”来指定要重复的子表达式，然后对这个子表达式进行重复，例如：(abc)? 表示0个或1个abc 这里一 个括号的表达式就表示一个分组 。
+ 分组可以分为两种形式，捕获组和非捕获组。 
+捕获组捕获组可以通过从左到右计算其开括号来编号 。例如，在表达式 (A)(B(C)) 中，存在四个这样的组：
+
+
+
+
+
+
+
+
+0
+(A)(B(C))
+
+
+1
+(A)
+
+
+2
+(B(C))
+
+
+3
+(C)
+
+
+组零始终代表整个表达式
+之所以这样命名捕获组是因为在匹配中，保存了与这些组匹配的输入序列的每个</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/09/USB%E6%89%AB%E6%8F%8F%E6%9E%AA%E8%BD%AC%E4%B8%B2%E5%8F%A3/">
+        <p class="h4 index-header">USB扫描枪转串口</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">安装驱动https://share.weiyun.com/kFnwmCKg
+扫描条形码进行功能设置
+测试
+修改扫描枪绑定串口1、查看扫描枪硬件PID
+2、填入硬件PID和要绑定的串口
+3、点击确定，重启电脑，查看串口情况</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-09&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/09/03/%E6%9E%84%E5%BB%BAredis-%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
+        <p class="h4 index-header">构建redis 管理工具</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">代码地址https://github.com/uglide/RedisDesktopManager构建完成官方构建步骤
+Install Visual Studio 2017 Community Edition.
+Install Qt 5.13.
+Go to 3rdparty/qredisclient/3rdparty/hiredis and apply the patch to fix compilation on Windows:git apply ../hiredis-win.patch
+Go to the 3rdparty/ folder and install zlib with nuget: nuget install zlib-msvc14-x64 -Version 1.2.11.7795
+Install Python 3.7 amd64 to C:\Python37-x64.
+Install Python requirements pip3 install -r src/py/requirements.txt.
+Open ./src/rdm.pro in Qt Creat</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-09-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/redis">redis</a>&nbsp;
+          
+            <a href="/tags/qt5%20%E6%89%93%E5%8C%85">qt5 打包</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/4/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

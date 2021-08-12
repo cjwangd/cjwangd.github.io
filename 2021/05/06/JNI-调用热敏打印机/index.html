@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>JNI 调用热敏打印机 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 五月 6日 2021, 2:50 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    4.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      26 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>打印机是美松的热敏打印机，厂商只提供动态库和demo。</p>
+<p>win10 1909 + vs2017</p>
+<h2 id="java-本地方法"><a href="#java-本地方法" class="headerlink" title="java 本地方法"></a>java 本地方法</h2><p>参考demo中的代码，写好java接口</p>
+<pre><code>package com.cares.msprint;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/28 16:21
+ **/
+public class MsPrintSdk &#123;
+
+    public static native int SetPrintport(String strPort, int iBaudrate);
+
+    public static native int SetUsbportauto();
+
+    public static native int SetInit();
+
+    public static native int SetClean();
+
+    public static native int SetClose();
+
+    public static native int SetAlignment(int iAlignment);
+
+    public static native int SetAlignmentLeftRight(int iAlignment);
+
+    public static native int SetSizetext(int iHeight, int iWidth);
+
+    public static native int SetSizechar(int iHeight, int iWidth, int iUnderline, int iAsciitype);
+
+    public static native int SetSizechinese(int iHeight, int iWidth, int iUnderline, int iChinesetype);
+
+    public static native int SetLinespace(int iLinespace);
+
+    public static native int SetBold(int iBold);
+
+    public static native int SetSpacechar(int iSpace);
+
+    public static native int SetSpacechinese(int iChsleftspace, int iChsrightspace);
+
+    public static native int SetNvbmp(int iNums, String strPath);
+
+    public static native int SetMarkoffsetcut(int iOffset);
+
+    public static native int SetMarkoffsetprint(int iOffset);
+
+    public static native int SetLeftmargin(int iLeftspace);
+
+    public static native int SetDirection(int iDirection);
+
+    public static native int SetItalic(int iItalic);
+
+    public static native int SetRotate(int iRotate);
+
+    public static native int SetWhitemodel(int iWhite);
+
+    public static native int SetCommandmode(int iMode);
+
+    public static native int SetUnderline(int underline);
+
+    public static native int SetReadZKmode(int mode);
+
+    public static native int SetHTseat(String bHTseat, int iLength);
+
+    public static native int PrintNextHT();
+
+    public static native int PrintSelfcheck();
+
+    public static native int PrintString(String strData, int iImme);
+
+    public static native int PrintFeedline(int iLine);
+
+    public static native int PrintCutpaper(int iMode);
+
+    public static native int PrintQrcode(String strData, int iLmargin, int iMside, int iRound);
+
+    public static native int PrintQRcode500II(int iwidth, String strData);
+
+    public static native int Print1Dbar(int iWidth, int iHeight, int iHrisize, int iHriseat, int iCodetype, String strData);
+
+    public static native int PrintPdf417(int iDotwidth, int iDotheight, int iDatarows, int iDatacolumns, String strData);
+
+    public static native int PrintDiskbmpfile(String strPath);
+
+    public static native int PrintNvmbp(int iNvindex, int iMode);
+
+    public static native int PrintMarkposition();
+
+    public static native int PrintMarkpositionprint();
+
+    public static native int PrintMarkpositioncut();
+
+    public static native int PrintMarkcutpaper(int iMode);
+
+    public static native int PrintTransmit(String bCmd, int iLength);
+
+    public static native int PrintChangeRow();
+
+    public static native int PrintRemainQR();
+
+    public static native int PrintFeedDot(int Lnumber);
+
+    public static native String GetProductinformation(int iFstype);
+
+    public static native int GetTransmit(String bCmd, int iLength, String bRecv, int iRelen);
+
+    public static native int GetStatus();
+
+    public static native int GetStatusspecial();
+
+    public static native int GetSDKinformation(String bInfodata);
+
+    public static native int SetRotation_Intomode();
+
+    public static native int PrintRotation_Data();
+
+    public static native int PrintRotation_Sendtext(String strData, int iImme);
+
+    public static native int PrintRotation_Sendcode(int leftspace, int iWidth, int iHeight, int iCodetype, String strData);
+
+    public static native int PrintRotation_Changeline();
+
+    public static native int SetRotation_Leftspace(int iLeftspace);
+
+    public static native int SetPrintIDorName(String strIDorNAME);
+
+    public static native String GetPrintIDorName();
+
+    public static native int SetComportauto();
+
+    public static native int SetPrintportFlowCtrl(int iFlowCtrlFlag);
+
+    public static native void SetTraceLog(int iLog);
+
+    public static native int PrintPDF_CCCB_A(String strPath);
+
+    public static native int PrintPDF_CCCB_B(String strPath);
+
+    public static native int GetStatus_TS();
+
+    public static native int SetPrintConn(int iConnWay, String strName, String strValue);
+
+    public static native int PrintDataMatrix(String strData, int iSize);
+&#125;
+
+</code></pre><h2 id="使用javah-生成头文件"><a href="#使用javah-生成头文件" class="headerlink" title="使用javah 生成头文件"></a>使用javah 生成头文件</h2><pre><code>/* DO NOT EDIT THIS FILE - it is machine generated */
+#include &lt;jni.h&gt;
+/* Header for class com_cares_msprint_MsPrintSdk */
+
+#ifndef _Included_com_cares_msprint_MsPrintSdk
+#define _Included_com_cares_msprint_MsPrintSdk
+#ifdef __cplusplus
+extern &quot;C&quot; &#123;
+#endif
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintport
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintport
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetUsbportauto
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetUsbportauto
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetInit
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetInit
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetClean
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetClean
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetClose
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetClose
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetAlignment
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetAlignment
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetAlignmentLeftRight
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetAlignmentLeftRight
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizetext
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizetext
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizechar
+ * Signature: (IIII)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizechar
+  (JNIEnv *, jclass, jint, jint, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizechinese
+ * Signature: (IIII)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizechinese
+  (JNIEnv *, jclass, jint, jint, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetLinespace
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetLinespace
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetBold
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetBold
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSpacechar
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSpacechar
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSpacechinese
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSpacechinese
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetNvbmp
+ * Signature: (ILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetNvbmp
+  (JNIEnv *, jclass, jint, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetMarkoffsetcut
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetMarkoffsetcut
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetMarkoffsetprint
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetMarkoffsetprint
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetLeftmargin
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetLeftmargin
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetDirection
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetDirection
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetItalic
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetItalic
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotate
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotate
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetWhitemodel
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetWhitemodel
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetCommandmode
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetCommandmode
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetUnderline
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetUnderline
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetReadZKmode
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetReadZKmode
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetHTseat
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetHTseat
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintNextHT
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintNextHT
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintSelfcheck
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintSelfcheck
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintString
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintString
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintFeedline
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintFeedline
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintCutpaper
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintCutpaper
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintQrcode
+ * Signature: (Ljava/lang/String;III)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintQrcode
+  (JNIEnv *, jclass, jstring, jint, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintQRcode500II
+ * Signature: (ILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintQRcode500II
+  (JNIEnv *, jclass, jint, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    Print1Dbar
+ * Signature: (IIIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_Print1Dbar
+  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPdf417
+ * Signature: (IIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPdf417
+  (JNIEnv *, jclass, jint, jint, jint, jint, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintDiskbmpfile
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintDiskbmpfile
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintNvmbp
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintNvmbp
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkposition
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkposition
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkpositionprint
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkpositionprint
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkpositioncut
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkpositioncut
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkcutpaper
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkcutpaper
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintTransmit
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintTransmit
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintChangeRow
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintChangeRow
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRemainQR
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRemainQR
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintFeedDot
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintFeedDot
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetProductinformation
+ * Signature: (ILjava/lang/String;I)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetProductinformation
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetTransmit
+ * Signature: (Ljava/lang/String;ILjava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetTransmit
+  (JNIEnv *, jclass, jstring, jint, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatus
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatus
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatusspecial
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatusspecial
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetSDKinformation
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetSDKinformation
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotation_Intomode
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotation_1Intomode
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Data
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Data
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Sendtext
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Sendtext
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Sendcode
+ * Signature: (IIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Sendcode
+  (JNIEnv *, jclass, jint, jint, jint, jint, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Changeline
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Changeline
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotation_Leftspace
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotation_1Leftspace
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintIDorName
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintIDorName
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetPrintIDorName
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetPrintIDorName
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetComportauto
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetComportauto
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintportFlowCtrl
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintportFlowCtrl
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetTraceLog
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_cares_msprint_MsPrintSdk_SetTraceLog
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPDF_CCCB_A
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPDF_1CCCB_1A
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPDF_CCCB_B
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPDF_1CCCB_1B
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatus_TS
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatus_1TS
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintConn
+ * Signature: (ILjava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintConn
+  (JNIEnv *, jclass, jint, jstring, jstring);
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintDataMatrix
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintDataMatrix
+  (JNIEnv *, jclass, jstring, jint);
+
+#ifdef __cplusplus
+&#125;
+#endif
+#endif
+</code></pre><h2 id="新建vs空白工程"><a href="#新建vs空白工程" class="headerlink" title="新建vs空白工程"></a>新建vs空白工程</h2><p>工程构建目标设置为dll，添加jdk的头文件和美松的sdk头文件</p>
+<p><img src="/images/pasted-181.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h2 id="jni实现"><a href="#jni实现" class="headerlink" title="jni实现"></a>jni实现</h2><pre><code>#include &quot;com_cares_msprint_MsPrintSdk.h&quot;
+#include &quot;Msprintsdk.h&quot;
+#include &quot;windows.h&quot;
+#include &quot;tchar.h&quot;
+
+JavaVM * g_jvm = NULL;
+HINSTANCE m_hInstancePrint;
+
+char* jstringTostring(JNIEnv* env, jstring jstr);
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintport
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintport
+(JNIEnv *env, jclass, jstring strPort, jint iBaudrate) &#123;
+
+    const char* c = env-&gt;GetStringUTFChars(strPort, false);
+    return SetPrintport(c,iBaudrate);
+
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetUsbportauto
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetUsbportauto
+(JNIEnv *env, jclass) &#123;
+    return SetUsbportauto();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetInit
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetInit
+(JNIEnv *env, jclass) &#123;
+    return SetInit();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetClean
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetClean
+(JNIEnv *env, jclass) &#123;
+    return SetClean();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetClose
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetClose
+(JNIEnv *, jclass) &#123;
+    return SetClose();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetAlignment
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetAlignment
+(JNIEnv *, jclass, jint iAlignment) &#123;
+    return SetAlignment(iAlignment);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetAlignmentLeftRight
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetAlignmentLeftRight
+(JNIEnv *, jclass, jint iAlignment) &#123;
+    return SetAlignmentLeftRight(iAlignment);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizetext
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizetext
+(JNIEnv *, jclass, jint iHeight, jint iWidth) &#123;
+    return SetSizetext(iHeight, iWidth);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizechar
+ * Signature: (IIII)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizechar
+(JNIEnv *, jclass, jint iHeight, jint iWidth, jint iUnderline, jint iAsciitype) &#123;
+    return SetSizechar(iHeight, iWidth, iUnderline, iAsciitype);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSizechinese
+ * Signature: (IIII)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSizechinese
+(JNIEnv *, jclass, jint iHeight, jint iWidth, jint iUnderline, jint iChineseType) &#123;
+    return SetSizechinese(iHeight, iWidth, iUnderline, iChineseType);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetLinespace
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetLinespace
+(JNIEnv *, jclass, jint iLineSpace) &#123;
+    return SetLinespace(iLineSpace);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetBold
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetBold
+(JNIEnv *, jclass, jint iBold) &#123;
+    return SetBold(iBold);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSpacechar
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSpacechar
+(JNIEnv *, jclass, jint iSpace) &#123;
+    return SetSpacechar(iSpace);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetSpacechinese
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetSpacechinese
+(JNIEnv *, jclass, jint left, jint right) &#123;
+    return SetSpacechinese(left, right);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetNvbmp
+ * Signature: (ILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetNvbmp
+(JNIEnv *env, jclass, jint nums, jstring strPath) &#123;
+
+    const char* path = env-&gt;GetStringUTFChars(strPath,0);
+
+    return SetNvbmp(nums,path);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetMarkoffsetcut
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetMarkoffsetcut
+(JNIEnv *, jclass, jint offset) &#123;
+    return SetMarkoffsetcut(offset);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetMarkoffsetprint
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetMarkoffsetprint
+(JNIEnv *, jclass, jint offset) &#123;
+    return SetMarkoffsetprint(offset);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetLeftmargin
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetLeftmargin
+(JNIEnv *, jclass, jint left) &#123;
+    return SetLeftmargin(left);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetDirection
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetDirection
+(JNIEnv *, jclass, jint dir) &#123;
+    return SetDirection(dir);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetItalic
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetItalic
+(JNIEnv *, jclass, jint i) &#123;
+    return SetItalic(i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotate
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotate
+(JNIEnv *, jclass, jint i) &#123;
+    return  SetRotate(i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetWhitemodel
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetWhitemodel
+(JNIEnv *, jclass, jint i) &#123;
+    return SetWhitemodel(i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetCommandmode
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetCommandmode
+(JNIEnv *, jclass, jint mode) &#123;
+    return SetCommandmode(mode);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetUnderline
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetUnderline
+(JNIEnv *, jclass, jint i) &#123;
+    return SetUnderline(i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetReadZKmode
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetReadZKmode
+(JNIEnv *, jclass, jint mode) &#123;
+    return SetReadZKmode(mode);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetHTseat
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetHTseat
+(JNIEnv *env, jclass, jstring set, jint len) &#123;
+    const char* setstr = env-&gt;GetStringUTFChars(set, 0);
+    return SetHTseat(setstr,len);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintNextHT
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintNextHT
+(JNIEnv *, jclass) &#123;
+    return PrintNextHT();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintSelfcheck
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintSelfcheck
+(JNIEnv *, jclass) &#123;
+    return PrintSelfcheck();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintString
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintString
+(JNIEnv *env, jclass, jstring c, jint i) &#123;
+    const char* data = jstringTostring(env, c);
+    int res = PrintString(data, i);
+    free((void*)data);
+    return res;
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintFeedline
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintFeedline
+(JNIEnv *, jclass, jint i) &#123;
+    return PrintFeedline(i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintCutpaper
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintCutpaper
+(JNIEnv *, jclass, jint m) &#123;
+    return PrintCutpaper(m);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintQrcode
+ * Signature: (Ljava/lang/String;III)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintQrcode
+(JNIEnv *env, jclass, jstring data, jint margin, jint side, jint round) &#123;
+    const char* code = env-&gt;GetStringUTFChars(data, 0);
+    return PrintQrcode(code, margin, side, round);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintQRcode500II
+ * Signature: (ILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintQRcode500II
+(JNIEnv *env, jclass, jint width, jstring data) &#123;
+    const char* code = env-&gt;GetStringUTFChars(data, 0);
+    return PrintQRcode500II(width, code);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    Print1Dbar
+ * Signature: (IIIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_Print1Dbar
+(JNIEnv *env, jclass, jint width, jint height, jint size, jint seat, jint type, jstring data) &#123;
+    const char* code = env-&gt;GetStringUTFChars(data, 0);
+    return Print1Dbar(width, height, size, seat, type, code);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPdf417
+ * Signature: (IIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPdf417
+(JNIEnv *env, jclass, jint width, jint height, jint rows, jint cols, jstring data) &#123;
+    const char* code = env-&gt;GetStringUTFChars(data, 0);
+    return PrintPdf417(width, height, rows, cols, code);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintDiskbmpfile
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintDiskbmpfile
+(JNIEnv *env, jclass, jstring data) &#123;
+    const char* code = env-&gt;GetStringUTFChars(data, 0);
+    return PrintDiskbmpfile(code);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintNvmbp
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintNvmbp
+(JNIEnv *, jclass, jint idx, jint mode) &#123;
+    return PrintNvmbp(idx,mode);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkposition
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkposition
+(JNIEnv *, jclass) &#123;
+    return PrintMarkposition();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkpositionprint
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkpositionprint
+(JNIEnv *, jclass) &#123;
+    return PrintMarkpositionprint();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkpositioncut
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkpositioncut
+(JNIEnv *, jclass) &#123;
+    return PrintMarkpositioncut();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintMarkcutpaper
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintMarkcutpaper
+(JNIEnv *, jclass, jint mode) &#123;
+    return PrintMarkcutpaper(mode);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintTransmit
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintTransmit
+(JNIEnv *env, jclass, jstring cmd, jint len) &#123;
+    const char* code = env-&gt;GetStringUTFChars(cmd, 0);
+    return PrintTransmit(code, len);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintChangeRow
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintChangeRow
+(JNIEnv *, jclass) &#123;
+    return PrintChangeRow();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRemainQR
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRemainQR
+(JNIEnv *, jclass) &#123;
+    return PrintRemainQR();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintFeedDot
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintFeedDot
+(JNIEnv *, jclass, jint num) &#123;
+    return PrintFeedDot(num);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetProductinformation
+ * Signature: (ILjava/lang/String;I)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetProductinformation
+(JNIEnv *env, jclass, jint) &#123;
+    int iLen = 0;
+    char bFiddata[30] = &#123; 0 &#125;;
+    int r = GetProductinformation(3, bFiddata, iLen);
+
+    if (0 == r) &#123;
+        return env-&gt;NewStringUTF(bFiddata);
+    &#125;
+
+    return nullptr;
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetTransmit
+ * Signature: (Ljava/lang/String;ILjava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetTransmit
+(JNIEnv *, jclass, jstring, jint, jstring, jint) &#123;
+    // 暂不实现
+    return 0;
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatus
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatus
+(JNIEnv *, jclass) &#123;
+    return GetStatus();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatusspecial
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatusspecial
+(JNIEnv *, jclass) &#123;
+    return GetStatusspecial();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetSDKinformation
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetSDKinformation
+(JNIEnv *env, jclass) &#123;
+    char bInfodata[20] = &#123; 0 &#125;;
+    int r = GetSDKinformation(bInfodata);
+    if (r == 0) &#123;
+        return env-&gt;NewStringUTF(bInfodata);
+    &#125;
+
+    return nullptr;
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotation_Intomode
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotation_1Intomode
+(JNIEnv *, jclass) &#123;
+    return SetRotation_Intomode();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Data
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Data
+(JNIEnv *, jclass) &#123;
+    return PrintRotation_Data();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Sendtext
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Sendtext
+(JNIEnv *env, jclass, jstring text, jint i) &#123;
+    const unsigned char* str = (unsigned char*)env-&gt;GetStringUTFChars(text, 0);
+    return PrintRotation_Sendtext(str, i);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Sendcode
+ * Signature: (IIIILjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Sendcode
+(JNIEnv *env, jclass, jint iLeftspace, jint height, jint width, jint codeType, jstring strData) &#123;
+
+    const char* data = env-&gt;GetStringUTFChars(strData,0);
+
+    return PrintRotation_Sendcode(iLeftspace, height, width, codeType, data);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintRotation_Changeline
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintRotation_1Changeline
+(JNIEnv *, jclass) &#123;
+    return PrintRotation_Changeline();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetRotation_Leftspace
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetRotation_1Leftspace
+(JNIEnv *, jclass, jint iLeftspace) &#123;
+    return SetRotation_Leftspace(iLeftspace);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintIDorName
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintIDorName
+(JNIEnv *env, jclass, jstring strIDorNAME) &#123;
+
+    const char* idname = env-&gt;GetStringUTFChars(strIDorNAME, 0);
+    return SetPrintIDorName(idname);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetPrintIDorName
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jstring JNICALL Java_com_cares_msprint_MsPrintSdk_GetPrintIDorName
+(JNIEnv *env, jclass) &#123;
+    char recv[100] = &#123; 0 &#125;;
+    int res = GetPrintIDorName(recv);
+    if (res != 0) &#123;
+        return nullptr;
+    &#125;
+
+    jstring str = env-&gt;NewStringUTF(recv);
+    return str;
+
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetComportauto
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetComportauto
+(JNIEnv *, jclass) &#123;
+    return SetComportauto();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintportFlowCtrl
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintportFlowCtrl
+(JNIEnv *, jclass, jint iFlowCtrlFlag) &#123;
+
+    return SetPrintportFlowCtrl(iFlowCtrlFlag);
+
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetTraceLog
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_cares_msprint_MsPrintSdk_SetTraceLog
+(JNIEnv *, jclass, jint iLog) &#123;
+    return SetTraceLog(iLog);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPDF_CCCB_A
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPDF_1CCCB_1A
+(JNIEnv *env, jclass, jstring path) &#123;
+    const char* strPath = env-&gt;GetStringUTFChars(path, 0);
+    return PrintPDF_CCCB_A(strPath);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintPDF_CCCB_B
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintPDF_1CCCB_1B
+(JNIEnv *env, jclass, jstring path) &#123;
+    const char* strPath = env-&gt;GetStringUTFChars(path, 0);
+    return PrintPDF_CCCB_B(strPath);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    GetStatus_TS
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_GetStatus_1TS
+(JNIEnv *, jclass) &#123;
+    return GetStatus_TS();
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    SetPrintConn
+ * Signature: (ILjava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_SetPrintConn
+(JNIEnv *env, jclass, jint iConnWay, jstring strName, jstring strValue) &#123;
+    const char* key = env-&gt;GetStringUTFChars(strName,0);
+    const char* value = env-&gt;GetStringUTFChars(strValue, 0);
+    return SetPrintConn(iConnWay,key,value);
+&#125;
+
+/*
+ * Class:     com_cares_msprint_MsPrintSdk
+ * Method:    PrintDataMatrix
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_cares_msprint_MsPrintSdk_PrintDataMatrix
+(JNIEnv *env, jclass, jstring strData, jint iSize) &#123;
+
+    const char* chs = env-&gt;GetStringUTFChars(strData,0);
+
+    return PrintDataMatrix(chs, iSize);
+&#125;
+
+
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) &#123;
+    JNIEnv *env = NULL;
+    jint result = -1;
+
+    // 加载 打印机函数
+    m_hInstancePrint = LoadLibrary(&quot;Msprintsdk.dll&quot;);
+    if (m_hInstancePrint != NULL)
+    &#123;
+        SetPrintport = (int(*)(const char* strPort, int iBaudrate))GetProcAddress(m_hInstancePrint, &quot;SetPrintport&quot;);
+        SetInit = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetInit&quot;);
+        SetUsbportauto = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetUsbportauto&quot;);
+        SetClose = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetClose&quot;);
+        SetClean = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetClean&quot;);
+        SetAlignment = (int(*)(int iAlignment))GetProcAddress(m_hInstancePrint, &quot;SetAlignment&quot;);
+        SetAlignmentLeftRight = (int(*)(int iAlignment))GetProcAddress(m_hInstancePrint, &quot;SetAlignmentLeftRight&quot;);
+        SetSizetext = (int(*)(int iHeight, int iWidth))GetProcAddress(m_hInstancePrint, &quot;SetSizetext&quot;);
+        SetSizechar = (int(*)(int iHeight, int iWidth, int iUnderline, int iAsciitype))GetProcAddress(m_hInstancePrint, &quot;SetSizechar&quot;);
+        SetSizechinese = (int(*)(int iHeight, int iWidth, int iUnderline, int iChinesetype))GetProcAddress(m_hInstancePrint, &quot;SetSizechinese&quot;);
+        SetLinespace = (int(*)(int iLinespace))GetProcAddress(m_hInstancePrint, &quot;SetLinespace&quot;);
+        SetBold = (int(*)(int iBold))GetProcAddress(m_hInstancePrint, &quot;SetBold&quot;);
+        SetSpacechar = (int(*)(int iSpace))GetProcAddress(m_hInstancePrint, &quot;SetSpacechar&quot;);
+        SetSpacechinese = (int(*)(int iChsleftspace, int iChsrightspace))GetProcAddress(m_hInstancePrint, &quot;SetSpacechinese&quot;);
+        SetNvbmp = (int(*)(int iNums, const char* strPath))GetProcAddress(m_hInstancePrint, &quot;SetNvbmp&quot;);
+        SetReadZKmode = (int(*)(int mode))GetProcAddress(m_hInstancePrint, &quot;SetReadZKmode&quot;);
+        SetHTseat = (int(*)(const char* bHTseat, int iLength))GetProcAddress(m_hInstancePrint, &quot;SetHTseat&quot;);
+        PrintNextHT = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintNextHT&quot;);
+
+        PrintNvmbp = (int(*)(int iNvindex, int iMode))GetProcAddress(m_hInstancePrint, &quot;PrintNvmbp&quot;);
+        PrintSelfcheck = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintSelfcheck&quot;);
+        PrintString = (int(*)(const char* strData, int iImme))GetProcAddress(m_hInstancePrint, &quot;PrintString&quot;);
+
+        PrintFeedline = (int(*)(int iLine))GetProcAddress(m_hInstancePrint, &quot;PrintFeedline&quot;);
+        PrintQrcode = (int(*)(const char* strData, int iLmargin, int iMside, int iRound))GetProcAddress(m_hInstancePrint, &quot;PrintQrcode&quot;);
+        PrintCutpaper = (int(*)(int iMode))GetProcAddress(m_hInstancePrint, &quot;PrintCutpaper&quot;);
+        PrintMarkposition = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintMarkposition&quot;);
+        PrintMarkcutpaper = (int(*)(int iMode))GetProcAddress(m_hInstancePrint, &quot;PrintMarkcutpaper&quot;);
+        PrintDiskbmpfile = (int(*)(const char* strPath))GetProcAddress(m_hInstancePrint, &quot;PrintDiskbmpfile&quot;);
+        PrintTransmit = (int(*)(const char* bCmd, int iLength))GetProcAddress(m_hInstancePrint, &quot;PrintTransmit&quot;);
+        PrintRemainQR = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintRemainQR&quot;);
+        SetCommandmode = (int(*)(int iMode))GetProcAddress(m_hInstancePrint, &quot;SetCommandmode&quot;);
+
+        GetTransmit = (int(*)(const char* bCmd, int iLength, char* bRecv, int iRelen))GetProcAddress(m_hInstancePrint, &quot;GetTransmit&quot;);
+        GetStatus = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;GetStatus&quot;);
+
+        GetProductinformation = (int(*)(int iFstype, char *bFiddata, int iFidlen))GetProcAddress(m_hInstancePrint, &quot;GetProductinformation&quot;);
+        Print1Dbar = (int(*)(int iWidth, int iHeight, int iHrisize, int iHriseat, int iCodetype, const char* strData))GetProcAddress(m_hInstancePrint, &quot;Print1Dbar&quot;);
+
+        GetSDKinformation = (int(*)(char *bInfodata))GetProcAddress(m_hInstancePrint, &quot;GetSDKinformation&quot;);
+
+
+        SetRotation_Intomode = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetRotation_Intomode&quot;);
+        PrintRotation_Data = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintRotation_Data&quot;);
+        PrintRotation_Sendtext = (int(*)(const unsigned char* strData, int iImme))GetProcAddress(m_hInstancePrint, &quot;PrintRotation_Sendtext&quot;);
+        PrintRotation_Sendcode = (int(*)(int leftspace, int iWidth, int iHeight, int iCodetype, const char* strData))GetProcAddress(m_hInstancePrint, &quot;PrintRotation_Sendcode&quot;);
+        PrintRotation_Changeline = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;PrintRotation_Changeline&quot;);
+        SetRotation_Leftspace = (int(*)(int iLeftspace))GetProcAddress(m_hInstancePrint, &quot;SetRotation_Leftspace&quot;);
+        SetPrintIDorName = (int(*)(const char* strIDorNAME))GetProcAddress(m_hInstancePrint, &quot;SetPrintIDorName&quot;);
+        GetPrintIDorName = (int(*)(char* strIDorNAME))GetProcAddress(m_hInstancePrint, &quot;GetPrintIDorName&quot;);
+        SetLeftmargin = (int(*)(int iLeftspace))GetProcAddress(m_hInstancePrint, &quot;SetLeftmargin&quot;);
+        SetComportauto = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;SetComportauto&quot;);
+        SetPrintportFlowCtrl = (int(*)(int iFlowCtrlFlag))GetProcAddress(m_hInstancePrint, &quot;SetPrintportFlowCtrl&quot;);
+        PrintFeedDot = (int(*)(int Lnumber))GetProcAddress(m_hInstancePrint, &quot;PrintFeedDot&quot;);
+        SetTraceLog = (void(*)(int iLog))GetProcAddress(m_hInstancePrint, &quot;SetTraceLog&quot;);
+        PrintPDF_CCCB_A = (int(*)(const char* strPath))GetProcAddress(m_hInstancePrint, &quot;PrintPDF_CCCB_A&quot;);
+        PrintPDF_CCCB_B = (int(*)(const char* strPath))GetProcAddress(m_hInstancePrint, &quot;PrintPDF_CCCB_B&quot;);
+        GetStatus_TS = (int(*)(void))GetProcAddress(m_hInstancePrint, &quot;GetStatus_TS&quot;);
+        SetPrintConn = (int(*)(int iConnWay, const char *strName, const char *strValue))GetProcAddress(m_hInstancePrint, &quot;SetPrintConn&quot;);
+        PrintDataMatrix = (int(*)(const char* strData, int iSize))GetProcAddress(m_hInstancePrint, &quot;PrintDataMatrix&quot;);
+        PrintQRcode500II = (int(*)(int iwidth, const char* strData))GetProcAddress(m_hInstancePrint, &quot;PrintQRcode500II&quot;);
+        PrintPdf417 = (int(*)(int iDotwidth, int iDotheight, int iDatarows, int iDatacolumns, const char* strData))GetProcAddress(m_hInstancePrint, &quot;PrintPdf417&quot;);
+
+        SetTraceLog(1);
+    &#125;
+    else
+    &#123;
+        printf(&quot;Loading DLL file failed!\n&quot;);
+        fflush(stdout);    
+        return -1;
+    &#125;
+
+    if (jvm-&gt;GetEnv((void **)&amp;env, JNI_VERSION_1_4) != JNI_OK) &#123;
+        return -1;
+    &#125;
+    g_jvm = jvm;
+
+    result = JNI_VERSION_1_8;
+
+
+    printf(&quot;JNI_OnLoad sucess\n&quot;);
+    fflush(stdout);
+    return result;
+&#125;
+
+
+char* jstringTostring(JNIEnv* env, jstring jstr)
+&#123;
+    int length = env-&gt;GetStringLength(jstr);
+    const jchar* jcstr = env-&gt;GetStringChars(jstr, 0);
+    char* rtn = (char*)malloc(length * 2 + 1);
+    int size = 0;
+    size = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)jcstr, length, rtn,
+        (length * 2 + 1), NULL, NULL);
+    if (size &lt;= 0)
+        return NULL;
+    env-&gt;ReleaseStringChars(jstr, jcstr);
+    rtn[size] = 0;
+    return rtn;
+&#125;
+</code></pre><h2 id="JNI-传中文字符"><a href="#JNI-传中文字符" class="headerlink" title="JNI 传中文字符"></a>JNI 传中文字符</h2><pre><code>char* jstringTostring(JNIEnv* env, jstring jstr)
+&#123;
+    int length = env-&gt;GetStringLength(jstr);
+    const jchar* jcstr = env-&gt;GetStringChars(jstr, 0);
+    char* rtn = (char*)malloc(length * 2 + 1);
+    int size = 0;
+    size = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)jcstr, length, rtn,
+        (length * 2 + 1), NULL, NULL);
+    if (size &lt;= 0)
+        return NULL;
+    env-&gt;ReleaseStringChars(jstr, jcstr);
+    rtn[size] = 0;
+    return rtn;
+&#125;</code></pre><p>使用完后注意  free </p>
+<h2 id="java-测试代码"><a href="#java-测试代码" class="headerlink" title="java 测试代码"></a>java 测试代码</h2><pre><code>public class PrinterTest &#123;
+
+    public static void main(String[] args) &#123;
+        int res=-1;
+        System.loadLibrary(&quot;MsPrintSdkJni&quot;);
+        res = MsPrintSdk.SetUsbportauto();
+        System.out.println(&quot;SetUsbportauto=&quot;+res);
+        res=MsPrintSdk.SetInit();
+        System.out.println(&quot;SetInit=&quot;+res);
+        MsPrintSdk.SetSizetext(2,2);
+
+        res=MsPrintSdk.PrintString(&quot;测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文\n&quot;, 0);
+        res=MsPrintSdk.PrintString(&quot;您前面有 2 人等候,注意业务窗口的呼叫号码信息。过号请重新取号。\n&quot;, 0);
+        System.out.println(&quot;PrintString=&quot;+res);
+        PrintQrcode(&quot;QR Code:123456&quot;,27,8,0);
+        MsPrintSdk.PrintFeedline(6);
+        MsPrintSdk.PrintCutpaper(1);
+        MsPrintSdk.SetClose();
+    &#125;
+&#125;
+</code></pre><p><img src="/images/pasted-182.png" srcset="/img/loading.gif" alt="upload successful"></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/JNI">JNI</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA">热敏打印机</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JNI 调用热敏打印机&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

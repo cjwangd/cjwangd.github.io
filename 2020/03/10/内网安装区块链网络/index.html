@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>内网安装区块链网络 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 三月 10日 2020, 7:52 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    4.1k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      24 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="安装规划"><a href="#安装规划" class="headerlink" title="安装规划"></a>安装规划</h1><h2 id="域名说明"><a href="#域名说明" class="headerlink" title="域名说明"></a>域名说明</h2><table>
+<thead>
+<tr>
+<th>域名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>orderer.cares.com</td>
+<td>排序节点</td>
+</tr>
+<tr>
+<td>peer0.nkg.com</td>
+<td>nkg peer节点</td>
+</tr>
+<tr>
+<td>ca.cares.com</td>
+<td>排序组织证书颁发节点</td>
+</tr>
+<tr>
+<td>ca.nkg.com</td>
+<td>nkg 证书颁发节点</td>
+</tr>
+<tr>
+<td>tls.cares.com</td>
+<td>全局 tls证书颁发节点</td>
+</tr>
+<tr>
+<td>peer0.weh.com</td>
+<td>weh peer 节点</td>
+</tr>
+<tr>
+<td>ca.weh.com</td>
+<td>weh 证书颁发节点</td>
+</tr>
+<tr>
+<td>peer0.tna.com</td>
+<td>tna peer节点</td>
+</tr>
+<tr>
+<td>ca.tna.com</td>
+<td>tna证书颁发节点</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="域名规划"><a href="#域名规划" class="headerlink" title="域名规划"></a>域名规划</h2><table>
+<thead>
+<tr>
+<th>IP</th>
+<th>域名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.53.50</td>
+<td>orderer.cares.com peer0.nkg.com ca.cares.com ca.nkg.com tls.cares.com</td>
+</tr>
+<tr>
+<td>192.168.53.51</td>
+<td>peer0.weh.com ca.weh.com</td>
+</tr>
+<tr>
+<td>192.168.53.52</td>
+<td>peer0.tna.com ca.tna.com</td>
+</tr>
+</tbody></table>
+<h1 id="基础软件安装（全部机器相同操作）"><a href="#基础软件安装（全部机器相同操作）" class="headerlink" title="基础软件安装（全部机器相同操作）"></a>基础软件安装（全部机器相同操作）</h1><h2 id="1、go"><a href="#1、go" class="headerlink" title="1、go"></a>1、go</h2><p>将go的可执行文件路径添加到PATH</p>
+<pre><code>export PATH=$PATH:/root/fabric/soft/prereq/go/bin</code></pre><p>设置GOROOT环境变量指向GO_HOME</p>
+<pre><code>export GOROOT=/root/fabric/soft/prereq/go</code></pre><p>设置GOPATH环境变量指向源码编译路径</p>
+<pre><code>export GOPATH=/root/fabric/gopath</code></pre><h2 id="2、node"><a href="#2、node" class="headerlink" title="2、node"></a>2、node</h2><p>将node的可执行文件路径添加到PATH</p>
+<pre><code>export PATH=$PATH:/root/fabric/soft/prereq/node-v12.16.1-linux-x64/bin</code></pre><h2 id="3、docker"><a href="#3、docker" class="headerlink" title="3、docker"></a>3、docker</h2><p>复制docker二进制文件到 /usr/bin<br>复制docker.service containerd.service docker.socket 到 /lib/systemd/system<br>添加docker组  </p>
+<pre><code>groupadd docker</code></pre><pre><code>systemctl enable docker.service
+systemctl enable docker.socket
+systemctl enable containerd.service
+
+systemctl start docker.service</code></pre><h2 id="4、fabric"><a href="#4、fabric" class="headerlink" title="4、fabric"></a>4、fabric</h2><p>复制fabric二进制文件到/usr/bin</p>
+<p>复制fabric源码到  $GOPATH</p>
+<h1 id="fabric-网络搭建"><a href="#fabric-网络搭建" class="headerlink" title="fabric 网络搭建"></a>fabric 网络搭建</h1><h2 id="CA-安装"><a href="#CA-安装" class="headerlink" title="CA 安装"></a>CA 安装</h2><h3 id="tls-ca"><a href="#tls-ca" class="headerlink" title="tls-ca"></a>tls-ca</h3><h4 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/tls-ca/&#123;crypto,admin&#125;</code></pre><h4 id="启动-tls-ca"><a href="#启动-tls-ca" class="headerlink" title="启动 tls-ca"></a>启动 tls-ca</h4><pre><code>export TLS_CA_HOME=/root/workspace/tls-ca
+export FABRIC_CA_SERVER_HOME=$TLS_CA_HOME/crypto
+export FABRIC_CA_SERVER_TLS_ENABLED=true
+export FABRIC_CA_SERVER_CSR_CN=tls.cares.com
+export FABRIC_CA_SERVER_CSR_HOSTS=tls.cares.com
+export FABRIC_CA_SERVER_DEBUG=true
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:6053
+
+nohup fabric-ca-server start -d -b tls:tlspw --port 6052 &gt; $TLS_CA_HOME/tls-ca-logs 2&gt;&amp;1 &amp;</code></pre><h4 id="注册TLS证书"><a href="#注册TLS证书" class="headerlink" title="注册TLS证书"></a>注册TLS证书</h4><pre><code>export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tls-ca/crypto/tls-cert.pem
+export FABRIC_CA_CLIENT_HOME=/root/workspace/tls-ca/admin
+fabric-ca-client enroll -d -u https://tls:tlspw@tls.cares.com:6052
+fabric-ca-client register -d --id.name peer0.nkg.com --id.secret 1 --id.type peer -u https://tls.cares.com:6052
+fabric-ca-client register -d --id.name peer0.weh.com --id.secret 1 --id.type peer -u https://tls.cares.com:6052
+fabric-ca-client register -d --id.name peer0.tna.com --id.secret 1 --id.type peer -u https://tls.cares.com:6052
+fabric-ca-client register -d --id.name orderer.cares.com --id.secret 1 --id.type orderer -u https://tls.cares.com:6052</code></pre><h3 id="orderer-ca"><a href="#orderer-ca" class="headerlink" title="orderer ca"></a>orderer ca</h3><h4 id="创建目录-1"><a href="#创建目录-1" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/order-ca/&#123;crypto,admin&#125;</code></pre><h4 id="启动orderer-ca"><a href="#启动orderer-ca" class="headerlink" title="启动orderer ca"></a>启动orderer ca</h4><pre><code>export ORDERER_CA_HOME=/root/workspace/order-ca
+export FABRIC_CA_SERVER_HOME=$ORDERER_CA_HOME/crypto
+export FABRIC_CA_SERVER_TLS_ENABLED=true
+export FABRIC_CA_SERVER_CSR_CN=ca.cares.com
+export FABRIC_CA_SERVER_CSR_HOSTS=ca.cares.com
+export FABRIC_CA_SERVER_DEBUG=true
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:6055
+
+nohup fabric-ca-server start -d -b rca:rcapw --port 6054 &gt; $ORDERER_CA_HOME/orderer-ca-logs 2&gt;&amp;1 &amp;</code></pre><h4 id="注册-orderer-组织和orderer-admin"><a href="#注册-orderer-组织和orderer-admin" class="headerlink" title="注册 orderer 组织和orderer admin"></a>注册 orderer 组织和orderer admin</h4><pre><code>export ORDERER_CA_HOME=/root/workspace/order-ca
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$ORDERER_CA_HOME/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$ORDERER_CA_HOME/admin
+fabric-ca-client enroll -d -u https://rca:rcapw@ca.cares.com:6054
+fabric-ca-client register -d --id.name orderer.cares.com --id.secret 1 --id.type orderer -u https://ca.cares.com:6054
+fabric-ca-client register -d --id.name Admin@orderer.cares.com --id.secret 1 --id.type admin --id.attrs &quot;hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert&quot; -u https://ca.cares.com:6054</code></pre><h3 id="nkg-ca"><a href="#nkg-ca" class="headerlink" title="nkg ca"></a>nkg ca</h3><h4 id="创建目录-2"><a href="#创建目录-2" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/nkg-ca/&#123;crypto,admin&#125;
+</code></pre><h4 id="启动nkg-ca"><a href="#启动nkg-ca" class="headerlink" title="启动nkg ca"></a>启动nkg ca</h4><pre><code>export NKG_CA_HOME=/root/workspace/nkg-ca
+export FABRIC_CA_SERVER_HOME=$NKG_CA_HOME/crypto
+export FABRIC_CA_SERVER_TLS_ENABLED=true
+export FABRIC_CA_SERVER_CSR_CN=ca.nkg.com
+export FABRIC_CA_SERVER_CSR_HOSTS=ca.nkg.com
+export FABRIC_CA_SERVER_DEBUG=true
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:6057
+
+nohup fabric-ca-server start -d -b rca:rcapw --port 6056 &gt; $NKG_CA_HOME/nkg-ca-logs 2&gt;&amp;1 &amp;</code></pre><h4 id="注册-nkg-peer0，admin-user"><a href="#注册-nkg-peer0，admin-user" class="headerlink" title="注册 nkg  peer0，admin,user"></a>注册 nkg  peer0，admin,user</h4><pre><code>export NKG_CA_HOME=/root/workspace/nkg-ca
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$NKG_CA_HOME/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$NKG_CA_HOME/admin
+fabric-ca-client enroll -d -u https://rca:rcapw@ca.nkg.com:6056
+fabric-ca-client register -d --id.name peer0.nkg.com --id.secret 1 --id.type peer -u https://ca.nkg.com:6056
+fabric-ca-client register -d --id.name Admin@nkg.com --id.secret 1 --id.type user -u https://ca.nkg.com:6056
+fabric-ca-client register -d --id.name User1@nkg.com --id.secret 1 --id.type user -u https://ca.nkg.com:6056</code></pre><h3 id="weh-ca"><a href="#weh-ca" class="headerlink" title="weh ca"></a>weh ca</h3><h4 id="创建目录-3"><a href="#创建目录-3" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/weh-ca/&#123;crypto,admin&#125;</code></pre><h4 id="启动weh-ca"><a href="#启动weh-ca" class="headerlink" title="启动weh ca"></a>启动weh ca</h4><pre><code>export WEH_CA_HOME=/root/workspace/weh-ca
+export FABRIC_CA_SERVER_HOME=$WEH_CA_HOME/crypto
+export FABRIC_CA_SERVER_TLS_ENABLED=true
+export FABRIC_CA_SERVER_CSR_CN=ca.weh.com
+export FABRIC_CA_SERVER_CSR_HOSTS=ca.weh.com
+export FABRIC_CA_SERVER_DEBUG=true
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:6057
+
+nohup fabric-ca-server start -d -b rca:rcapw --port 6056 &gt; $WEH_CA_HOME/weh-ca-logs 2&gt;&amp;1 &amp;</code></pre><h4 id="注册-weh-peer0，admin-user"><a href="#注册-weh-peer0，admin-user" class="headerlink" title="注册 weh  peer0，admin,user"></a>注册 weh  peer0，admin,user</h4><pre><code>export WEH_CA_HOME=/root/workspace/weh-ca
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$WEH_CA_HOME/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$WEH_CA_HOME/admin
+fabric-ca-client enroll -d -u https://rca:rcapw@ca.weh.com:6056
+fabric-ca-client register -d --id.name peer0.weh.com --id.secret 1 --id.type peer -u https://ca.weh.com:6056
+fabric-ca-client register -d --id.name Admin@weh.com --id.secret 1 --id.type user -u https://ca.weh.com:6056
+fabric-ca-client register -d --id.name User1@weh.com --id.secret 1 --id.type user -u https://ca.weh.com:6056</code></pre><h3 id="tna-ca"><a href="#tna-ca" class="headerlink" title="tna ca"></a>tna ca</h3><h4 id="创建目录-4"><a href="#创建目录-4" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/tna-ca/&#123;crypto,admin&#125;</code></pre><h4 id="启动tna-ca"><a href="#启动tna-ca" class="headerlink" title="启动tna ca"></a>启动tna ca</h4><pre><code>export TNA_CA_HOME=/root/workspace/tna-ca
+export FABRIC_CA_SERVER_HOME=$TNA_CA_HOME/crypto
+export FABRIC_CA_SERVER_TLS_ENABLED=true
+export FABRIC_CA_SERVER_CSR_CN=ca.tna.com
+export FABRIC_CA_SERVER_CSR_HOSTS=ca.tna.com
+export FABRIC_CA_SERVER_DEBUG=true
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:6057
+
+nohup fabric-ca-server start -d -b rca:rcapw --port 6056 &gt; $TNA_CA_HOME/tna-ca-logs 2&gt;&amp;1 &amp;</code></pre><h4 id="注册-tna-peer0，admin-user"><a href="#注册-tna-peer0，admin-user" class="headerlink" title="注册 tna  peer0，admin,user"></a>注册 tna  peer0，admin,user</h4><pre><code>export TNA_CA_HOME=/root/workspace/tna-ca
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$TNA_CA_HOME/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$TNA_CA_HOME/admin
+fabric-ca-client enroll -d -u https://rca:rcapw@ca.tna.com:6056
+fabric-ca-client register -d --id.name peer0.tna.com --id.secret 1 --id.type peer -u https://ca.tna.com:6056
+fabric-ca-client register -d --id.name Admin@tna.com --id.secret 1 --id.type user -u https://ca.tna.com:6056
+fabric-ca-client register -d --id.name User1@tna.com --id.secret 1 --id.type user -u https://ca.tna.com:6056
+</code></pre><h2 id="peer节点安装"><a href="#peer节点安装" class="headerlink" title="peer节点安装"></a>peer节点安装</h2><h3 id="nkg-peer0"><a href="#nkg-peer0" class="headerlink" title="nkg peer0"></a>nkg peer0</h3><h4 id="创建目录-5"><a href="#创建目录-5" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p   /root/workspace/nkg/peer0</code></pre><h4 id="颁发-nkg-peer0-证书"><a href="#颁发-nkg-peer0-证书" class="headerlink" title="颁发 nkg peer0  证书"></a>颁发 nkg peer0  证书</h4><pre><code>export FABRIC_CA_CLIENT_HOME=/root/workspace/nkg/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/nkg-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://peer0.nkg.com:1@ca.nkg.com:6056</code></pre><h4 id="颁发-TLS-证书"><a href="#颁发-TLS-证书" class="headerlink" title="颁发 TLS 证书"></a>颁发 TLS 证书</h4><pre><code>export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+export FABRIC_CA_CLIENT_HOME=/root/workspace/nkg/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tls-ca/crypto/ca-cert.pem
+fabric-ca-client enroll -d -u https://peer0.nkg.com:1@tls.cares.com:6052 --enrollment.profile tls --csr.hosts peer0.nkg.com</code></pre><p>将 /root/workspace/nkg/peer0/tls-msp/keystore 下的 key更名为 key.pem</p>
+<h4 id="颁发-nkg-admin-证书"><a href="#颁发-nkg-admin-证书" class="headerlink" title="颁发 nkg admin  证书"></a>颁发 nkg admin  证书</h4><pre><code>mkdir -p   /root/workspace/nkg/admin
+
+export FABRIC_CA_CLIENT_HOME=/root/workspace/nkg/admin
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/nkg-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://Admin@nkg.com:1@ca.nkg.com:6056</code></pre><h4 id="复制admin证书"><a href="#复制admin证书" class="headerlink" title="复制admin证书"></a>复制admin证书</h4><pre><code>mkdir  -p /root/workspace/nkg/peer0/msp/admincerts
+cp /root/workspace/nkg/admin/msp/signcerts/cert.pem /root/workspace/nkg/peer0/msp/admincerts/cert.pem
+
+mkdir  -p /root/workspace/nkg/admin/msp/admincerts
+cp /root/workspace/nkg/admin/msp/signcerts/cert.pem /root/workspace/nkg/admin/msp/admincerts/cert.pem</code></pre><h4 id="启动peer0"><a href="#启动peer0" class="headerlink" title="启动peer0"></a>启动peer0</h4><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg
+export CORE_PEER_ID=peer0.nkg.com
+export CORE_PEER_ADDRESS=peer0.nkg.com:7051
+export CORE_PEER_LOCALMSPID=nkgMSP
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/nkg/peer0/msp
+export FABRIC_LOGGING_SPEC=info
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_CERT_FILE=/root/workspace/nkg/peer0/tls-msp/signcerts/cert.pem
+export CORE_PEER_TLS_KEY_FILE=/root/workspace/nkg/peer0/tls-msp/keystore/key.pem
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_GOSSIP_USELEADERELECTION=true
+export CORE_PEER_GOSSIP_ORGLEADER=false
+export CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nkg.com:7051
+export CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
+
+nohup peer node start &gt; /root/workspace/nkg/peer0/peer0.log 2&gt;&amp;1 &amp;</code></pre><h3 id="weh-peer0"><a href="#weh-peer0" class="headerlink" title="weh peer0"></a>weh peer0</h3><h4 id="创建目录-6"><a href="#创建目录-6" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p   /root/workspace/weh/peer0</code></pre><h4 id="颁发-weh-peer0-证书"><a href="#颁发-weh-peer0-证书" class="headerlink" title="颁发 weh peer0  证书"></a>颁发 weh peer0  证书</h4><pre><code>export FABRIC_CA_CLIENT_HOME=/root/workspace/weh/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/weh-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://peer0.weh.com:1@ca.weh.com:6056</code></pre><h4 id="颁发-TLS-证书-1"><a href="#颁发-TLS-证书-1" class="headerlink" title="颁发 TLS 证书"></a>颁发 TLS 证书</h4><p>#sftp复制 tls.cares.com  /root/workspace/tls-ca/crypto/ca-cert.pem 文件到  /root/workspace/tls-ca/crypto</p>
+<pre><code>mkdir -p /root/workspace/tls-ca/crypto
+export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+export FABRIC_CA_CLIENT_HOME=/root/workspace/weh/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tls-ca/crypto/ca-cert.pem
+fabric-ca-client enroll -d -u https://peer0.weh.com:1@tls.cares.com:6052 --enrollment.profile tls --csr.hosts peer0.weh.com</code></pre><p>将 /root/workspace/weh/peer0/tls-msp/keystore 下的 key更名为 key.pem</p>
+<h4 id="颁发-weh-admin-证书"><a href="#颁发-weh-admin-证书" class="headerlink" title="颁发 weh admin  证书"></a>颁发 weh admin  证书</h4><pre><code>mkdir -p   /root/workspace/weh/admin
+
+export FABRIC_CA_CLIENT_HOME=/root/workspace/weh/admin
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/weh-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://Admin@weh.com:1@ca.weh.com:6056</code></pre><h4 id="复制admin证书-1"><a href="#复制admin证书-1" class="headerlink" title="复制admin证书"></a>复制admin证书</h4><pre><code>mkdir  -p /root/workspace/weh/peer0/msp/admincerts
+cp /root/workspace/weh/admin/msp/signcerts/cert.pem /root/workspace/weh/peer0/msp/admincerts/cert.pem
+
+mkdir  -p /root/workspace/weh/admin/msp/admincerts
+cp /root/workspace/weh/admin/msp/signcerts/cert.pem /root/workspace/weh/admin/msp/admincerts/cert.pem</code></pre><h4 id="启动peer0-1"><a href="#启动peer0-1" class="headerlink" title="启动peer0"></a>启动peer0</h4><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg
+export CORE_PEER_ID=peer0.weh.com
+export CORE_PEER_ADDRESS=peer0.weh.com:7051
+export CORE_PEER_LOCALMSPID=wehMSP
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/weh/peer0/msp
+export FABRIC_LOGGING_SPEC=info
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_CERT_FILE=/root/workspace/weh/peer0/tls-msp/signcerts/cert.pem
+export CORE_PEER_TLS_KEY_FILE=/root/workspace/weh/peer0/tls-msp/keystore/key.pem
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/weh/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_GOSSIP_USELEADERELECTION=true
+export CORE_PEER_GOSSIP_ORGLEADER=false
+export CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.weh.com:7051
+export CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
+
+nohup peer node start &gt; /root/workspace/weh/peer0/peer0.log 2&gt;&amp;1 &amp;</code></pre><h3 id="tna-peer0"><a href="#tna-peer0" class="headerlink" title="tna peer0"></a>tna peer0</h3><h4 id="创建目录-7"><a href="#创建目录-7" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p   /root/workspace/tna/peer0</code></pre><h4 id="颁发-tna-peer0-证书"><a href="#颁发-tna-peer0-证书" class="headerlink" title="颁发 tna peer0  证书"></a>颁发 tna peer0  证书</h4><pre><code>export FABRIC_CA_CLIENT_HOME=/root/workspace/tna/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tna-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://peer0.tna.com:1@ca.tna.com:6056</code></pre><h4 id="颁发-TLS-证书-2"><a href="#颁发-TLS-证书-2" class="headerlink" title="颁发 TLS 证书"></a>颁发 TLS 证书</h4><p>#sftp复制 tls.cares.com  /root/workspace/tls-ca/crypto/ca-cert.pem 文件到  /root/workspace/tls-ca/crypto</p>
+<pre><code>mkdir -p /root/workspace/tls-ca/crypto
+export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+export FABRIC_CA_CLIENT_HOME=/root/workspace/tna/peer0
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tls-ca/crypto/ca-cert.pem
+fabric-ca-client enroll -d -u https://peer0.tna.com:1@tls.cares.com:6052 --enrollment.profile tls --csr.hosts peer0.tna.com</code></pre><p>将 /root/workspace/tna/peer0/tls-msp/keystore 下的 key更名为 key.pem</p>
+<h4 id="颁发-tna-admin-证书"><a href="#颁发-tna-admin-证书" class="headerlink" title="颁发 tna admin  证书"></a>颁发 tna admin  证书</h4><pre><code>mkdir -p   /root/workspace/tna/admin
+
+export FABRIC_CA_CLIENT_HOME=/root/workspace/tna/admin
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tna-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://Admin@tna.com:1@ca.tna.com:6056</code></pre><h4 id="复制admin证书-2"><a href="#复制admin证书-2" class="headerlink" title="复制admin证书"></a>复制admin证书</h4><pre><code>mkdir  -p /root/workspace/tna/peer0/msp/admincerts
+cp /root/workspace/tna/admin/msp/signcerts/cert.pem /root/workspace/tna/peer0/msp/admincerts/cert.pem
+
+mkdir  -p /root/workspace/tna/admin/msp/admincerts
+cp /root/workspace/tna/admin/msp/signcerts/cert.pem /root/workspace/tna/admin/msp/admincerts/cert.pem</code></pre><h4 id="启动peer0-2"><a href="#启动peer0-2" class="headerlink" title="启动peer0"></a>启动peer0</h4><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg
+export CORE_PEER_ID=peer0.tna.com
+export CORE_PEER_ADDRESS=peer0.tna.com:7051
+export CORE_PEER_LOCALMSPID=tnaMSP
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/tna/peer0/msp
+export FABRIC_LOGGING_SPEC=info
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_CERT_FILE=/root/workspace/tna/peer0/tls-msp/signcerts/cert.pem
+export CORE_PEER_TLS_KEY_FILE=/root/workspace/tna/peer0/tls-msp/keystore/key.pem
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/tna/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_GOSSIP_USELEADERELECTION=true
+export CORE_PEER_GOSSIP_ORGLEADER=false
+export CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.tna.com:7051
+export CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
+
+nohup peer node start &gt; /root/workspace/tna/peer0/peer0.log 2&gt;&amp;1 &amp;</code></pre><h2 id="orderer-节点安装"><a href="#orderer-节点安装" class="headerlink" title="orderer 节点安装"></a>orderer 节点安装</h2><h3 id="orderer-cares-com"><a href="#orderer-cares-com" class="headerlink" title="orderer.cares.com"></a>orderer.cares.com</h3><h4 id="创建目录-8"><a href="#创建目录-8" class="headerlink" title="创建目录"></a>创建目录</h4><pre><code>mkdir -p /root/workspace/cares/orderer</code></pre><h4 id="颁发-orderer-证书"><a href="#颁发-orderer-证书" class="headerlink" title="颁发 orderer  证书"></a>颁发 orderer  证书</h4><pre><code>export FABRIC_CA_CLIENT_HOME=/root/workspace/cares/orderer
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/order-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://orderer.cares.com:1@ca.cares.com:6054</code></pre><h4 id="颁发-TLS-证书-3"><a href="#颁发-TLS-证书-3" class="headerlink" title="颁发 TLS 证书"></a>颁发 TLS 证书</h4><p>#sftp复制 tls.cares.com  /root/workspace/tls-ca/crypto/ca-cert.pem 文件到  /root/workspace/tls-ca/crypto</p>
+<pre><code>mkdir -p /root/workspace/tls-ca/crypto
+export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+export FABRIC_CA_CLIENT_HOME=/root/workspace/cares/orderer
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/tls-ca/crypto/ca-cert.pem
+fabric-ca-client enroll -d -u https://orderer.cares.com:1@tls.cares.com:6052 --enrollment.profile tls --csr.hosts orderer.cares.com</code></pre><p>将 /root/workspace/cares/orderer/tls-msp/keystore 下的 key更名为 key.pem</p>
+<h4 id="颁发-orderer-admin-证书"><a href="#颁发-orderer-admin-证书" class="headerlink" title="颁发 orderer admin  证书"></a>颁发 orderer admin  证书</h4><pre><code>mkdir -p   /root/workspace/cares/admin
+
+export FABRIC_CA_CLIENT_HOME=/root/workspace/cares/admin
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/root/workspace/order-ca/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_MSPDIR=msp
+fabric-ca-client enroll -d -u https://Admin@orderer.cares.com:1@ca.cares.com:6054</code></pre><h4 id="复制admin证书-3"><a href="#复制admin证书-3" class="headerlink" title="复制admin证书"></a>复制admin证书</h4><pre><code>mkdir  -p /root/workspace/cares/orderer/msp/admincerts
+cp /root/workspace/cares/admin/msp/signcerts/cert.pem /root/workspace/cares/orderer/msp/admincerts/cert.pem
+
+mkdir  -p /root/workspace/cares/admin/msp/admincerts
+cp /root/workspace/cares/admin/msp/signcerts/cert.pem /root/workspace/cares/admin/msp/admincerts/cert.pem</code></pre><h4 id="创建组织msp目录"><a href="#创建组织msp目录" class="headerlink" title="创建组织msp目录"></a>创建组织msp目录</h4><pre><code>mkdir -p /root/workspace/orgs-msp/&#123;nkg,weh,tna,cares&#125;</code></pre><p>复制各自peer0 下admin 目录msp到上述目录,这里以nkg为例</p>
+<pre><code>cp -r /root/workspace/nkg/admin/*  /root/workspace/orgs-msp/nkg
+mkdir -p /root/workspace/orgs-msp/nkg/&#123;admincerts,tlscacerts&#125;
+cp /root/workspace/orgs-msp/nkg/signcerts/cert.pem /root/workspace/orgs-msp/nkg/admincerts
+cp /root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem /root/workspace/orgs-msp/nkg/admincerts/tlscacerts</code></pre><h4 id="编写-root-workspace-cfg-configtx-yaml"><a href="#编写-root-workspace-cfg-configtx-yaml" class="headerlink" title="编写 /root/workspace/cfg/configtx.yaml"></a>编写 /root/workspace/cfg/configtx.yaml</h4><pre><code>Organizations:
+
+  - &amp;cares
+     Name: 华东凯亚
+     ID: ordererMSP
+     MSPDir: /root/workspace/orgs-msp/cares
+
+  - &amp;nkg
+     Name: 南京机场
+     ID: nkgMSP
+     MSPDir: /root/workspace/orgs-msp/nkg
+     AnchorPeers:
+        - Host: peer0.nkg.com
+          Port: 7051
+
+  - &amp;weh
+     Name: 威海机场
+     ID: wehMSP
+     MSPDir: /root/workspace/orgs-msp/weh
+     AnchorPeers:
+        - Host: peer0.weh.com
+          Port: 7051
+
+
+  - &amp;tna
+     Name: 济南机场
+     ID: tnaMSP
+     MSPDir: /root/workspace/orgs-msp/tna
+     AnchorPeers:
+        - Host: peer0.tna.com
+          Port: 7051
+Application: &amp;ApplicationDefaults
+
+   # Organizations is the list of orgs which are defined as participants on
+   # the application side of the network
+   Organizations:
+
+Profiles:
+
+  OrgsOrdererGenesis:
+     Orderer:
+        OrdererType: solo
+        Addresses:
+            - orderer.cares.com:7050
+        BatchTimeout: 2s
+        BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+        Organizations:
+            - *cares
+
+     Consortiums:
+        SampleConsortium:
+          Organizations:
+             - *nkg
+             - *weh
+             - *tna
+
+  OrgsChannel:
+     Consortium: SampleConsortium
+     Application:
+        &lt;&lt;: *ApplicationDefaults
+        Organizations:
+           - *nkg
+           - *weh
+           - *tna</code></pre><h4 id="生成-anchor-节点文件"><a href="#生成-anchor-节点文件" class="headerlink" title="生成 anchor 节点文件"></a>生成 anchor 节点文件</h4><h5 id="nkg"><a href="#nkg" class="headerlink" title="nkg"></a>nkg</h5><pre><code>export FABRIC_CFG_PATH=/root/workspace/cfg/
+configtxgen  -profile OrgsChannel -outputAnchorPeersUpdate /root/workspace/blocks/nkgMSPanchors.tx -channelID securitycheck -asOrg nkg</code></pre><h5 id="weh"><a href="#weh" class="headerlink" title="weh"></a>weh</h5><pre><code>export FABRIC_CFG_PATH=/root/workspace/cfg/
+configtxgen  -profile OrgsChannel -outputAnchorPeersUpdate /root/workspace/blocks/wehMSPanchors.tx -channelID securitycheck -asOrg weh</code></pre><h5 id="tna"><a href="#tna" class="headerlink" title="tna"></a>tna</h5><pre><code>export FABRIC_CFG_PATH=/root/workspace/cfg/
+configtxgen  -profile OrgsChannel -outputAnchorPeersUpdate /root/workspace/blocks/tnaMSPanchors.tx -channelID securitycheck -asOrg tna</code></pre><h4 id="创建系统通道和应用通道"><a href="#创建系统通道和应用通道" class="headerlink" title="创建系统通道和应用通道"></a>创建系统通道和应用通道</h4><pre><code>export FABRIC_CFG_PATH=/root/workspace/cfg
+configtxgen -profile OrgsOrdererGenesis -outputBlock /root/workspace/blocks/genesis.block -channelID syschannel
+configtxgen -profile OrgsChannel -outputCreateChannelTx /root/workspace/blocks/channel.tx -channelID securitycheck</code></pre><h4 id="启动-orderer"><a href="#启动-orderer" class="headerlink" title="启动 orderer"></a>启动 orderer</h4><pre><code>mkdir -p /root/workspace/cares/data
+export FABRIC_CFG_PATH=/root/fabric/cfg
+export ORDERER_HOME=/root/workspace/cares/data
+export ORDERER_HOST=orderer.cares.com
+export ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+export ORDERER_GENERAL_GENESISMETHOD=file
+export ORDERER_GENERAL_GENESISFILE=/root/workspace/blocks/genesis.block
+export ORDERER_GENERAL_LOCALMSPID=ordererMSP
+export ORDERER_GENERAL_LOCALMSPDIR=/root/workspace/cares/orderer/msp
+export ORDERER_GENERAL_TLS_ENABLED=true
+export ORDERER_GENERAL_TLS_CERTIFICATE=/root/workspace/cares/orderer/tls-msp/signcerts/cert.pem
+export ORDERER_GENERAL_TLS_PRIVATEKEY=/root/workspace/cares/orderer/tls-msp/keystore/key.pem
+export ORDERER_GENERAL_TLS_ROOTCAS=[/root/workspace/cares/orderer/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem]
+export ORDERER_GENERAL_LOGLEVEL=debug
+export ORDERER_DEBUG_BROADCASTTRACEDIR=/root/workspace/cares/data/logs
+
+nohup orderer start &gt; /root/workspace/cares/orderer/orderer.log 2&gt;&amp;1 &amp;</code></pre><h2 id="创建应用通道securitycheck-并加入"><a href="#创建应用通道securitycheck-并加入" class="headerlink" title="创建应用通道securitycheck,并加入"></a>创建应用通道securitycheck,并加入</h2><h3 id="nkg-创建-securitycheck"><a href="#nkg-创建-securitycheck" class="headerlink" title="nkg 创建  securitycheck"></a>nkg 创建  securitycheck</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.nkg.com
+export CORE_PEER_ADDRESS=peer0.nkg.com:7051
+export CORE_PEER_LOCALMSPID=nkgMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/nkg/admin/msp
+peer channel create -c securitycheck -f /root/workspace/blocks/channel.tx -o orderer.cares.com:7050 --outputBlock /root/workspace/blocks/securitycheck.block --tls --cafile /root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem</code></pre><h3 id="nkg-加入-securitycheck"><a href="#nkg-加入-securitycheck" class="headerlink" title="nkg 加入 securitycheck"></a>nkg 加入 securitycheck</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.nkg.com
+export CORE_PEER_ADDRESS=peer0.nkg.com:7051
+export CORE_PEER_LOCALMSPID=nkgMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/nkg/admin/msp
+peer channel join -b /root/workspace/blocks/securitycheck.block
+peer channel update -o orderer.cares.com:7050 -c securitycheck -f /root/workspace/blocks/nkgMSPanchors.tx --tls --cafile /root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem</code></pre><h3 id="weh-加入-securitycheck"><a href="#weh-加入-securitycheck" class="headerlink" title="weh 加入 securitycheck"></a>weh 加入 securitycheck</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.weh.com
+export CORE_PEER_ADDRESS=peer0.weh.com:7051
+export CORE_PEER_LOCALMSPID=wehMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/weh/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/weh/admin/msp
+peer channel join -b /root/workspace/blocks/securitycheck.block
+peer channel update -o orderer.cares.com:7050 -c securitycheck -f /root/workspace/blocks/wehMSPanchors.tx --tls --cafile /root/workspace/weh/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem</code></pre><h3 id="tna-加入-securitycheck"><a href="#tna-加入-securitycheck" class="headerlink" title="tna 加入 securitycheck"></a>tna 加入 securitycheck</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.tna.com
+export CORE_PEER_ADDRESS=peer0.tna.com:7051
+export CORE_PEER_LOCALMSPID=tnaMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/tna/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/tna/admin/msp
+peer channel join -b /root/workspace/blocks/securitycheck.block
+peer channel update -o orderer.cares.com:7050 -c securitycheck -f /root/workspace/blocks/tnaMSPanchors.tx --tls --cafile /root/workspace/tna/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem</code></pre><h2 id="安装、初始化链码"><a href="#安装、初始化链码" class="headerlink" title="安装、初始化链码"></a>安装、初始化链码</h2><h3 id="nkg-安装链码"><a href="#nkg-安装链码" class="headerlink" title="nkg  安装链码"></a>nkg  安装链码</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.nkg.com
+export CORE_PEER_ADDRESS=peer0.nkg.com:7051
+export CORE_PEER_LOCALMSPID=nkgMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/nkg/admin/msp
+
+peer chaincode install  -n test -v 1.0 -p  chaincode_example02 -l golang</code></pre><h3 id="weh-安装链码"><a href="#weh-安装链码" class="headerlink" title="weh 安装链码"></a>weh 安装链码</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.weh.com
+export CORE_PEER_ADDRESS=peer0.weh.com:7051
+export CORE_PEER_LOCALMSPID=wehMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/weh/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/weh/admin/msp
+
+peer chaincode install  -n test -v 1.0 -p  chaincode_example02 -l golang</code></pre><h3 id="tna-安装链码"><a href="#tna-安装链码" class="headerlink" title="tna 安装链码"></a>tna 安装链码</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.tna.com
+export CORE_PEER_ADDRESS=peer0.tna.com:7051
+export CORE_PEER_LOCALMSPID=tnaMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/tna/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/tna/admin/msp
+
+peer chaincode install  -n test -v 1.0 -p  chaincode_example02 -l golang</code></pre><h3 id="nkg-初始化并调用链码交易"><a href="#nkg-初始化并调用链码交易" class="headerlink" title="nkg 初始化并调用链码交易"></a>nkg 初始化并调用链码交易</h3><pre><code>export FABRIC_CFG_PATH=/root/fabric/cfg/
+export FABRIC_LOGGING_SPEC=DEBUG
+export CORE_PEER_ID=peer0.nkg.com
+export CORE_PEER_ADDRESS=peer0.nkg.com:7051
+export CORE_PEER_LOCALMSPID=nkgMSP
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+export CORE_PEER_MSPCONFIGPATH=/root/workspace/nkg/admin/msp
+
+peer chaincode instantiate -o orderer.cares.com:7050 -C securitycheck -n test -l golang -v 1.0 -c &#39;&#123;&quot;Args&quot;:[&quot;init&quot;,&quot;a&quot;,&quot;200&quot;,&quot;b&quot;,&quot;200&quot;]&#125;&#39; -P &quot;OR (&#39;tnaMSP.member&#39;,&#39;wehMSP.member&#39;,&#39;nkgMSP.member&#39;)&quot; --tls --cafile /root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+
+
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;
+
+peer chaincode invoke -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;10&quot;]&#125;&#39; --tls --cafile /root/workspace/nkg/peer0/tls-msp/tlscacerts/tls-tls-cares-com-6052.pem
+
+peer chaincode query -C securitycheck -n test -c &#39;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&#39;</code></pre><h2 id="区块链浏览器"><a href="#区块链浏览器" class="headerlink" title="区块链浏览器"></a>区块链浏览器</h2><p><img src="/images/pasted-41.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h2 id="编写go语言业务链码"><a href="#编写go语言业务链码" class="headerlink" title="编写go语言业务链码"></a>编写go语言业务链码</h2><pre><code>
+package main
+
+
+import (
+    &quot;bytes&quot;
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;
+    sc &quot;github.com/hyperledger/fabric/protos/peer&quot;
+    &quot;strconv&quot;
+)
+
+type SecuritySmartContract struct &#123;
+&#125;
+
+type SecurityRecord struct &#123;
+    Id string `json:&quot;id&quot;`    // 身份证号
+    CreateTime   string `json:&quot;createTime&quot;` // 违规时间
+    EventType  string `json:&quot;eventType&quot;`   // 违规类型
+    Desc string `json:&quot;desc&quot;`    // 违规描述
+    Score  int `json:&quot;score&quot;`   // 加减分
+    Org    string `json:&quot;org&quot;`     // 组织
+&#125;
+
+
+func (s *SecuritySmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response &#123;
+    return shim.Success(nil)
+&#125;
+
+func (s *SecuritySmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response &#123;
+
+    function, args := APIstub.GetFunctionAndParameters()
+    if function == &quot;add&quot; &#123;
+        return s.add(APIstub, args)
+    &#125; else if function == &quot;queryById&quot; &#123;
+        return s.queryById(APIstub,args)
+    &#125;
+
+    return shim.Error(&quot;Invalid Smart Contract function name.&quot;)
+&#125;
+
+func (s *SecuritySmartContract) add(APIstub shim.ChaincodeStubInterface, args []string) sc.Response &#123;
+
+    if len(args) != 6 &#123;
+        return shim.Error(&quot;Incorrect number of arguments. Expecting 5&quot;)
+    &#125;
+    score,_ := strconv.Atoi(args[4])
+
+    var r = SecurityRecord&#123;Id: args[0], CreateTime: args[1], EventType: args[2], Desc: args[3],Score: score,Org:args[5]&#125;
+
+    carAsBytes, _ := json.Marshal(r)
+    APIstub.PutState(args[0], carAsBytes)
+
+    return shim.Success(nil)
+&#125;
+
+
+func (s *SecuritySmartContract) queryById(APIstub shim.ChaincodeStubInterface, args []string) sc.Response &#123;
+    if len(args) != 1 &#123;
+        return shim.Error(&quot;Incorrect number of arguments. Expecting 1&quot;)
+    &#125;
+    var id string = args[0];
+    resultsIterator, err :=  APIstub.GetHistoryForKey(id)
+    if err != nil &#123;
+        return shim.Error(err.Error())
+    &#125;
+    defer resultsIterator.Close()
+    var buffer bytes.Buffer
+    buffer.WriteString(&quot;[&quot;)
+
+    bArrayMemberAlreadyWritten := false
+    for resultsIterator.HasNext() &#123;
+        queryResponse, err := resultsIterator.Next()
+        if err != nil &#123;
+            return shim.Error(err.Error())
+        &#125;
+        // Add a comma before array members, suppress it for the first array member
+        if bArrayMemberAlreadyWritten == true &#123;
+            buffer.WriteString(&quot;,&quot;)
+        &#125;
+        buffer.WriteString(string(queryResponse.Value))
+        bArrayMemberAlreadyWritten = true
+    &#125;
+    buffer.WriteString(&quot;]&quot;)
+
+    fmt.Printf(&quot;- queryById:\n%s\n&quot;, buffer.String())
+
+    return shim.Success(buffer.Bytes())
+&#125;
+
+func main() &#123;
+
+    err := shim.Start(new(SecuritySmartContract))
+    if err != nil &#123;
+        fmt.Printf(&quot;Error creating new Smart Contract: %s&quot;, err)
+    &#125;
+&#125;
+
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%20%E5%86%85%E7%BD%91%20%E6%97%A0%E4%BA%92%E8%81%94%E7%BD%91">区块链 内网 无互联网</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "内网安装区块链网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>Netty 服务端连接管理 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 23日 2020, 10:18 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      7 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="FidsServer-java"><a href="#FidsServer-java" class="headerlink" title="FidsServer.java"></a>FidsServer.java</h1><pre><code>package com.cares.fids.server.comm;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2020/12/19 19:38
+ **/
+@Slf4j
+@Component
+public class FidsServer &#123;
+
+    private static final Integer port = 9526;
+
+    @Resource
+    private FidsServerChannelInit childChannelHandler;
+
+    public void startServer() &#123;
+        new Thread(() -&gt; &#123;
+            run(port);
+        &#125;).start();
+    &#125;
+
+    public void run(int port) &#123;
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try &#123;
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childHandler(childChannelHandler);
+            //绑定端口，同步等待成功
+            ChannelFuture f = bootstrap.bind(port).sync();
+            //等待服务监听端口关闭
+            if (f.isSuccess()) &#123;
+                log.info(&quot;FIDS SOCKET 服务端启动成功！port=&#123;&#125;&quot;, port);
+            &#125;
+            f.channel().closeFuture().sync();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            //退出，释放线程资源
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        &#125;
+    &#125;
+&#125;
+
+</code></pre><h1 id="FidsServerChannelInit-java"><a href="#FidsServerChannelInit-java" class="headerlink" title="FidsServerChannelInit.java"></a>FidsServerChannelInit.java</h1><pre><code>package com.cares.fids.server.comm;
+
+import com.cares.fids.server.comm.handler.FidsClientPreprocessHandler;
+import com.cares.fids.server.comm.handler.FidsHeartbeatHandler;
+import com.cares.fids.server.comm.handler.FidsServerHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2020/12/19 19:25
+ **/
+@Component
+public class FidsServerChannelInit extends ChannelInitializer&lt;SocketChannel&gt; &#123;
+
+    @Resource
+    FidsServerHandler fidsServerHandler;
+
+    @Resource
+    FidsHeartbeatHandler fidsHeartbeatHandler;
+
+    @Resource
+    FidsClientPreprocessHandler fidsClientPreprocessHandler;
+
+    public void initChannel(SocketChannel socketChannel) throws Exception &#123;
+        ChannelPipeline pipeline = socketChannel.pipeline();
+        pipeline.addLast(new IdleStateHandler(0, 0, 20));
+        pipeline.addLast(new ObjectEncoder());
+        pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(getClass().getClassLoader())));
+        pipeline.addLast(fidsClientPreprocessHandler);
+        pipeline.addLast(fidsHeartbeatHandler);
+        pipeline.addLast(fidsServerHandler);
+    &#125;
+&#125;
+</code></pre><h1 id="FidsClientPreprocessHandler-java"><a href="#FidsClientPreprocessHandler-java" class="headerlink" title="FidsClientPreprocessHandler.java"></a>FidsClientPreprocessHandler.java</h1><pre><code>package com.cares.fids.server.comm.handler;
+
+import com.cares.acdm.fids.protocol.msg.BaseMsg;
+import com.cares.fids.server.comm.ClientConnectionMap;
+import com.cares.fids.server.service.FidsBusinessService;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2020/12/23 9:35
+ **/
+@Slf4j
+@Component
+@ChannelHandler.Sharable
+public class FidsClientPreprocessHandler extends ChannelInboundHandlerAdapter &#123;
+
+    @Resource
+    FidsBusinessService fidsBusinessService;
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception &#123;
+        Channel channel = ctx.channel();
+        BaseMsg baseMsg = (BaseMsg) msg;
+        String clientId = baseMsg.getClientId();
+        ClientConnectionMap.addClientConnection(clientId, channel);
+        ctx.fireChannelRead(baseMsg);
+        String mac = channel.attr(ClientConnectionMap.token).get();
+        fidsBusinessService.online(mac);
+    &#125;
+
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception &#123;
+        Channel channel = ctx.channel();
+        ClientConnectionMap.removeClientConnection(channel);
+        String mac = channel.attr(ClientConnectionMap.token).get();
+        fidsBusinessService.offline(mac);
+    &#125;
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception &#123;
+        Channel channel = ctx.channel();
+        ClientConnectionMap.removeClientConnection(channel);
+        ctx.close();
+    &#125;
+&#125;
+</code></pre><h1 id="FidsHeartbeatHandler-java"><a href="#FidsHeartbeatHandler-java" class="headerlink" title="FidsHeartbeatHandler.java"></a>FidsHeartbeatHandler.java</h1><pre><code>package com.cares.fids.server.comm.handler;
+
+import com.cares.acdm.fids.protocol.FidsMsgType;
+import com.cares.acdm.fids.protocol.msg.BaseMsg;
+import com.cares.acdm.fids.protocol.msg.FidsHeartbeatReq;
+import com.cares.fids.server.comm.ClientConnectionMap;
+import io.netty.channel.*;
+import io.netty.handler.timeout.IdleStateEvent;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2020/12/23 11:25
+ **/
+@Slf4j
+@Component
+@ChannelHandler.Sharable
+public class FidsHeartbeatHandler extends ChannelInboundHandlerAdapter &#123;
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception &#123;
+
+        BaseMsg baseMsg = (BaseMsg) msg;
+        if (baseMsg.getType().equals(FidsMsgType.FIDS_HEARTBEAT_RSP)) &#123;
+            log.info(&quot;收到客户端心跳响应&quot;);
+        &#125; else &#123;
+            ctx.fireChannelRead(msg);
+        &#125;
+    &#125;
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception &#123;
+        if (evt instanceof IdleStateEvent) &#123;
+            log.info(&quot;=====连接空闲，尝试发送心跳=====&quot;);
+            FidsHeartbeatReq req = new FidsHeartbeatReq();
+            req.setType(FidsMsgType.FIDS_HEARTBEAT_REQ);
+            ctx.channel().writeAndFlush(req).addListener((ChannelFutureListener) future -&gt; &#123;
+                log.info(&quot;hearbeat result:&quot; + future.isSuccess() + &quot;,reason:&quot; + future.cause());
+                if (!future.isSuccess()) &#123;
+                    future.cause().printStackTrace();
+                &#125;
+            &#125;).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+        &#125; else &#123;
+            super.userEventTriggered(ctx, evt);
+        &#125;
+    &#125;
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception &#123;
+        Channel channel = ctx.channel();
+        ClientConnectionMap.removeClientConnection(channel);
+        ctx.close();
+    &#125;
+&#125;
+
+</code></pre><h1 id="FidsServerHandler-java"><a href="#FidsServerHandler-java" class="headerlink" title="FidsServerHandler.java"></a>FidsServerHandler.java</h1><pre><code>package com.cares.fids.server.comm.handler;
+
+import com.cares.acdm.fids.protocol.msg.BaseMsg;
+import com.cares.fids.server.comm.ClientConnectionMap;
+import com.cares.fids.server.service.FidsBusinessService;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2020/12/19 19:31
+ **/
+@Slf4j
+@Component
+@ChannelHandler.Sharable
+public class FidsServerHandler extends SimpleChannelInboundHandler&lt;BaseMsg&gt; &#123;
+
+    @Resource
+    private FidsBusinessService fidsBusinessService;
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, BaseMsg baseMsg) throws Exception &#123;
+        log.info(&quot;业务处理&quot;);
+        fidsBusinessService.processBusiness(baseMsg);
+    &#125;
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception &#123;
+        Channel channel = ctx.channel();
+        ClientConnectionMap.removeClientConnection(channel);
+        ctx.close();
+    &#125;
+&#125;
+
+</code></pre><h1 id=""><a href="#" class="headerlink" title=""></a></h1><pre><code>package com.cares.fids.server.comm;
+
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+
+public class ClientConnectionMap &#123;
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientConnectionMap.class);
+    public static ConcurrentHashMap&lt;String, Channel&gt; allClientMap = new ConcurrentHashMap&lt;&gt;();
+    public static AttributeKey&lt;String&gt; token = AttributeKey.valueOf(&quot;token&quot;);
+
+    public static void addClientConnection(String token, Channel channel) &#123;
+        channel.attr(ClientConnectionMap.token).set(token);
+        if (allClientMap.contains(token)) &#123;
+            return;
+        &#125;
+        allClientMap.put(token, channel);
+        logger.info(&quot;&#123;&#125; add, token &#123;&#125; &quot;, channel, token);
+    &#125;
+
+    public static void addClientConnection(Channel channel) &#123;
+        String token = channel.attr(ClientConnectionMap.token).get();
+        allClientMap.put(token, channel);
+        logger.info(&quot;&#123;&#125; add, token &#123;&#125; &quot;, channel, token);
+    &#125;
+
+    /**
+     * 当客户端掉线，channel被关闭时移除
+     *
+     * @param channel
+     */
+    public static void removeClientConnection(Channel channel) &#123;
+
+        String key = channel.attr(token).get();
+        if (StringUtils.isNotEmpty(key) &amp;&amp; allClientMap.containsKey(key)) &#123;
+            allClientMap.remove(key);
+            logger.info(&quot;&#123;&#125; remove, token &#123;&#125; &quot;, channel, key);
+        &#125;
+
+    &#125;
+
+    public static List&lt;Channel&gt; getClientChannel(String token) &#123;
+        List&lt;Channel&gt; channels = new ArrayList&lt;&gt;();
+        if (StringUtils.isNotEmpty(token)) &#123;
+            for (String item : allClientMap.keySet()) &#123;
+                if (StringUtils.isNotEmpty(item)) &#123;
+                    String itemKey;
+                    int index = item.lastIndexOf(&quot;_&quot;);
+
+                    if (index &gt; -1) &#123;
+                        itemKey = item.substring(0, item.lastIndexOf(&quot;_&quot;));
+                    &#125; else &#123;
+                        itemKey = item;
+                    &#125;
+
+                    if (itemKey.equals(token)) &#123;
+                        channels.add(allClientMap.get(item));
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        return channels;
+    &#125;
+
+    public static Channel getClientChannelBytoken(String token) &#123;
+        return allClientMap.get(token);
+    &#125;
+
+    public static Set&lt;String&gt; keySet() &#123;
+        return allClientMap.keySet();
+    &#125;
+&#125;
+
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/JAVA">JAVA</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/netty%20%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86">netty 连接管理</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Netty 服务端连接管理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

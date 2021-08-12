@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>分布式内存数据库Hazelcast 应用 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 三月 18日 2021, 10:35 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.8k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      7 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="Hazelcast-简介"><a href="#Hazelcast-简介" class="headerlink" title="Hazelcast 简介"></a>Hazelcast 简介</h3><h4 id="Hazelcast是什么"><a href="#Hazelcast是什么" class="headerlink" title="Hazelcast是什么"></a>Hazelcast是什么</h4><p>   “分布式”、“集群服务”、“网格式内存数据”、“分布式缓存“、“弹性可伸缩服务”——这些牛逼闪闪的名词拿到哪都是ITer装逼的不二之选。在Javaer的世界，有这样一个开源项目，只需要引入一个jar包、只需简单的配置和编码即可实现以上高端技能，他就是 Hazelcast。</p>
+<p>    Hazelcast 是由Hazelcast公司（没错，这公司也叫Hazelcast！）开发和维护的开源产品，可以为基于jvm环境运行的各种应用提供分布式集群和分布式缓存服务。Hazelcast可以嵌入到任何使用Java、C++、.NET开发的产品中（C++、.NET只提供客户端接入）。Hazelcast目前已经更新到3.X版本，Java中绝大部分数据结构都被其以为分布式的方式实现。比如Javaer熟悉的Map接口，当通过Hazelcast创建一个Map实例后，在节点A调用 Map::put(“A”,”A_DATA”) 方法添加数据，节点B使用 Map::get(“A”) 可以获到值为”A_DATA” 的数据。Hazelcast 提供了 Map、Queue、MultiMap、Set、List、Semaphore、Atomic 等接口的分布式实现；提供了基于Topic 实现的消息队列或订阅\发布模式；提供了分布式id生成器（IdGenerator）；提供了分布式事件驱动（Distributed Events）；提供了分布式计算（Distributed Computing）；提供了分布式查询（Distributed Query）。总的来说在独立jvm经常使用数据结果或模型 Hazelcast 都提供了分布式集群的实现。</p>
+<p>    Hazelcast 有开源版本和商用版本。开源版本遵循 Apache License 2.0 开源协议免费使用。商用版本需要获取特定的License，两者之间最大的区别在于：商用版本提供了数据高密度存储。我们都知道jvm有自己特定的GC机制，无论数据是在堆还是栈中，只要发现无效引用的数据块，就有可能被回收。而Hazelcast的分布式数据都存放在jvm的内存中，频繁的读写数据会导致大量的GC开销。使用商业版的Hazelcast会拥有高密度存储的特性，大大降低Jvm的内存开销，从而降低GC开销。</p>
+<h4 id="Hazelcast的特性"><a href="#Hazelcast的特性" class="headerlink" title="Hazelcast的特性"></a>Hazelcast的特性</h4><h5 id="自治集群（无中心化）"><a href="#自治集群（无中心化）" class="headerlink" title="自治集群（无中心化）"></a>自治集群（无中心化）</h5><p>    Hazelcast 没有任何中心节点（文中的节点可以理解为运行在任意服务器的独立jvm，下同），或者说Hazelcast 不需要特别指定一个中心节点。在运行的过程中，它自己选定集群中的某个节点作为中心点来管理所有的节点。</p>
+<h5 id="数据按应用分布式存储"><a href="#数据按应用分布式存储" class="headerlink" title="数据按应用分布式存储"></a>数据按应用分布式存储</h5><p>    Hazelcast 的数据是分布式存储的。他会将数据尽量存储在需要使用该项数据的节点上，以实现数据去中心化的目的。在传统的数据存储模型中（MySql、MongDB、Redis 等等）数据都是独立于应用单独存放，当需要提升数据库的性能时，需要不断加固单个数据库应用的性能。即使是现在大量的数据库支持集群模式或读写分离，但是基本思路都是某几个库支持写入数据，其他的库不断的拷贝更新数据副本。这样做的坏处一是会产生大量脏读的问题，二是消耗大量的资源来传递数据——从数据源频繁读写数据会耗费额外资源，当数据量增长或创建的主从服务越来越多时，这个消耗呈指数级增长。</p>
+<p>    使用 Hazelcast 可以有效的解决数据中心化问题。他将数据分散的存储在每个节点中，节点越多越分散。每个节点都有各自的应用服务，而Hazelcast集群会根据每个应用的数据使用情况分散存储这些数据，在应用过程中数据会尽量“靠近”应用存放。这些在集群中的数据共享整个集群的存储空间和计算资源。</p>
+<h5 id="抗单点故障"><a href="#抗单点故障" class="headerlink" title="抗单点故障"></a>抗单点故障</h5><p>    集群中的节点是无中心化的，每个节点都有可能随时退出或随时进入。因此，在集群中存储的数据都会有一个备份（可以配置备份的个数，也可以关闭数据备份）。这样的方式有点类似于 hadoop，某项数据存放在一个节点时，在其他节点必定有至少一个备份存在。当某个节点退出时，节点上存放的数据会由备份数据替代，而集群会重新创建新的备份数据。</p>
+<h5 id="简易性"><a href="#简易性" class="headerlink" title="简易性"></a>简易性</h5><p>    所有的 Hazelcast 功能只需引用一个jar包，除此之外，他不依赖任何第三方包。因此可以非常便捷高效的将其嵌入到各种应用服务器中，而不必担心带来额外的问题（jar包冲突、类型冲突等等）。他仅仅提供一系列分布式功能，而不需要绑定任何框架来使用，因此适用于任何场景。</p>
+<p>    除了以上特性，Hazelcast 还支持服务器/客户端模型，支持脚本管理、能够和 Docker 快速整合等等。</p>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;com.hazelcast&lt;/groupId&gt;
+            &lt;artifactId&gt;hazelcast&lt;/artifactId&gt;
+            &lt;version&gt;4.1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.hazelcast&lt;/groupId&gt;
+            &lt;artifactId&gt;hazelcast-eureka-one&lt;/artifactId&gt;
+            &lt;version&gt;2.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>hazelcast 成员之间可以通过组播、指定IP或者eureka注册中心发现彼此</p>
+<p>由于项目集成了eureka注册中心，这里采用eruka方式的成员发现，组播的话ip地址必须在同一网段，指定IP地址对微服务来说不那么灵活</p>
+<pre><code>    @Bean
+    public Config hazelcastConfig() &#123;
+
+        EurekaOneDiscoveryStrategyFactory.setEurekaClient(eurekaClient);
+        EurekaOneDiscoveryStrategyFactory.setGroupName(appName);
+        Config config = new Config();
+        config.setClusterName(appName);
+        config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getEurekaConfig()
+                .setEnabled(true)
+                .setProperty(&quot;self-registration&quot;, &quot;true&quot;)
+                .setProperty(&quot;namespace&quot;, appName)
+                .setProperty(&quot;use-metadata-for-host-and-port&quot;, &quot;true&quot;);
+        return config;
+    &#125;
+
+</code></pre><h3 id="广播订阅"><a href="#广播订阅" class="headerlink" title="广播订阅"></a>广播订阅</h3><h4 id="编写监听器"><a href="#编写监听器" class="headerlink" title="编写监听器"></a>编写监听器</h4><pre><code>
+@Slf4j
+@Component
+public class FidsMsgListener implements MessageListener&lt;DistributeMsg&gt; &#123;
+
+    @Resource
+    ApplicationContext applicationContext;
+    private Map&lt;DistributeMsgTypeEnum, IDistHandler&gt; handlers = new HashMap&lt;&gt;();
+
+    @PostConstruct
+    public void init() &#123;
+        handlers.clear();
+        applicationContext.getBeansOfType(IDistHandler.class)
+                .forEach((k, v) -&gt; handlers.put(v.getClass().getAnnotation(DistHandler.class).value(), v));
+    &#125;
+
+    @Override
+    public void onMessage(Message&lt;DistributeMsg&gt; message) &#123;
+        DistributeMsgTypeEnum typeEnum = message.getMessageObject().getType();
+        log.debug(&quot;分布式消息处理&#123;&#125;,发送方&#123;&#125;&quot;, typeEnum, message.getPublishingMember().getAddress().getHost());
+        IDistHandler handler = handlers.get(typeEnum);
+        if (null != handler) &#123;
+            handler.handler(message);
+        &#125;
+
+    &#125;
+&#125;</code></pre><h4 id="配置topic"><a href="#配置topic" class="headerlink" title="配置topic"></a>配置topic</h4><pre><code>    @Bean
+    ITopic&lt;DistributeMsg&gt; iTopic(FidsMsgListener fidsMsgListener) &#123;
+        HazelcastInstance hazelcastInstance = applicationContext.getBean(HazelcastInstance.class);
+        ITopic&lt;DistributeMsg&gt; topic = hazelcastInstance.getTopic(FIDS_HAZELCAST_TOPIC);
+        topic.addMessageListener(fidsMsgListener);
+
+        return topic;
+    &#125;
+</code></pre><h4 id="发布消息"><a href="#发布消息" class="headerlink" title="发布消息"></a>发布消息</h4><pre><code>
+@Resource
+private ITopic&lt;DistributeMsg&gt; topic;
+
+....
+....
+
+DistributeMsg msg = DistributeMsg.builder().data(baseMsg).type(DistributeMsgTypeEnum.FIDS_PROTOCOL).build();
+topic.publish(msg);
+</code></pre><h3 id="共享MAP"><a href="#共享MAP" class="headerlink" title="共享MAP"></a>共享MAP</h3><p>实现了跨机器跨进程的内存共享，原来用redis和rabbit做分布式消息转发和存储。redis读取大对象，也没那么大才几百K就超时，用spring cloud bus amqp 转发消息也不稳定。用hazelcast稳定对了，速度也相当快。再也不用担心超时的问题。</p>
+<pre><code>    @Bean
+    public IMap&lt;String, Object&gt; iMap() &#123;
+        HazelcastInstance hazelcastInstance = applicationContext.getBean(HazelcastInstance.class);
+        IMap&lt;String, Object&gt; map = hazelcastInstance.getMap(FIDS_HAZELCAST_SCREE_SHOT_MAP);
+        return map;
+    &#125;
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F">分布式</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%86%85%E5%AD%98">分布式内存</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "分布式内存数据库Hazelcast 应用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

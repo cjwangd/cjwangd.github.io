@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如同燃烛照明">
+  <meta name="author" content="王长金">
+  <meta name="keywords" content="王长金的个人博客">
+  <title>SPRINGBOOT 打包串口通信程序 ~ 王长金的个人博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>王长金的个人博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 八月 27日 2020, 9:00 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.5k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      19 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h1><pre><code>1、jdk: 1.8
+2、springboot：2.3.3.RELEASE
+</code></pre><p>主要代码从网上copy的，打包一个32位的运行时，写个启动脚本，做到直接运行</p>
+<h1 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h1><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.3.3.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;cn.sh.cares&lt;/groupId&gt;
+    &lt;artifactId&gt;serialport&lt;/artifactId&gt;
+    &lt;version&gt;1.0.RELEASE&lt;/version&gt;
+    &lt;name&gt;serialport&lt;/name&gt;
+    &lt;description&gt;串口读写&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.netbeans.external&lt;/groupId&gt;
+            &lt;artifactId&gt;AbsoluteLayout&lt;/artifactId&gt;
+            &lt;version&gt;RELEASE120-1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.rxtx&lt;/groupId&gt;
+            &lt;artifactId&gt;rxtxcomm&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;systemPath&gt;$&#123;project.basedir&#125;/lib/RXTXcomm.jar&lt;/systemPath&gt;
+            &lt;scope&gt;system&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.swinglabs&lt;/groupId&gt;
+            &lt;artifactId&gt;swing-layout&lt;/artifactId&gt;
+            &lt;version&gt;1.0.3&lt;/version&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.junit.vintage&lt;/groupId&gt;
+                    &lt;artifactId&gt;junit-vintage-engine&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3.3.RELEASE&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;jvmArguments&gt;
+                        -Djava.library.path=$&#123;project.basedir&#125;/lib/x64
+                    &lt;/jvmArguments&gt;
+                    &lt;includeSystemScope&gt;true&lt;/includeSystemScope&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.0.0&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;run&lt;/goal&gt;
+                        &lt;/goals&gt;
+                        &lt;configuration&gt;
+                            &lt;target&gt;
+                                &lt;property name=&quot;dist&quot;&gt;$&#123;project.build.directory&#125;/$&#123;project.artifactId&#125;&lt;/property&gt;
+                                &lt;property name=&quot;app-name&quot;&gt;$&#123;project.artifactId&#125;-$&#123;project.version&#125;&lt;/property&gt;
+                                &lt;property name=&quot;jre&quot;&gt;$&#123;dist&#125;/jre&lt;/property&gt;
+                                &lt;delete dir=&quot;$&#123;dist&#125;&quot; /&gt;
+                                &lt;mkdir dir=&quot;$&#123;dist&#125;&quot; /&gt;
+                                &lt;copy file=&quot;target/$&#123;app-name&#125;.jar&quot; tofile=&quot;$&#123;dist&#125;/$&#123;app-name&#125;.jar&quot; /&gt;
+                                &lt;copy todir=&quot;$&#123;jre&#125;&quot; overwrite=&quot;true&quot; &gt;
+                                    &lt;fileset dir=&quot;D:\soft\Java\JDK8_32\jre&quot; erroronmissingdir=&quot;false&quot;&gt;&lt;/fileset&gt;
+                                &lt;/copy&gt;
+                                &lt;copy todir=&quot;$&#123;dist&#125;/jre/bin/&quot; overwrite=&quot;true&quot; &gt;
+                                    &lt;fileset dir=&quot;$&#123;project.basedir&#125;/lib/x86/&quot; erroronmissingdir=&quot;false&quot;&gt;
+                                        &lt;include name=&quot;*.dll&quot;&gt;&lt;/include&gt;
+                                    &lt;/fileset&gt;
+                                &lt;/copy&gt;
+                                &lt;copy file=&quot;$&#123;project.basedir&#125;/cmd/start.cmd&quot; tofile=&quot;$&#123;dist&#125;/start.cmd&quot; /&gt;
+
+                                &lt;zip basedir=&quot;$&#123;dist&#125;&quot; destfile=&quot;$&#123;project.build.directory&#125;/$&#123;project.artifactId&#125;.zip&quot; /&gt;
+                            &lt;/target&gt;
+                        &lt;/configuration&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+
+</code></pre><h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p><img src="/images/pasted-151.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><h2 id="start-cmd"><a href="#start-cmd" class="headerlink" title="start.cmd"></a>start.cmd</h2><pre><code>echo off
+
+set cwd=%~dp0
+set path=%cwd%jre\bin;%path%
+cd %cwd%
+start javaw.exe -jar serialport-1.0.RELEASE.jar</code></pre><h2 id="SerialPortManager"><a href="#SerialPortManager" class="headerlink" title="SerialPortManager"></a>SerialPortManager</h2><pre><code>package cn.sh.cares.serialport.manager;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.TooManyListenersException;
+
+
+import cn.sh.cares.serialport.utils.ArrayUtils;
+import cn.sh.cares.serialport.utils.ShowUtils;
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
+
+/**
+ * 串口管理
+ */
+@SuppressWarnings(&quot;all&quot;)
+public class SerialPortManager &#123;
+
+    /**
+     * 查找所有可用端口
+     *
+     * @return 可用端口名称列表
+     */
+    public static final ArrayList&lt;String&gt; findPorts() &#123;
+        // 获得当前所有可用串口
+        Enumeration&lt;CommPortIdentifier&gt; portList = CommPortIdentifier.getPortIdentifiers();
+        ArrayList&lt;String&gt; portNameList = new ArrayList&lt;String&gt;();
+        // 将可用串口名添加到List并返回该List
+        while (portList.hasMoreElements()) &#123;
+            String portName = portList.nextElement().getName();
+            portNameList.add(portName);
+        &#125;
+        return portNameList;
+    &#125;
+
+    /**
+     * 打开串口
+     *
+     * @param portName 端口名称
+     * @param baudrate 波特率
+     * @return 串口对象
+     * @throws PortInUseException 串口已被占用
+     */
+    public static final SerialPort openPort(String portName, int baudrate) throws PortInUseException &#123;
+        try &#123;
+            // 通过端口名识别端口
+            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+            // 打开端口，并给端口名字和一个timeout（打开操作的超时时间）
+            CommPort commPort = portIdentifier.open(portName, 2000);
+            // 判断是不是串口
+            if (commPort instanceof SerialPort) &#123;
+                SerialPort serialPort = (SerialPort) commPort;
+                try &#123;
+                    // 设置一下串口的波特率等参数
+                    // 数据位：8
+                    // 停止位：1
+                    // 校验位：None
+                    serialPort.setSerialPortParams(baudrate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                            SerialPort.PARITY_NONE);
+                &#125; catch (UnsupportedCommOperationException e) &#123;
+                    e.printStackTrace();
+                &#125;
+                return serialPort;
+            &#125;
+        &#125; catch (NoSuchPortException e1) &#123;
+            e1.printStackTrace();
+        &#125;
+        return null;
+    &#125;
+
+    /**
+     * 关闭串口
+     *
+     * @param serialport 待关闭的串口对象
+     */
+    public static void closePort(SerialPort serialPort) &#123;
+        if (serialPort != null) &#123;
+            serialPort.close();
+        &#125;
+    &#125;
+
+    /**
+     * 往串口发送数据
+     *
+     * @param serialPort 串口对象
+     * @param order      待发送数据
+     */
+    public static void sendToPort(SerialPort serialPort, byte[] order) &#123;
+        OutputStream out = null;
+        try &#123;
+            out = serialPort.getOutputStream();
+            out.write(order);
+            out.flush();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            try &#123;
+                if (out != null) &#123;
+                    out.close();
+                    out = null;
+                &#125;
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+
+    /**
+     * 从串口读取数据
+     *
+     * @param serialPort 当前已建立连接的SerialPort对象
+     * @return 读取到的数据
+     */
+    public static byte[] readFromPort(SerialPort serialPort) &#123;
+        InputStream in = null;
+        byte[] bytes = &#123;&#125;;
+        try &#123;
+            in = serialPort.getInputStream();
+            // 缓冲区大小为一个字节
+            byte[] readBuffer = new byte[1];
+            int bytesNum = in.read(readBuffer);
+            while (bytesNum &gt; 0) &#123;
+                bytes = ArrayUtils.concat(bytes, readBuffer);
+                bytesNum = in.read(readBuffer);
+            &#125;
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            try &#123;
+                if (in != null) &#123;
+                    in.close();
+                    in = null;
+                &#125;
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        return bytes;
+    &#125;
+
+    /**
+     * 添加监听器
+     *
+     * @param port     串口对象
+     * @param listener 串口存在有效数据监听
+     */
+    public static void addListener(SerialPort serialPort, DataAvailableListener listener) &#123;
+        try &#123;
+            // 给串口添加监听器
+            serialPort.addEventListener(new SerialPortListener(listener));
+            // 设置当有数据到达时唤醒监听接收线程
+            serialPort.notifyOnDataAvailable(true);
+            // 设置当通信中断时唤醒中断线程
+            serialPort.notifyOnBreakInterrupt(true);
+        &#125; catch (TooManyListenersException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * 串口监听
+     */
+    public static class SerialPortListener implements SerialPortEventListener &#123;
+
+        private DataAvailableListener mDataAvailableListener;
+
+        public SerialPortListener(DataAvailableListener mDataAvailableListener) &#123;
+            this.mDataAvailableListener = mDataAvailableListener;
+        &#125;
+
+        public void serialEvent(SerialPortEvent serialPortEvent) &#123;
+            switch (serialPortEvent.getEventType()) &#123;
+                case SerialPortEvent.DATA_AVAILABLE: // 1.串口存在有效数据
+                    if (mDataAvailableListener != null) &#123;
+                        mDataAvailableListener.dataAvailable();
+                    &#125;
+                    break;
+
+                case SerialPortEvent.OUTPUT_BUFFER_EMPTY: // 2.输出缓冲区已清空
+                    break;
+
+                case SerialPortEvent.CTS: // 3.清除待发送数据
+                    break;
+
+                case SerialPortEvent.DSR: // 4.待发送数据准备好了
+                    break;
+
+                case SerialPortEvent.RI: // 5.振铃指示
+                    break;
+
+                case SerialPortEvent.CD: // 6.载波检测
+                    break;
+
+                case SerialPortEvent.OE: // 7.溢位（溢出）错误
+                    break;
+
+                case SerialPortEvent.PE: // 8.奇偶校验错误
+                    break;
+
+                case SerialPortEvent.FE: // 9.帧错误
+                    break;
+
+                case SerialPortEvent.BI: // 10.通讯中断
+                    ShowUtils.errorMessage(&quot;与串口设备通讯中断&quot;);
+                    break;
+
+                default:
+                    break;
+            &#125;
+        &#125;
+    &#125;
+
+    /**
+     * 串口存在有效数据监听
+     */
+    public interface DataAvailableListener &#123;
+        /**
+         * 串口存在有效数据
+         */
+        void dataAvailable();
+    &#125;
+&#125;
+</code></pre><h2 id="MainFrame"><a href="#MainFrame" class="headerlink" title="MainFrame"></a>MainFrame</h2><pre><code>package cn.sh.cares.serialport.ui;
+
+import java.awt.Color;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
+import cn.sh.cares.serialport.manager.SerialPortManager;
+import cn.sh.cares.serialport.utils.ByteUtils;
+import cn.sh.cares.serialport.utils.ShowUtils;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+
+/**
+ * 主界面
+ *
+ */
+@SuppressWarnings(&quot;all&quot;)
+public class MainFrame extends JFrame &#123;
+
+    // 程序界面宽度
+    public final int WIDTH = 530;
+    // 程序界面高度
+    public final int HEIGHT = 390;
+
+    // 数据显示区
+    private JTextArea mDataView = new JTextArea();
+    private JScrollPane mScrollDataView = new JScrollPane(mDataView);
+
+    // 串口设置面板
+    private JPanel mSerialPortPanel = new JPanel();
+    private JLabel mSerialPortLabel = new JLabel(&quot;串口&quot;);
+    private JLabel mBaudrateLabel = new JLabel(&quot;波特率&quot;);
+    private JComboBox mCommChoice = new JComboBox();
+    private JComboBox mBaudrateChoice = new JComboBox();
+    private ButtonGroup mDataChoice = new ButtonGroup();
+    private JRadioButton mDataASCIIChoice = new JRadioButton(&quot;ASCII&quot;, true);
+    private JRadioButton mDataHexChoice = new JRadioButton(&quot;Hex&quot;);
+
+    // 操作面板
+    private JPanel mOperatePanel = new JPanel();
+    private JTextArea mDataInput = new JTextArea();
+    private JButton mSerialPortOperate = new JButton(&quot;打开串口&quot;);
+    private JButton mSendData = new JButton(&quot;发送数据&quot;);
+
+    // 串口列表
+    private List&lt;String&gt; mCommList = null;
+    // 串口对象
+    private SerialPort mSerialport;
+
+    public MainFrame() &#123;
+        initView();
+        initComponents();
+        actionListener();
+        initData();
+    &#125;
+
+    /**
+     * 初始化窗口
+     */
+    private void initView() &#123;
+        // 关闭程序
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        // 禁止窗口最大化
+        setResizable(false);
+
+        // 设置程序窗口居中显示
+        Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+        setBounds(p.x - WIDTH / 2, p.y - HEIGHT / 2, WIDTH, HEIGHT);
+        this.setLayout(null);
+
+        setTitle(&quot;串口通信&quot;);
+    &#125;
+
+    /**
+     * 初始化控件
+     */
+    private void initComponents() &#123;
+        // 数据显示
+        mDataView.setFocusable(false);
+        mScrollDataView.setBounds(10, 10, 505, 200);
+        add(mScrollDataView);
+
+        // 串口设置
+        mSerialPortPanel.setBorder(BorderFactory.createTitledBorder(&quot;串口设置&quot;));
+        mSerialPortPanel.setBounds(10, 220, 170, 130);
+        mSerialPortPanel.setLayout(null);
+        add(mSerialPortPanel);
+
+        mSerialPortLabel.setForeground(Color.gray);
+        mSerialPortLabel.setBounds(10, 25, 40, 20);
+        mSerialPortPanel.add(mSerialPortLabel);
+
+        mCommChoice.setFocusable(false);
+        mCommChoice.setBounds(60, 25, 100, 20);
+        mSerialPortPanel.add(mCommChoice);
+
+        mBaudrateLabel.setForeground(Color.gray);
+        mBaudrateLabel.setBounds(10, 60, 40, 20);
+        mSerialPortPanel.add(mBaudrateLabel);
+
+        mBaudrateChoice.setFocusable(false);
+        mBaudrateChoice.setBounds(60, 60, 100, 20);
+        mSerialPortPanel.add(mBaudrateChoice);
+
+        mDataASCIIChoice.setBounds(20, 95, 55, 20);
+        mDataHexChoice.setBounds(95, 95, 55, 20);
+        mDataChoice.add(mDataASCIIChoice);
+        mDataChoice.add(mDataHexChoice);
+        mSerialPortPanel.add(mDataASCIIChoice);
+        mSerialPortPanel.add(mDataHexChoice);
+
+        // 操作
+        mOperatePanel.setBorder(BorderFactory.createTitledBorder(&quot;操作&quot;));
+        mOperatePanel.setBounds(200, 220, 315, 130);
+        mOperatePanel.setLayout(null);
+        add(mOperatePanel);
+
+        mDataInput.setBounds(25, 25, 265, 50);
+        mDataInput.setLineWrap(true);
+        mDataInput.setWrapStyleWord(true);
+        mOperatePanel.add(mDataInput);
+
+        mSerialPortOperate.setFocusable(false);
+        mSerialPortOperate.setBounds(45, 95, 90, 20);
+        mOperatePanel.add(mSerialPortOperate);
+
+        mSendData.setFocusable(false);
+        mSendData.setBounds(180, 95, 90, 20);
+        mOperatePanel.add(mSendData);
+    &#125;
+
+    /**
+     * 初始化数据
+     */
+    private void initData() &#123;
+        mCommList = SerialPortManager.findPorts();
+        // 检查是否有可用串口，有则加入选项中
+        if (mCommList == null || mCommList.size() &lt; 1) &#123;
+            ShowUtils.warningMessage(&quot;没有搜索到有效串口！&quot;);
+        &#125; else &#123;
+            for (String s : mCommList) &#123;
+                mCommChoice.addItem(s);
+            &#125;
+        &#125;
+
+        mBaudrateChoice.addItem(&quot;9600&quot;);
+        mBaudrateChoice.addItem(&quot;19200&quot;);
+        mBaudrateChoice.addItem(&quot;38400&quot;);
+        mBaudrateChoice.addItem(&quot;57600&quot;);
+        mBaudrateChoice.addItem(&quot;115200&quot;);
+    &#125;
+
+    /**
+     * 按钮监听事件
+     */
+    private void actionListener() &#123;
+        // 串口
+        mCommChoice.addPopupMenuListener(new PopupMenuListener() &#123;
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) &#123;
+                mCommList = SerialPortManager.findPorts();
+                // 检查是否有可用串口，有则加入选项中
+                if (mCommList == null || mCommList.size() &lt; 1) &#123;
+                    ShowUtils.warningMessage(&quot;没有搜索到有效串口！&quot;);
+                &#125; else &#123;
+                    int index = mCommChoice.getSelectedIndex();
+                    mCommChoice.removeAllItems();
+                    for (String s : mCommList) &#123;
+                        mCommChoice.addItem(s);
+                    &#125;
+                    mCommChoice.setSelectedIndex(index);
+                &#125;
+            &#125;
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) &#123;
+                // NO OP
+            &#125;
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) &#123;
+                // NO OP
+            &#125;
+        &#125;);
+
+        // 打开|关闭串口
+        mSerialPortOperate.addActionListener(new ActionListener() &#123;
+
+            @Override
+            public void actionPerformed(ActionEvent e) &#123;
+                if (&quot;打开串口&quot;.equals(mSerialPortOperate.getText()) &amp;&amp; mSerialport == null) &#123;
+                    openSerialPort(e);
+                &#125; else &#123;
+                    closeSerialPort(e);
+                &#125;
+            &#125;
+        &#125;);
+
+        // 发送数据
+        mSendData.addActionListener(new ActionListener() &#123;
+
+            @Override
+            public void actionPerformed(ActionEvent e) &#123;
+                sendData(e);
+            &#125;
+        &#125;);
+    &#125;
+
+    /**
+     * 打开串口
+     *
+     * @param evt 点击事件
+     */
+    private void openSerialPort(ActionEvent evt) &#123;
+        // 获取串口名称
+        String commName = (String) mCommChoice.getSelectedItem();
+        // 获取波特率，默认为9600
+        int baudrate = 9600;
+        String bps = (String) mBaudrateChoice.getSelectedItem();
+        baudrate = Integer.parseInt(bps);
+
+        // 检查串口名称是否获取正确
+        if (commName == null || commName.equals(&quot;&quot;)) &#123;
+            ShowUtils.warningMessage(&quot;没有搜索到有效串口！&quot;);
+        &#125; else &#123;
+            try &#123;
+                mSerialport = SerialPortManager.openPort(commName, baudrate);
+                if (mSerialport != null) &#123;
+                    mDataView.setText(&quot;串口已打开&quot; + &quot;\r\n&quot;);
+                    mSerialPortOperate.setText(&quot;关闭串口&quot;);
+                &#125;
+            &#125; catch (PortInUseException e) &#123;
+                ShowUtils.warningMessage(&quot;串口已被占用！&quot;);
+            &#125;
+        &#125;
+
+        // 添加串口监听
+        SerialPortManager.addListener(mSerialport, new SerialPortManager.DataAvailableListener() &#123;
+
+            @Override
+            public void dataAvailable() &#123;
+                byte[] data = null;
+                try &#123;
+                    if (mSerialport == null) &#123;
+                        ShowUtils.errorMessage(&quot;串口对象为空，监听失败！&quot;);
+                    &#125; else &#123;
+                        // 读取串口数据
+                        data = SerialPortManager.readFromPort(mSerialport);
+
+                        // 以字符串的形式接收数据
+                        if (mDataASCIIChoice.isSelected()) &#123;
+                            mDataView.append(new String(data) + &quot;\r\n&quot;);
+                        &#125;
+
+                        // 以十六进制的形式接收数据
+                        if (mDataHexChoice.isSelected()) &#123;
+                            mDataView.append(ByteUtils.byteArrayToHexString(data) + &quot;\r\n&quot;);
+                        &#125;
+                    &#125;
+                &#125; catch (Exception e) &#123;
+                    ShowUtils.errorMessage(e.toString());
+                    // 发生读取错误时显示错误信息后退出系统
+                    System.exit(0);
+                &#125;
+            &#125;
+        &#125;);
+    &#125;
+
+    /**
+     * 关闭串口
+     *
+     * @param evt 点击事件
+     */
+    private void closeSerialPort(ActionEvent evt) &#123;
+        SerialPortManager.closePort(mSerialport);
+        mDataView.setText(&quot;串口已关闭&quot; + &quot;\r\n&quot;);
+        mSerialPortOperate.setText(&quot;打开串口&quot;);
+        mSerialport = null;
+    &#125;
+
+    /**
+     * 发送数据
+     *
+     * @param evt 点击事件
+     */
+    private void sendData(ActionEvent evt) &#123;
+        // 待发送数据
+        String data = mDataInput.getText().toString();
+
+        if (mSerialport == null) &#123;
+            ShowUtils.warningMessage(&quot;请先打开串口！&quot;);
+            return;
+        &#125;
+
+        if (&quot;&quot;.equals(data) || data == null) &#123;
+            ShowUtils.warningMessage(&quot;请输入要发送的数据！&quot;);
+            return;
+        &#125;
+
+        // 以字符串的形式发送数据
+        if (mDataASCIIChoice.isSelected()) &#123;
+            SerialPortManager.sendToPort(mSerialport, data.getBytes());
+        &#125;
+
+        // 以十六进制的形式发送数据
+        if (mDataHexChoice.isSelected()) &#123;
+            SerialPortManager.sendToPort(mSerialport, ByteUtils.hexStr2Byte(data));
+        &#125;
+    &#125;
+
+    public static void main(String args[]) &#123;
+
+    &#125;
+&#125;</code></pre><h2 id="ArrayUtils"><a href="#ArrayUtils" class="headerlink" title="ArrayUtils"></a>ArrayUtils</h2><pre><code>package cn.sh.cares.serialport.utils;
+
+/**
+ * 数组工具
+ *
+ */
+public class ArrayUtils &#123;
+
+    /**
+     * 合并数组
+     *
+     * @param firstArray  第一个数组
+     * @param secondArray 第二个数组
+     * @return 合并后的数组
+     */
+    public static byte[] concat(byte[] firstArray, byte[] secondArray) &#123;
+        if (firstArray == null || secondArray == null) &#123;
+            return null;
+        &#125;
+        byte[] bytes = new byte[firstArray.length + secondArray.length];
+        System.arraycopy(firstArray, 0, bytes, 0, firstArray.length);
+        System.arraycopy(secondArray, 0, bytes, firstArray.length, secondArray.length);
+        return bytes;
+    &#125;
+&#125;
+</code></pre><h2 id="ByteUtils"><a href="#ByteUtils" class="headerlink" title="ByteUtils"></a>ByteUtils</h2><pre><code>package cn.sh.cares.serialport.utils;
+
+import java.nio.ByteBuffer;
+import java.util.Locale;
+
+/**
+ * Byte转换工具
+ *
+ */
+public class ByteUtils &#123;
+
+    /**
+     * 十六进制字符串转byte[]
+     *
+     * @param hex 十六进制字符串
+     * @return byte[]
+     */
+    public static byte[] hexStr2Byte(String hex) &#123;
+        if (hex == null) &#123;
+            return new byte[]&#123;&#125;;
+        &#125;
+
+        // 奇数位补0
+        if (hex.length() % 2 != 0) &#123;
+            hex = &quot;0&quot; + hex;
+        &#125;
+
+        int length = hex.length();
+        ByteBuffer buffer = ByteBuffer.allocate(length / 2);
+        for (int i = 0; i &lt; length; i++) &#123;
+            String hexStr = hex.charAt(i) + &quot;&quot;;
+            i++;
+            hexStr += hex.charAt(i);
+            byte b = (byte) Integer.parseInt(hexStr, 16);
+            buffer.put(b);
+        &#125;
+        return buffer.array();
+    &#125;
+
+    /**
+     * byte[]转十六进制字符串
+     *
+     * @param array byte[]
+     * @return 十六进制字符串
+     */
+    public static String byteArrayToHexString(byte[] array) &#123;
+        if (array == null) &#123;
+            return &quot;&quot;;
+        &#125;
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i &lt; array.length; i++) &#123;
+            buffer.append(byteToHex(array[i]));
+        &#125;
+        return buffer.toString();
+    &#125;
+
+    /**
+     * byte转十六进制字符
+     *
+     * @param b byte
+     * @return 十六进制字符
+     */
+    public static String byteToHex(byte b) &#123;
+        String hex = Integer.toHexString(b &amp; 0xFF);
+        if (hex.length() == 1) &#123;
+            hex = &#39;0&#39; + hex;
+        &#125;
+        return hex.toUpperCase(Locale.getDefault());
+    &#125;
+&#125;
+</code></pre><h2 id="ShowUtils"><a href="#ShowUtils" class="headerlink" title="ShowUtils"></a>ShowUtils</h2><pre><code>package cn.sh.cares.serialport.utils;
+
+import javax.swing.JOptionPane;
+
+/**
+ * 提示框
+ */
+public class ShowUtils &#123;
+
+    /**
+     * 消息提示
+     *
+     * @param message 消息内容
+     */
+    public static void message(String message) &#123;
+        JOptionPane.showMessageDialog(null, message);
+    &#125;
+
+    /**
+     * 警告消息提示
+     *
+     * @param message 消息内容
+     */
+    public static void warningMessage(String message) &#123;
+        JOptionPane.showMessageDialog(null, message, &quot;警告&quot;,
+                JOptionPane.WARNING_MESSAGE);
+    &#125;
+
+    /**
+     * 错误消息提示
+     *
+     * @param message 消息内容
+     */
+    public static void errorMessage(String message) &#123;
+        JOptionPane.showMessageDialog(null, message, &quot;错误&quot;,
+                JOptionPane.ERROR_MESSAGE);
+    &#125;
+
+    /**
+     * 自定义的消息提示
+     *
+     * @param title   标题
+     * @param message 消息内容
+     */
+    public static void plainMessage(String title, String message) &#123;
+        JOptionPane.showMessageDialog(null, message, title,
+                JOptionPane.PLAIN_MESSAGE);
+    &#125;
+
+    /**
+     * 带有选择功能的提示
+     *
+     * @param title   标题
+     * @param message 消息内容
+     * @return 是/否 0/1
+     */
+    public static boolean selectMessage(String title, String message) &#123;
+        int isConfirm = JOptionPane.showConfirmDialog(null, message, title,
+                JOptionPane.YES_NO_OPTION);
+        if (0 == isConfirm) &#123;
+            return true;
+        &#125;
+        return false;
+    &#125;
+&#125;
+</code></pre><h2 id="SerialportApplication"><a href="#SerialportApplication" class="headerlink" title="SerialportApplication"></a>SerialportApplication</h2><pre><code>package cn.sh.cares.serialport;
+
+import cn.sh.cares.serialport.ui.MainFrame;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+
+@SpringBootApplication
+public class SerialportApplication &#123;
+
+    public static void main(String[] args) &#123;
+
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(SerialportApplication.class);
+        builder.headless(false).web(WebApplicationType.NONE).run(args);
+
+        java.awt.EventQueue.invokeLater(() -&gt; new MainFrame().setVisible(true));
+    &#125;
+
+&#125;
+</code></pre><h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><p><img src="/images/pasted-153.png" srcset="/img/loading.gif" alt="upload successful"></p>
+<h1 id="代码库"><a href="#代码库" class="headerlink" title="代码库"></a>代码库</h1><p><a target="_blank" rel="noopener" href="https://github.com/cjwangd/serialport">https://github.com/cjwangd/serialport</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/SPRINGBOOT">SPRINGBOOT</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%BD%A2">图形</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1">串口通信</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="http://beian.miit.gov.cn" class="copymail" target="_blank">苏ICP备20000570号-1</a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "SPRINGBOOT 打包串口通信程序&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
