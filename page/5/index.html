@@ -145,6 +145,52 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/17/%E9%80%9A%E8%BF%87%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E8%BF%98%E5%8E%9Fsqlserver%E6%95%B0%E6%8D%AE%E5%BA%93/">
+        <p class="h4 index-header">通过备份文件还原sqlserver数据库</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">启动容器1、mssql
+
+docker run -dit -e &#39;ACCEPT_EULA=Y&#39; -e &#39;SA_PASSWORD=123456&#39; -p 1433:1433 --name mssql mcr.microsoft.com/mssql/server创建目录docker exec -it mssql mkdir -p /opt/hg
+
+docker cp hg.bak mssql:/opt/hg
+
+还原数据库打开navcat命令行
+1&gt; restore filelistonly  from disk=&#39;/opt/hg/hg.bak&#39;
+2&gt; go
+ LogicalName   PhysicalName                                            Type   FileGroupName   Size         MaxSize          FileId   CreateLSN   DropLSN   UniqueId                            </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-17&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/sqlserver">sqlserver</a>&nbsp;
+          
+            <a href="/tags/%E5%A4%87%E4%BB%BD%E8%BF%98%E5%8E%9F">备份还原</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/11/12/SPRINGBOOT-%E5%AE%89%E8%A3%85%E4%B8%BAsystemd%E6%9C%8D%E5%8A%A1/">
         <p class="h4 index-header">SPRINGBOOT 安装为systemd服务</p>
         
@@ -559,50 +605,6 @@ X ，至少 n 次，但是不超过 m 次
             <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
           &nbsp;
         
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/09/03/%E6%9E%84%E5%BB%BAredis-%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
-        <p class="h4 index-header">构建redis 管理工具</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">代码地址https://github.com/uglide/RedisDesktopManager构建完成官方构建步骤
-Install Visual Studio 2017 Community Edition.
-Install Qt 5.13.
-Go to 3rdparty/qredisclient/3rdparty/hiredis and apply the patch to fix compilation on Windows:git apply ../hiredis-win.patch
-Go to the 3rdparty/ folder and install zlib with nuget: nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-Install Python 3.7 amd64 to C:\Python37-x64.
-Install Python requirements pip3 install -r src/py/requirements.txt.
-Open ./src/rdm.pro in Qt Creat</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-09-03&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/redis">redis</a>&nbsp;
-          
-            <a href="/tags/qt5%20%E6%89%93%E5%8C%85">qt5 打包</a>&nbsp;
-          
         
       </div>
     </div>

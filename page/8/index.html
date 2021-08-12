@@ -145,6 +145,50 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/Thymeleaf-%E6%80%BB%E7%BB%93/">
+        <p class="h4 index-header">Thymeleaf 总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、配置spring.thymeleaf.cache=false
+spring.thymeleaf.enable-spring-el-compiler=true&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;2、js变量赋值其中script 标签type 要替换为 th:inline=”javascript”,替换变量双重中括号[[spel表达式]]
+&lt;script th:inline=&quot;javascript&quot;&gt;
+  //前台调用时传过来的参数
+  var menuclick = [[$&#123;param.menu&#125;]];
+  var specialtext = [[$&#123;specialtext&#125;]];
+  var index = [[$&#12</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/thymeleaf">thymeleaf</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/11/SPRING-BOOT-%E7%9B%91%E5%90%ACSESSION-%E4%BA%8B%E4%BB%B6/">
         <p class="h4 index-header">SPRING BOOT 监听SESSION 事件</p>
         
@@ -542,43 +586,6 @@ linux  route
             <a href="/categories/%E7%BD%91%E7%BB%9C">网络</a>&nbsp;
           &nbsp;
         
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/08/05/OSB-PIPELINE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
-        <p class="h4 index-header">OSB PIPELINE 错误处理</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">OSB 默认错误返回是包含error-code 和error-msg 的json格式报文，一般情况下对于客户来说这个格式跟系统是不统一的 ，此时需要自定义错误处理，根据不同错误码返回不同的自定义格式报文
-
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-05&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/OSB">OSB</a>&nbsp;
-          
         
       </div>
     </div>

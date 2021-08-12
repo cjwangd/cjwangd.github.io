@@ -439,6 +439,42 @@ import com.</div>
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/12/03/MySQL-%E4%BC%98%E5%8C%96/">
+        <p class="h4 index-header">使用 Github，hexo 建立个人日志系统</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">创建 github 仓库可访问的仓库可访问的仓库的名称必须是 用户名.github.io
+保存源码的仓库 也可以在 可访问的仓库 建一个分支来保存源码。这里单独建立一个private 仓库
+配置gitgit config --global user.name &quot;你的GitHub用户名&quot;
+git config --global user.email &quot;你的GitHub注册邮箱&quot;
+配置hexo安装npm install -g hexo-cli 
+
+hexo init blog
+配置 package.json加入以下依赖
+&quot;hexo-admin&quot;: &quot;^2.3.0&quot;,  //   在网页写博客
+&quot;hexo-deployer-git&quot;: &quot;^3.0.0&quot;,  //  将编译静态文件发布到 github配置 _config.yamldeploy:
+  type: &#39;git&#39;
+  repo: &#39;https://github.com/username/use</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-03&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/12/02/Honywell-1900-%E6%B7%BB%E5%8A%A0%E6%89%AB%E6%8F%8F%E7%B1%BB%E5%9E%8B/">
         <p class="h4 index-header">Honywell 1900 添加扫描类型</p>
         
@@ -555,52 +591,6 @@ Q</div>
             <a href="/categories/%E8%88%AA%E7%A9%BA%E4%B8%9A%E5%8A%A1">航空业务</a>&nbsp;
           &nbsp;
         
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/11/17/%E9%80%9A%E8%BF%87%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E8%BF%98%E5%8E%9Fsqlserver%E6%95%B0%E6%8D%AE%E5%BA%93/">
-        <p class="h4 index-header">通过备份文件还原sqlserver数据库</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">启动容器1、mssql
-
-docker run -dit -e &#39;ACCEPT_EULA=Y&#39; -e &#39;SA_PASSWORD=123456&#39; -p 1433:1433 --name mssql mcr.microsoft.com/mssql/server创建目录docker exec -it mssql mkdir -p /opt/hg
-
-docker cp hg.bak mssql:/opt/hg
-
-还原数据库打开navcat命令行
-1&gt; restore filelistonly  from disk=&#39;/opt/hg/hg.bak&#39;
-2&gt; go
- LogicalName   PhysicalName                                            Type   FileGroupName   Size         MaxSize          FileId   CreateLSN   DropLSN   UniqueId                            </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-17&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/sqlserver">sqlserver</a>&nbsp;
-          
-            <a href="/tags/%E5%A4%87%E4%BB%BD%E8%BF%98%E5%8E%9F">备份还原</a>&nbsp;
-          
         
       </div>
     </div>

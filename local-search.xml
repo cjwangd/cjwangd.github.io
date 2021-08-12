@@ -922,6 +922,19 @@
   
   
   <entry>
+    <title>使用 Github，hexo 建立个人日志系统</title>
+    <link href="/2020/12/03/MySQL-%E4%BC%98%E5%8C%96/"/>
+    <url>/2020/12/03/MySQL-%E4%BC%98%E5%8C%96/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="创建-github-仓库"><a href="#创建-github-仓库" class="headerlink" title="创建 github 仓库"></a>创建 github 仓库</h1><h2 id="可访问的仓库"><a href="#可访问的仓库" class="headerlink" title="可访问的仓库"></a>可访问的仓库</h2><p>可访问的仓库的名称必须是 用户名.github.io</p><h2 id="保存源码的仓库"><a href="#保存源码的仓库" class="headerlink" title="保存源码的仓库"></a>保存源码的仓库</h2><p> 也可以在 可访问的仓库 建一个分支来保存源码。这里单独建立一个private 仓库</p><h1 id="配置git"><a href="#配置git" class="headerlink" title="配置git"></a>配置git</h1><pre><code>git config --global user.name &quot;你的GitHub用户名&quot;git config --global user.email &quot;你的GitHub注册邮箱&quot;</code></pre><h1 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre><code>npm install -g hexo-cli hexo init blog</code></pre><h2 id="配置-package-json"><a href="#配置-package-json" class="headerlink" title="配置 package.json"></a>配置 package.json</h2><p>加入以下依赖</p><pre><code>&quot;hexo-admin&quot;: &quot;^2.3.0&quot;,  //   在网页写博客&quot;hexo-deployer-git&quot;: &quot;^3.0.0&quot;,  //  将编译静态文件发布到 github</code></pre><h2 id="配置-config-yaml"><a href="#配置-config-yaml" class="headerlink" title="配置 _config.yaml"></a>配置 _config.yaml</h2><pre><code>deploy:  type: &#39;git&#39;  repo: &#39;https://github.com/username/username.github.io.git&#39;  branch: &#39;master&#39;# hexo-admin authentification admin:  username: user  password_hash: password_hash  secret: secret</code></pre><h1 id="写日志流程"><a href="#写日志流程" class="headerlink" title="写日志流程"></a>写日志流程</h1><p>1、check 源码到本地，启动本地hexo 服务</p><pre><code>hexo server</code></pre><p>2、打开网页编辑器，编写日志</p><pre><code>http://127.0.0.1:4000/admin</code></pre><p>3、将源码和编译静态文件提交到github</p><pre><code>hexo cleanhexo ghexo ggit push </code></pre>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Honywell 1900 添加扫描类型</title>
     <link href="/2020/12/02/Honywell-1900-%E6%B7%BB%E5%8A%A0%E6%89%AB%E6%8F%8F%E7%B1%BB%E5%9E%8B/"/>
     <url>/2020/12/02/Honywell-1900-%E6%B7%BB%E5%8A%A0%E6%89%AB%E6%8F%8F%E7%B1%BB%E5%9E%8B/</url>

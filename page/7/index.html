@@ -145,6 +145,52 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/ExtJS-%E7%BB%84%E4%BB%B6%E9%87%8D%E8%BD%BD/">
+        <p class="h4 index-header">ExtJS 组件重载</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> ExtJs 日期选择没有清除按钮，增加一个清除按钮
+/**
+ * 日期选择增加清除按钮
+ */
+Ext.override(Ext.picker.Date,&#123;
+    onRender : function(container, position) &#123;
+        var me = this;
+        me.clearBtn = new Ext.button.Button(&#123;
+            ownerCt: me,
+            ownerLayout: me.getComponentLayout(),
+            text: &#39;清除&#39;,
+            tooltip: &#39;清除日期&#39;,
+            tooltipType: &#39;title&#39;,
+            handler: me.selectClear,
+            scope: me
+        &#125;);
+        this.clearBtn.owner</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/11/%E5%9F%BA%E4%BA%8Etoken%E8%AE%A4%E8%AF%81%E7%9A%84%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/">
         <p class="h4 index-header">基于token认证的文件下载</p>
         
@@ -547,50 +593,6 @@ E:\IDEA_WORKSPACE\DCS\MQ-CONNECTOR\TARGET\MQ-CONNECTOR├─bin│  └─com│
             <a href="/tags/%E6%89%93%E5%8C%85">打包</a>&nbsp;
           
             <a href="/tags/ZIP64">ZIP64</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/08/11/Thymeleaf-%E6%80%BB%E7%BB%93/">
-        <p class="h4 index-header">Thymeleaf 总结</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">1、配置spring.thymeleaf.cache=false
-spring.thymeleaf.enable-spring-el-compiler=true&lt;dependency&gt;
-  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
-&lt;/dependency&gt;2、js变量赋值其中script 标签type 要替换为 th:inline=”javascript”,替换变量双重中括号[[spel表达式]]
-&lt;script th:inline=&quot;javascript&quot;&gt;
-  //前台调用时传过来的参数
-  var menuclick = [[$&#123;param.menu&#125;]];
-  var specialtext = [[$&#123;specialtext&#125;]];
-  var index = [[$&#12</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JAVA">JAVA</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/thymeleaf">thymeleaf</a>&nbsp;
           
         
       </div>
