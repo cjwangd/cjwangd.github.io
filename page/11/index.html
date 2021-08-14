@@ -145,6 +145,48 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/11/%E5%9F%BA%E4%BA%8Edocker-%E6%90%AD%E5%BB%BA-mysql-innodb-cluster-%E9%9B%86%E7%BE%A4/">
+        <p class="h4 index-header">基于docker 搭建 mysql innodb cluster 集群</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、构建mysql-shell 镜像由于没有好用的mysql-shell镜像，这里先手工构建一个
+1.1 下载 mysql-shellfedora 32 版本
+下载  mysql-shell-8.0.22-1.fc32.x86_64.rpm下载地址
+https://dev.mysql.com/downloads/shell/1.2 编写docker file
+FROM fedora
+
+MAINTAINER Wang Changjin &lt;wangcj@cares.sh.cn&gt;
+ADD mysql-shell-8.0.22-1.fc32.x86_64.rpm /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
+COPY cluster.js /
+RUN rpm -ivh /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
+
+ENTRYPOINT [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;while true; do  sleep 1; done&quot;]
+1.3 集群创建脚</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E8%A3%85%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C/">
         <p class="h4 index-header">内网安装区块链网络</p>
         
@@ -639,40 +681,6 @@ systemctl start redis.service
           <i class="iconfont icon-inbox"></i>
           
             <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/08/ORACLE-12C-%E5%85%8B%E9%9A%86%E5%8F%AF%E6%8F%92%E6%8B%94%E6%95%B0%E6%8D%AE%E5%BA%93/">
-        <p class="h4 index-header">ORACLE 12C 克隆可插拔数据库</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">1、登录到根容器 sqlplus /nolog
- conn / as sysdba
-2、克隆orclpdb1 为 datacenter
-3、查看监听
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
           &nbsp;
         
         

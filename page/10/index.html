@@ -145,6 +145,83 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/06/28/REDIS-%E4%B8%BB%E4%BB%8E%E5%AE%89%E8%A3%85/">
+        <p class="h4 index-header">REDIS 主从安装</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1 环境
+
+
+节点
+主机名
+ip地址
+操作系统版本
+
+
+
+节点一
+midware1
+10.5.11.74
+centos 7.5
+
+
+节点二
+midware2
+10.5.11.75
+centos 7.5
+
+
+2 设置hostname2.1 hostsvi /etc/hosts
+10.5.11.74 midware1
+10.5.11.75 midware2
+2.2 hostname节点一
+hostnamectl set-hostname midware1
+
+节点二
+hostnamectl set-hostname midware2
+
+3 主从安装3.1 节点一软件安装rpm -ivh jemalloc-3.6.0-1.el7.x86_64.rpm
+rpm -ivh redis-3.2.12-2.el7.x86_64.rpm
+
+3.2 节点一配置修改 /etc/redis.conf 中以下配置项
+
+bind 0.0.0.0
+requirepass  password
+
+systemctl enable redis
+systemctl start redis3.3 节点二软件安装rpm -iv</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-06-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/redis">redis</a>&nbsp;
+          
+            <a href="/tags/%E4%B8%BB%E4%BB%8E">主从</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/06/28/RABBITMQ-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/">
         <p class="h4 index-header">RABBITMQ 集群安装</p>
         
@@ -531,48 +608,6 @@ this.router.navigate([&#39;pages/xxlJob/joblog&#39;], &#123;queryParams: &#123;t
       <div>
         
           <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
-          &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/04/11/%E5%9F%BA%E4%BA%8Edocker-%E6%90%AD%E5%BB%BA-mysql-innodb-cluster-%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">基于docker 搭建 mysql innodb cluster 集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">1、构建mysql-shell 镜像由于没有好用的mysql-shell镜像，这里先手工构建一个
-1.1 下载 mysql-shellfedora 32 版本
-下载  mysql-shell-8.0.22-1.fc32.x86_64.rpm下载地址
-https://dev.mysql.com/downloads/shell/1.2 编写docker file
-FROM fedora
-
-MAINTAINER Wang Changjin &lt;wangcj@cares.sh.cn&gt;
-ADD mysql-shell-8.0.22-1.fc32.x86_64.rpm /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
-COPY cluster.js /
-RUN rpm -ivh /mysql-shell-8.0.22-1.fc32.x86_64.rpm 
-
-ENTRYPOINT [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;while true; do  sleep 1; done&quot;]
-1.3 集群创建脚</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-11&nbsp;&nbsp;
         
         
           <i class="iconfont icon-inbox"></i>

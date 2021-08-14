@@ -145,6 +145,45 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/12/25/FutureTask-%E8%8E%B7%E5%8F%96%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C/">
+        <p class="h4 index-header">FutureTask 获取异步处理结果</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">    public byte[] getScreenShot(String mac) &#123;
+        if (!ClientConnectionMap.keySet().contains(mac)) &#123;
+            throw new BusinessException(&quot;航显ID &quot; + mac + &quot; 不存在&quot;);
+        &#125;
+        Channel channel = ClientConnectionMap.getClientChannelBytoken(mac);
+        if (null == channel) &#123;
+            throw new BusinessException(&quot;连接异常&quot;);
+        &#125;
+        String reqId = UUID.randomUUID().toString();
+        FidsScreenShotReq req = new FidsScreen</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/java">java</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/12/24/SPING-CLOUD-GATEWAY-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
         <p class="h4 index-header">SPING CLOUD GATEWAY 自定义负载均衡</p>
         
@@ -536,46 +575,6 @@ hexo init blog
           <i class="iconfont icon-inbox"></i>
           
             <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
-          &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/11/30/Dockerfile-%E4%BB%A5%E9%9D%9Eroot%E7%94%A8%E6%88%B7%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/">
-        <p class="h4 index-header">Dockerfile 以非root用户执行脚本</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">FROM store/oracle/database-enterprise:12.2.0.1
-COPY --chown=oracle:oinstall  aoc.dmp /home/oracle/aoc.dmp
-COPY --chown=oracle:oinstall  sia.dmp /home/oracle/sia.dmp
-COPY --chown=oracle:oinstall init     /home/oracle/setup/init
-USER oracle
-WORKDIR /home/oracle
-CMD [&quot;/bin/sh&quot;,&quot;-c&quot;, &quot;/bin/bash /home/oracle/setup/init&quot;]
-USER oracle
-切换用户
-WORKDIR /home/oracle指定用户工作目录，加入脚本要在当前目录创建临时文件，必须指定WORKDIR，否则可能没有权限
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-30&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/docker">docker</a>&nbsp;
           &nbsp;
         
         

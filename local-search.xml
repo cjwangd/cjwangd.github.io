@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>kettle java 脚本</title>
+    <link href="/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/"/>
+    <url>/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="java脚本"><a href="#java脚本" class="headerlink" title="java脚本"></a>java脚本</h1><pre><code>import java.sql.*;import java.util.*;import java.util.Map;import org.apache.commons.lang.StringUtils;import org.pentaho.di.core.database.*;static Map  map = null;public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException&#123;    Object[] r = getRow();    if (r == null) &#123;        setOutputDone();        return false;    &#125;    if(null == map)&#123;        loadPropsDict();    &#125;    // 处理航段    String dep = get(Fields.In, &quot;ORI_APT_IATA&quot;).getString(r);    String arr = get(Fields.In, &quot;DES_APT_IATA&quot;).getString(r);    String LINE_HD = get(Fields.In, &quot;LINE_HD&quot;).getString(r);    String LINE = get(Fields.In, &quot;LINE&quot;).getString(r);    if(LINE.indexOf(dep)&lt;0 || LINE.indexOf(arr)&lt;0)&#123;        get(Fields.Out, &quot;LINE&quot;).setValue(r,LINE_HD);    &#125;    LINE = get(Fields.In, &quot;LINE&quot;).getString(r);    String[] codes = LINE.split(&quot;-&quot;);    String props = getPropertyByIATAcode(codes);    String LINE_TYPE = getLineProperty(props);    get(Fields.Out, &quot;LINE_TYPE&quot;).setValue(r,LINE_TYPE);    get(Fields.Out, &quot;AIR_LINE&quot;).setValue(r,LINE);    String LINE_SEG = get(Fields.In, &quot;LINE_SEG&quot;).getString(r);    codes = LINE_SEG.split(&quot;-&quot;);    props = getPropertyByIATAcode(codes);    String LEG_TYPE = getLineProperty(props);    get(Fields.Out, &quot;LEG_TYPE&quot;).setValue(r,LEG_TYPE);    get(Fields.Out, &quot;AIR_LEG&quot;).setValue(r,LINE_SEG);    LINE = get(Fields.In, &quot;LINE&quot;).getString(r);    String[] segs = LINE.split(&quot;-&quot;);    Long IO_NUM=calcIo(segs,LINE);    logBasic(&quot;IO_NUM=&quot;+IO_NUM);    get(Fields.In, &quot;IO_NUM&quot;).setValue(r,IO_NUM);    putRow(data.outputRowMeta, r);     return true;&#125;public Long calcIo(String[] segs,String line)&#123;    if(segs==null || segs.length&lt;2)&#123;        return 0L;    &#125;    else if(segs.length==2)&#123;       return 1L;    &#125;else&#123;        if(line.startsWith(&quot;PVG&quot;)||line.endsWith(&quot;PVG&quot;))&#123;            return 1L;        &#125;else&#123;            return 2L;        &#125;    &#125;&#125;/**判断航线类型*/public String getLineProperty(String str)&#123;     if(str.indexOf(&quot;I&quot;)&gt;=0)&#123;        return &quot;INT&quot;;     &#125;else if(str.indexOf(&quot;I&quot;)&gt;=0)&#123;         return &quot;REG&quot;;     &#125;else&#123;       return &quot;DOM&quot;;     &#125;&#125;public String getPropertyByIATAcode(String[] codes)&#123;    String prop = &quot;&quot;;    for(int i=0;i&lt;codes.length;i++)&#123;        String c = codes[i];        prop+=map.get(c);    &#125;    return prop;&#125;public void loadPropsDict()&#123;    map = new HashMap();    //数据库连接    Database database = null;    DatabaseMeta databaseMeta = null;    try    &#123;        databaseMeta = getTransMeta().findDatabase(&quot;SMIS&quot;);        if (databaseMeta == null) &#123;            logError(&quot;A connection with name SMIS could not be found!&quot;);            setErrors(1);            return;        &#125;        database = new Database(getTrans(), databaseMeta);        database.connect();        logBasic(&quot;success!&quot;);    &#125; catch(Exception e)    &#123;        logError(&quot;Connecting to database SMIS failed.&quot;, e);        setErrors(1);        return;    &#125;    //查询表数据    String sql = &quot;select t.iata_cd, t.property from SA_STATION t&quot;;    ResultSet resultSet;    try&#123;        resultSet = database.openQuery(sql);        Object[] idxRow = database.getRow(resultSet);        RowMetaInterface idxRowMeta = null;        if (idxRow != null) &#123;            idxRowMeta = database.getReturnRowMeta();        &#125;        int i = 0;        while (idxRow != null) &#123;            int index = getInputRowMeta().size();            String code = idxRowMeta.getString(idxRow, &quot;iata_cd&quot;, null);            String prop = idxRowMeta.getString(idxRow, &quot;property&quot;, null);            map.put(code, prop);            idxRow = database.getRow(resultSet);            i++;        &#125;        //释放连接        if (database != null) &#123;            database.disconnect();            database.closeQuery(resultSet);        &#125;        logBasic(&quot;加载sa_station---结束&quot;);    &#125;catch(Exception e)&#123;        throw new KettleException(e);    &#125; &#125;</code></pre><p>java 脚本有写套路是固定的，如下</p><h1 id="获取行"><a href="#获取行" class="headerlink" title="获取行"></a>获取行</h1><pre><code>Object[] r = getRow();</code></pre><h1 id="获取输入的字段"><a href="#获取输入的字段" class="headerlink" title="获取输入的字段"></a>获取输入的字段</h1><pre><code>get(Fields.In, &quot;field_name&quot;).getString(r);</code></pre><h1 id="设置输出字段的值"><a href="#设置输出字段的值" class="headerlink" title="设置输出字段的值"></a>设置输出字段的值</h1><pre><code>get(Fields.Out, &quot;LINE_TYPE&quot;).setValue(r,LINE_TYPE);</code></pre><h1 id="传递修改后的行到下一个处理"><a href="#传递修改后的行到下一个处理" class="headerlink" title="传递修改后的行到下一个处理"></a>传递修改后的行到下一个处理</h1><pre><code>putRow(data.outputRowMeta, r); </code></pre><p>这个是必须的，否则没有输出字段</p><h1 id="新增字段"><a href="#新增字段" class="headerlink" title="新增字段"></a>新增字段</h1><p>新增字段需要申明，并在java代码设置值</p><p><img src="%5Cimages%5Cpasted-188.png%5C" alt="upload successful"></p><p>这里面写的java语法跟实际还是有点区别，比如stream和泛型就好像不支持，尽管项目是jdk8</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>ETL</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>kettle</tag>
+      
+      <tag>java 脚本</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>github,hexo 搭建个人博客</title>
     <link href="/2021/08/12/github-hexo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
     <url>/2021/08/12/github-hexo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>

@@ -145,6 +145,65 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/">
+        <p class="h4 index-header">kettle java 脚本</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">java脚本import java.sql.*;
+import java.util.*;
+import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.pentaho.di.core.database.*;
+
+static Map  map = null;
+
+public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException
+&#123;
+    Object[] r = getRow();
+    if (r == null) &#123;
+        setOutputDone();
+        return false;
+    &#125;
+    if(null == map)&#123;
+        loadPropsDict();
+    &#125;
+
+
+    // 处理航段
+
+    String dep = get(Fields.In, &q</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-08-12&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/ETL">ETL</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/kettle">kettle</a>&nbsp;
+          
+            <a href="/tags/java%20%E8%84%9A%E6%9C%AC">java 脚本</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/08/12/github-hexo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
         <p class="h4 index-header">github,hexo 搭建个人博客</p>
         
@@ -578,47 +637,6 @@ public int FrameCallBackData(int width, int height, int bytesPerPixel, int strid
             <a href="/tags/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA">人脸跟踪</a>&nbsp;
           
             <a href="/tags/%E4%BA%BA%E8%84%B8web%E5%B1%95%E7%A4%BA">人脸web展示</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/04/27/FFMPEG-%E8%A7%86%E9%A2%91%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
-        <p class="h4 index-header">FFMPEG 视频格式转换</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">mp4 to oggffmpeg -i source.mp4 -acodec libvorbis destination.ogg 3gp to aviffmpeg -i source.3gp -f avi -vcodec xvid -acodec mp3 -ar
-22050 destination.aviflv to 3gpffmpeg -i source.flv -s 176×144 -vcodec h263 -r 25 -b 200
--ab 64 -acodec mp3 -ac 1 -ar 8000 destination.3gpflv to mp4ffmpeg -i source.flv -vcodec h264 -r 25 -b 200 -ab 128
--acodec mp3 -ac 2 -ar 44100 destination.mp3avi to mp4ffmpeg -i source.avi -f psp -r 29.97 -b 768k -ar 24000 -ab
-64k -s 320×240 destination.mp4mp4 to 3gpffmpeg -i sou</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-27&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89">计算机视觉</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/FFMPEG">FFMPEG</a>&nbsp;
-          
-            <a href="/tags/%E8%A7%86%E9%A2%91%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2">视频格式转换</a>&nbsp;
           
         
       </div>

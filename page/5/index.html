@@ -145,6 +145,46 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/11/30/Dockerfile-%E4%BB%A5%E9%9D%9Eroot%E7%94%A8%E6%88%B7%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/">
+        <p class="h4 index-header">Dockerfile 以非root用户执行脚本</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">FROM store/oracle/database-enterprise:12.2.0.1
+COPY --chown=oracle:oinstall  aoc.dmp /home/oracle/aoc.dmp
+COPY --chown=oracle:oinstall  sia.dmp /home/oracle/sia.dmp
+COPY --chown=oracle:oinstall init     /home/oracle/setup/init
+USER oracle
+WORKDIR /home/oracle
+CMD [&quot;/bin/sh&quot;,&quot;-c&quot;, &quot;/bin/bash /home/oracle/setup/init&quot;]
+USER oracle
+切换用户
+WORKDIR /home/oracle指定用户工作目录，加入脚本要在当前目录创建临时文件，必须指定WORKDIR，否则可能没有权限
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-30&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/docker">docker</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/11/19/%E7%8F%AD%E6%8A%A5%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
         <p class="h4 index-header">航班报文生命周期</p>
         
@@ -524,102 +564,6 @@ import lo</div>
             <a href="/tags/jna">jna</a>&nbsp;
           
             <a href="/tags/%E7%9B%91%E5%90%AC%E8%AE%BE%E5%A4%87%E6%8F%92%E6%8B%94">监听设备插拔</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/10/21/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%80%BB%E7%BB%93/">
-        <p class="h4 index-header">正则表达式总结</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">分组的引入  对于要重复单个字符，非常简单，直接在字符后卖弄加上限定符即可，例如 a+ 表示匹配1个或一个以上的a，a?表示匹配0个或1个a。这些限定符如下所示： 
-
-
-
-
-
-
-
-
-X?
-X ，一次或一次也没有
-
-
-X *
-X ，零次或多次
-
-
-X +
-X ，一次或多次
-
-
-X { n }
-X ，恰好 n 次
-
-
-X { n ,}
-X ，至少 n 次
-
-
-X { n , m }
-X ，至少 n 次，但是不超过 m 次
-
-
-但是我们如果要对多个字符进行重复怎么办呢？此时我们就要用到分组，我们可以使用小括号”()”来指定要重复的子表达式，然后对这个子表达式进行重复，例如：(abc)? 表示0个或1个abc 这里一 个括号的表达式就表示一个分组 。
- 分组可以分为两种形式，捕获组和非捕获组。 
-捕获组捕获组可以通过从左到右计算其开括号来编号 。例如，在表达式 (A)(B(C)) 中，存在四个这样的组：
-
-
-
-
-
-
-
-
-0
-(A)(B(C))
-
-
-1
-(A)
-
-
-2
-(B(C))
-
-
-3
-(C)
-
-
-组零始终代表整个表达式
-之所以这样命名捕获组是因为在匹配中，保存了与这些组匹配的输入序列的每个</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-21&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
           
         
       </div>

@@ -145,6 +145,49 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/06/IBMMQ-9-%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/">
+        <p class="h4 index-header">IBMMQ 9 配置使用</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、安装1.1 拉取镜像docker pull store/ibmcorp/mqadvanced-server-dev:9.1.0.01.2 启动mqdocker run \
+  --name IBMMQ \
+  --env LICENSE=accept \
+  --env MQ_QMGR_NAME=ZSJN \
+  --env MQ_ADMIN_PASSWORD=123 \
+  --env MQ_APP_PASSWORD=123 \
+  --publish 1414:1414 \
+  --publish 9443:9443 \
+  --detach \
+  store/ibmcorp/mqadvanced-server-dev:9.1.0.0docker ps
+2、配置2.1 配置用户[root@localhost ibmmq]# docker exec -it IBMMQ bash  
+(mq:9.1.0.0)root@f970f0efcb12:/# useradd ZSJN
+(mq:9.1.0.0)root@f970f0efcb12:/# passwd ZSJN
+Enter ne</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/05/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9/">
         <p class="h4 index-header">网络知识点</p>
         
@@ -608,83 +651,6 @@ ExecStart=/usr/local/bin/weed -logdir /home/weed-lo</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/WEEDFS">WEEDFS</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/06/28/REDIS-%E4%B8%BB%E4%BB%8E%E5%AE%89%E8%A3%85/">
-        <p class="h4 index-header">REDIS 主从安装</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">1 环境
-
-
-节点
-主机名
-ip地址
-操作系统版本
-
-
-
-节点一
-midware1
-10.5.11.74
-centos 7.5
-
-
-节点二
-midware2
-10.5.11.75
-centos 7.5
-
-
-2 设置hostname2.1 hostsvi /etc/hosts
-10.5.11.74 midware1
-10.5.11.75 midware2
-2.2 hostname节点一
-hostnamectl set-hostname midware1
-
-节点二
-hostnamectl set-hostname midware2
-
-3 主从安装3.1 节点一软件安装rpm -ivh jemalloc-3.6.0-1.el7.x86_64.rpm
-rpm -ivh redis-3.2.12-2.el7.x86_64.rpm
-
-3.2 节点一配置修改 /etc/redis.conf 中以下配置项
-
-bind 0.0.0.0
-requirepass  password
-
-systemctl enable redis
-systemctl start redis3.3 节点二软件安装rpm -iv</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-06-28&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/redis">redis</a>&nbsp;
-          
-            <a href="/tags/%E4%B8%BB%E4%BB%8E">主从</a>&nbsp;
           
         
       </div>
