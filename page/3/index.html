@@ -145,6 +145,54 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/03/06/JCEF-%E7%BC%96%E8%AF%91-%E8%AE%B0%E5%BD%95/">
+        <p class="h4 index-header">JCEF 编译 记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前言最近好几个项目使用到cef，所以将jcef 的编译过程记录一下
+如果要兼容很老的机器如winxp,maven中央库有现成的，直接引用即可
+https://mvnrepository.com/artifact/org.bitbucket.johness/java-cef这个是49版本，有32和64可选，最后一个支持xp系统的，更高的版本最低要求win7.
+49版本不支持  es6以上语法，前端打包构建需要转换为es5才可以执行
+如果目标平台在win7以上，最好下载最新的jcef进行编译
+环境
+VMWARE 虚拟机 win7 64
+
+visual studio 2015 c++ 开发环境
+
+CMAKE下载地址
+https://github-releases.githubusercontent.com/537699/b8220600-7c1f-11eb-9ccb-1898af20e7b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210306%2Fus-east-1%2Fs</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JCEF">JCEF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/JCEF">JCEF</a>&nbsp;
+          
+            <a href="/tags/%E7%BC%96%E8%AF%91">编译</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/03/04/JNA-%E8%AF%BB%E5%8F%96%E8%BA%AB%E4%BB%BD%E8%AF%81/">
         <p class="h4 index-header">JNA 读取身份证</p>
         
@@ -586,56 +634,6 @@ npm install --save-dev babel-preset-stage-2
             <a href="/tags/vue">vue</a>&nbsp;
           
             <a href="/tags/%E4%BD%8E%E7%89%88%E6%9C%AC%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9">低版本浏览器兼容</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/01/06/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A8%E9%80%81-eventsource/">
-        <p class="h4 index-header">服务端推送 eventsource</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">前台$(function () &#123;
-
-        let source = null;
-
-        // 用时间戳模拟登录用户
-        const userId = new Date().getTime();
-
-        if (window.EventSource) &#123;
-
-            // 建立连接
-            source = new EventSource(ctx + &quot;fids/screen_status/&quot; + userId);
-            source.addEventListener(&#39;open&#39;, function (e) &#123;
-                setMessageInnerHTML(&quot;建立连接。。。&quot;);
-            &#125;, false);
-            source.addEventListener(&#39;message&#39;, function (e) &#123;
- </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-01-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JAVA">JAVA</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%8E%A8%E9%80%81">推送</a>&nbsp;
           
         
       </div>

@@ -145,6 +145,67 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/08/17/mysql-%E8%8E%B7%E5%8F%96%E8%A1%8C%E5%8F%B7%E7%9A%84%E9%97%AE%E9%A2%98/">
+        <p class="h4 index-header">mysql 获取行号的问题</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">问题drop table if exists passing_number;
+CREATE TABLE `passing_number` (
+`id` int(4) NOT NULL,
+`number` int(4) NOT NULL,
+PRIMARY KEY (`id`));
+
+INSERT INTO passing_number VALUES
+(1,4),
+(2,3),
+(3,3),
+(4,2),
+(6,4),
+(5,5);请你根据上表，输出通过的题目的排名，通过题目个数相同的，排名相同，此时按照id升序排列，数据如下:
+
+id为5的用户通过了5个排名第1，
+id为1和id为6的都通过了4个，并列第2
+sqlSELECT
+    a.*,
+    CONVERT ( r.t_rank, UNSIGNED ) t_rank 
+FROM
+    ( SELECT pn.* FROM passing_number pn ORDER BY pn.number DESC, id ) a
+    LEFT JOIN (
+SELECT
+    p.number,
+    @r := @r + 1</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-08-17&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/mysql">mysql</a>&nbsp;
+          
+            <a href="/tags/sql">sql</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/">
         <p class="h4 index-header">kettle java 脚本</p>
         
@@ -589,55 +650,6 @@ message varchar2(4000)
           <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-29&nbsp;&nbsp;
         
         
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/04/28/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA%E8%BE%93%E5%87%BA%E5%88%B0-html-%E5%B1%95%E7%A4%BA/">
-        <p class="h4 index-header">人脸跟踪输出到 html 展示</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">人脸跟踪回调函数
-public int FrameCallBackData(int width, int height, int bytesPerPixel, int stride, byte[] data, String faces) &#123;
-
-        // 暂无展示需求
-
-        opencv_core.IplImage iplImage = cvCreateImageHeader(cvSize(width, height), IPL_DEPTH_8U, 3);
-        BytePointer bytePointer = new BytePointer(data);
-        cvSetData(iplImage, bytePointer, ((width * 3) + 3) &gt;&gt; 2 &lt;&lt; 2);
-
-
-        // 画人脸框
-        if (StringUtils.isNotEmpty(faces)) &#123;
-            log.info(&quot;faces=&#123;&#125;</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-28&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89">计算机视觉</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA">人脸跟踪</a>&nbsp;
-          
-            <a href="/tags/%E4%BA%BA%E8%84%B8web%E5%B1%95%E7%A4%BA">人脸web展示</a>&nbsp;
-          
         
       </div>
     </div>

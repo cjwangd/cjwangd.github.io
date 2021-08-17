@@ -145,6 +145,55 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/04/28/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA%E8%BE%93%E5%87%BA%E5%88%B0-html-%E5%B1%95%E7%A4%BA/">
+        <p class="h4 index-header">人脸跟踪输出到 html 展示</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">人脸跟踪回调函数
+public int FrameCallBackData(int width, int height, int bytesPerPixel, int stride, byte[] data, String faces) &#123;
+
+        // 暂无展示需求
+
+        opencv_core.IplImage iplImage = cvCreateImageHeader(cvSize(width, height), IPL_DEPTH_8U, 3);
+        BytePointer bytePointer = new BytePointer(data);
+        cvSetData(iplImage, bytePointer, ((width * 3) + 3) &gt;&gt; 2 &lt;&lt; 2);
+
+
+        // 画人脸框
+        if (StringUtils.isNotEmpty(faces)) &#123;
+            log.info(&quot;faces=&#123;&#125;</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89">计算机视觉</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA">人脸跟踪</a>&nbsp;
+          
+            <a href="/tags/%E4%BA%BA%E8%84%B8web%E5%B1%95%E7%A4%BA">人脸web展示</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/04/27/FFMPEG-%E8%A7%86%E9%A2%91%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
         <p class="h4 index-header">FFMPEG 视频格式转换</p>
         
@@ -576,54 +625,6 @@ CA PSCK1转PSCK8私钥openssl pkcs8 -topk8 -inform PEM -in ca/ca-key1.pem -outfo
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E8%AF%BB%E6%8A%A4%E7%85%A7">读护照</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/03/06/JCEF-%E7%BC%96%E8%AF%91-%E8%AE%B0%E5%BD%95/">
-        <p class="h4 index-header">JCEF 编译 记录</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">前言最近好几个项目使用到cef，所以将jcef 的编译过程记录一下
-如果要兼容很老的机器如winxp,maven中央库有现成的，直接引用即可
-https://mvnrepository.com/artifact/org.bitbucket.johness/java-cef这个是49版本，有32和64可选，最后一个支持xp系统的，更高的版本最低要求win7.
-49版本不支持  es6以上语法，前端打包构建需要转换为es5才可以执行
-如果目标平台在win7以上，最好下载最新的jcef进行编译
-环境
-VMWARE 虚拟机 win7 64
-
-visual studio 2015 c++ 开发环境
-
-CMAKE下载地址
-https://github-releases.githubusercontent.com/537699/b8220600-7c1f-11eb-9ccb-1898af20e7b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210306%2Fus-east-1%2Fs</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JCEF">JCEF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/JCEF">JCEF</a>&nbsp;
-          
-            <a href="/tags/%E7%BC%96%E8%AF%91">编译</a>&nbsp;
           
         
       </div>

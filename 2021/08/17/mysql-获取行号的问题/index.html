@@ -16,7 +16,7 @@
   <meta name="description" content="如果鸡蛋被外力打碎，那是生命的结束；&lt;br&gt;如果鸡蛋被内力打碎，那是生命的开始；&lt;br&gt;奇迹的开端永远在事务内部">
   <meta name="author" content="王长金">
   <meta name="keywords" content="王长金的个人博客">
-  <title>归档 ~ 王长金的个人博客</title>
+  <title>mysql 获取行号的问题 ~ 王长金的个人博客</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -118,6 +118,41 @@
             </span>
 
             
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 八月 17日 2021, 10:55 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    216 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
           </div>
 
           
@@ -128,35 +163,128 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 113 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E8%A3%85%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">内网安装区块链网络</span>
-      <span style="float: right;">03-10</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><pre><code>drop table if exists passing_number;
+CREATE TABLE `passing_number` (
+`id` int(4) NOT NULL,
+`number` int(4) NOT NULL,
+PRIMARY KEY (`id`));
 
-              </div>
-            </div>
+INSERT INTO passing_number VALUES
+(1,4),
+(2,3),
+(3,3),
+(4,2),
+(6,4),
+(5,5);</code></pre><p>请你根据上表，输出通过的题目的排名，通过题目个数相同的，排名相同，此时按照id升序排列，数据如下:</p>
+<p><img src="%5Cimages%5Cpasted-189.png%5C" srcset="/img/loading.gif" alt="upload successful"></p>
+<p>id为5的用户通过了5个排名第1，</p>
+<p>id为1和id为6的都通过了4个，并列第2</p>
+<h1 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h1><pre><code>SELECT
+    a.*,
+    CONVERT ( r.t_rank, UNSIGNED ) t_rank 
+FROM
+    ( SELECT pn.* FROM passing_number pn ORDER BY pn.number DESC, id ) a
+    LEFT JOIN (
+SELECT
+    p.number,
+    @r := @r + 1 t_rank 
+FROM
+    ( SELECT DISTINCT number FROM passing_number ) p,
+    ( SELECT @r := 0.0 ) q 
+ORDER BY
+    number DESC 
+    ) r ON a.number = r.number</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>@r 变量在navcat 返回看到结果就是整数，在牛客提交会有小数点加3个0，百思不得解。</p>
+<p>最后使用  CONVERT 转为整形 。或许sql中定义的变量是浮点型的？</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/mysql">mysql</a>
+                
+                  <a class="hover-with-bg" href="/tags/sql">sql</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -233,6 +361,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -273,7 +406,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "mysql 获取行号的问题&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

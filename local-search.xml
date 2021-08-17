@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>mysql 获取行号的问题</title>
+    <link href="/2021/08/17/mysql-%E8%8E%B7%E5%8F%96%E8%A1%8C%E5%8F%B7%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <url>/2021/08/17/mysql-%E8%8E%B7%E5%8F%96%E8%A1%8C%E5%8F%B7%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><pre><code>drop table if exists passing_number;CREATE TABLE `passing_number` (`id` int(4) NOT NULL,`number` int(4) NOT NULL,PRIMARY KEY (`id`));INSERT INTO passing_number VALUES(1,4),(2,3),(3,3),(4,2),(6,4),(5,5);</code></pre><p>请你根据上表，输出通过的题目的排名，通过题目个数相同的，排名相同，此时按照id升序排列，数据如下:</p><p><img src="%5Cimages%5Cpasted-189.png%5C" alt="upload successful"></p><p>id为5的用户通过了5个排名第1，</p><p>id为1和id为6的都通过了4个，并列第2</p><h1 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h1><pre><code>SELECT    a.*,    CONVERT ( r.t_rank, UNSIGNED ) t_rank FROM    ( SELECT pn.* FROM passing_number pn ORDER BY pn.number DESC, id ) a    LEFT JOIN (SELECT    p.number,    @r := @r + 1 t_rank FROM    ( SELECT DISTINCT number FROM passing_number ) p,    ( SELECT @r := 0.0 ) q ORDER BY    number DESC     ) r ON a.number = r.number</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>@r 变量在navcat 返回看到结果就是整数，在牛客提交会有小数点加3个0，百思不得解。</p><p>最后使用  CONVERT 转为整形 。或许sql中定义的变量是浮点型的？</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+      <tag>sql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>kettle java 脚本</title>
     <link href="/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/"/>
     <url>/2021/08/12/kettle-java-%E8%84%9A%E6%9C%AC/</url>

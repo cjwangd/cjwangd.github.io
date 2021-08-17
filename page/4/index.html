@@ -145,6 +145,56 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/01/06/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A8%E9%80%81-eventsource/">
+        <p class="h4 index-header">服务端推送 eventsource</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前台$(function () &#123;
+
+        let source = null;
+
+        // 用时间戳模拟登录用户
+        const userId = new Date().getTime();
+
+        if (window.EventSource) &#123;
+
+            // 建立连接
+            source = new EventSource(ctx + &quot;fids/screen_status/&quot; + userId);
+            source.addEventListener(&#39;open&#39;, function (e) &#123;
+                setMessageInnerHTML(&quot;建立连接。。。&quot;);
+            &#125;, false);
+            source.addEventListener(&#39;message&#39;, function (e) &#123;
+ </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-01-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%8E%A8%E9%80%81">推送</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/12/25/FutureTask-%E8%8E%B7%E5%8F%96%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C/">
         <p class="h4 index-header">FutureTask 获取异步处理结果</p>
         
@@ -542,40 +592,6 @@ hexo init blog
         
           <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-03&nbsp;&nbsp;
         
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/12/02/Honywell-1900-%E6%B7%BB%E5%8A%A0%E6%89%AB%E6%8F%8F%E7%B1%BB%E5%9E%8B/">
-        <p class="h4 index-header">Honywell 1900 添加扫描类型</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">码类型对照表
-
-扫描枪设置
-扫描枪重新插拔会失效，需要重新扫此码设置
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-02&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
-          &nbsp;
         
         
       </div>

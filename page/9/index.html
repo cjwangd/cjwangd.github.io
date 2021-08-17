@@ -145,6 +145,38 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/10/JAVA-%E8%BF%9B%E7%A8%8B%E8%B0%83%E8%AF%95%E5%8F%82%E6%95%B0/">
+        <p class="h4 index-header">JAVA 进程调试参数</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-Xdebug -Xrunjdwp:transport=dt_socket,address=8888,server=y,suspend=y
+suspend=y 表示服务进程阻塞直到调试端口连接上suspend=y 表示服务进程不等待调试端口连接
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/06/IBMMQ-9-%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/">
         <p class="h4 index-header">IBMMQ 9 配置使用</p>
         
@@ -587,70 +619,6 @@ BUILD  BUILDROOT  </div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/keepalived">keepalived</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/07/01/WEEDFS-%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
-        <p class="h4 index-header">WEEDFS 分布式文件系统</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">1、 环境
-
-
-节点
-IP
-进程
-
-
-
-节点一
-10.5.11.76
-master，volume
-
-
-节点二
-10.5.11.77
-volume
-
-
-准备weedfs软件包  linux_amd64.tar
-2、节点一 安装2.1、安装准备2.1.1、解压可执行文件tar xvf  linux_amd64.tar
-cp weed /usr/local/bin
-2.1.2、创建运行目录mkdir -p /home/&#123;weed-log,weed-log-master,weed-data,weed-meta&#125;
-2.2、 编写自启动脚本 weedmaster.servicevi /lib/systemd/system/weedmaster.service
-[Unit]
-Description=weedmaster
-After=network.target remote-fs.target nss-lookup.target
-[Service]
-PrivateTmp=yes
-ExecStart=/usr/local/bin/weed -logdir /home/weed-lo</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-07-01&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/WEEDFS">WEEDFS</a>&nbsp;
           
         
       </div>

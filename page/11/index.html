@@ -145,6 +145,36 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/26/oracle-12c-expdp-impdp/">
+        <p class="h4 index-header">oracle 12c expdp impdp</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">整个用户导出导出expdp  \&#39;system/oracle@127.0.0.1:1521/dcdb AS SYSDBA\&#39; nologfile=y dumpfile=expdp.dmp directory=ORACLE_BASE schemas=dsp,dspmgr,security  query=&#39;where rownum &lt; 1000&#39;导入impdp  \&#39;sys/Oradoc_db1@127.0.0.1:1521/orclpdb1.localdomain AS SYSDBA\&#39; nologfile=y dumpfile=expdp.dmp directory=ORACLE_BASE schemas=dsp,dspmgr,security remap_schema=dspmgr:dspmgr,dsp:dsp,security:security remap_tablespace=TBS_DSP:users,TBS_DSP_SECURITY:users,TBS_DSP_MGR:users,TBS_DSP_TEMP:temp,TBS</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/11/%E5%9F%BA%E4%BA%8Edocker-%E6%90%AD%E5%BB%BA-mysql-innodb-cluster-%E9%9B%86%E7%BE%A4/">
         <p class="h4 index-header">基于docker 搭建 mysql innodb cluster 集群</p>
         
@@ -643,46 +673,6 @@ PEER_PIDS=$(ps -ef|grep &#39;peer node start&#</div>
           
             <a href="/tags/fabric%20%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA">fabric 网络搭建</a>&nbsp;
           
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/08/Redis-%E5%AE%89%E8%A3%85/">
-        <p class="h4 index-header">Redis 安装</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装软件
-rpm -ivh redis-3.2.12-2.el7.x86_64.rpm
-配置vi /etc/redis.conf
-
-
-设置开机启动并启动redissystemctl enable redis.service
-systemctl start redis.service
-查看状态
-
-测试
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>&nbsp;
-          &nbsp;
-        
         
       </div>
     </div>

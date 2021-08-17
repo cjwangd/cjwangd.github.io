@@ -145,6 +145,55 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/SPRINGBOOT-%E5%88%86%E7%A6%BB%E6%89%93%E5%8C%85/">
+        <p class="h4 index-header">SPRINGBOOT 分离打包</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">目标：可执行文件、配置文件、库、静态资源文件分开打包
+优点：
+1、方便修改配置 
+2、 方便前后端分离整合（前端工程直接拷贝到resources）
+打包&lt;build&gt;
+
+        &lt;finalName&gt;$&#123;project.artifactId&#125;&lt;/finalName&gt;
+
+        &lt;resources&gt;
+            &lt;resource&gt;
+                &lt;directory&gt;src/main/resources&lt;/directory&gt;
+                &lt;excludes&gt;
+                    &lt;exclude&gt;application*.yml&lt;/exclude&gt;
+                    &lt;exclude&gt;application*.properties&lt;/exclude&gt;
+                    &lt;exclude&</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/SPRINGBOOT">SPRINGBOOT</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%89%93%E5%8C%85">打包</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/11/SPRINGBOOT-%E5%85%A8%E5%B1%80%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
         <p class="h4 index-header">SPRINGBOOT 全局错误处理</p>
         
@@ -561,38 +610,6 @@ public class IbmMqConfig &#123;
           
             <a href="/tags/%E6%B6%88%E6%81%AF%E8%AF%BB%E5%8F%96">消息读取</a>&nbsp;
           
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/08/10/JAVA-%E8%BF%9B%E7%A8%8B%E8%B0%83%E8%AF%95%E5%8F%82%E6%95%B0/">
-        <p class="h4 index-header">JAVA 进程调试参数</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">-Xdebug -Xrunjdwp:transport=dt_socket,address=8888,server=y,suspend=y
-suspend=y 表示服务进程阻塞直到调试端口连接上suspend=y 表示服务进程不等待调试端口连接
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JAVA">JAVA</a>&nbsp;
-          &nbsp;
-        
         
       </div>
     </div>
