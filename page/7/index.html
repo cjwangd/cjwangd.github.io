@@ -145,6 +145,59 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/11/RaphaelJs-2-x-%E8%B7%AF%E5%BE%84%E5%8A%A8%E7%94%BB/">
+        <p class="h4 index-header">RaphaelJs 2.x 路径动画</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、做的监控页面需要动画展示数据通道是否畅通，之前手写svg，发现无法加载同一个图片，转向RaphaelJs ，但是RaphaelJs 2.x 不提供AnimateAlong函数
+2、定义一个自定义属性 progress
+paper.customAttributes.progress = function (v) &#123;
+  var path = this.data(&quot;mypath&quot;),
+  attrs = this.attr(),
+  offset = &#123; x: 0, y: 0 &#125;;
+
+  if (!path) &#123;
+    return &#123;
+    transform: &quot;t0,0r0&quot;
+    &#125;;
+  &#125;
+
+  var startPoint = path.getPointAtLength(0);
+
+  if (attrs.hasOwnProperty(&quot;width&quot;)) &#123;
+    offset.x = -this.attr(&quot;widt</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/SVG">SVG</a>&nbsp;
+          
+            <a href="/tags/%E5%8A%A8%E7%94%BB">动画</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/11/Angular-1-x-%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%B0%83%E8%AF%95/">
         <p class="h4 index-header">Angular 1.x 控制台调试</p>
         
@@ -536,57 +589,6 @@ _filter:none;
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E6%82%BC%E5%BF%B5">悼念</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/08/11/SPRING-LDAP-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/">
-        <p class="h4 index-header">SPRING LDAP 分页查询</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">public List&lt;Person&gt; findAll() &#123;
-
-List&lt;Person&gt; result = new LinkedList&lt;Person&gt;();
-
-final SearchControls searchControls = new SearchControls();
-searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-
-final PagedResultsDirContextProcessor processor =
-new PagedResultsDirContextProcessor(500);
-
-return SingleContextSource.doWithSingleContext(
-ldapTemplate.getContextSource(), new LdapOperationsCallback&lt;List&lt;Person&gt;&gt;() &#123;
-
-@Override
-public List&lt;Person&gt; </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/SPRINGBOOT">SPRINGBOOT</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/LDAP">LDAP</a>&nbsp;
-          
-            <a href="/tags/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2">分页查询</a>&nbsp;
           
         
       </div>

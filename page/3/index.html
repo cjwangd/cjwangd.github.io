@@ -145,6 +145,67 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/03/06/JNA-%E8%AF%BB%E5%8F%96%E6%8A%A4%E7%85%A7/">
+        <p class="h4 index-header">JNA 读取护照</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">护照读取流程
+初始化护照阅读器接口
+设置读取配置
+检测护照放入状态（只有护照放入才能读取）
+读取护照
+获取需要的信息
+释放护照阅读器资源
+
+定义接口public interface PassportService extends Library &#123;
+
+    PassportService INSTANCE = Native.load(&quot;IDCard&quot;, PassportService.class, W32APIOptions.UNICODE_OPTIONS);
+
+    /**
+     * 初始化sdk
+     * @param cArrUserID
+     * @param nType
+     * @param cArrDirectory  lib 路径
+     * @return
+     */
+    int InitIDCard(WString cArrUserID, int nType, WString cArrDirectory);
+
+    /**
+     * 检测是否有证件放入
+     * -1 核心尚未初始化
+     *</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JNA">JNA</a>&nbsp;
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%AF%BB%E6%8A%A4%E7%85%A7">读护照</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/03/06/JCEF-%E7%BC%96%E8%AF%91-%E8%AE%B0%E5%BD%95/">
         <p class="h4 index-header">JCEF 编译 记录</p>
         
@@ -584,56 +645,6 @@ import org.springframework.cloud.bus.event.RemoteApplicationEvent;
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/spring%20cloud%20bus">spring cloud bus</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/01/06/DATAV-%E6%94%AF%E6%8C%81%E4%BD%8E%E7%89%88%E6%9C%AC%E6%B5%8F%E8%A7%88%E5%99%A8es7%E8%BD%ACes5/">
-        <p class="h4 index-header">DATAV 支持低版本浏览器es7转es5</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">问题datav在xp下谷歌浏览器报错，xp下谷歌浏览器只支持es2015语法
-解决思路：使用babel将es2018语法转为es2015
-新建目录，复制要转换的datav.map.vue.js到文件夹命令行进入新建的文件夹新建 bable 配置文件 .babelrc&#123;
-    &quot;presets&quot;: [
-      &quot;es2015&quot;,
-      &quot;vue&quot;,
-      &quot;stage-2&quot;
-    ],
-    &quot;plugins&quot;: []
-  &#125;
-安装bablenpm install -g babel-cli安装转码规则npm install --save-dev babel-preset-es2015
-npm install --save-dev babel-preset-stage-2
-执行转换bable  datav.vue.map.js -o a.js
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-01-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/vue">vue</a>&nbsp;
-          
-            <a href="/tags/%E4%BD%8E%E7%89%88%E6%9C%AC%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9">低版本浏览器兼容</a>&nbsp;
           
         
       </div>

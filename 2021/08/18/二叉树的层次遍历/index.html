@@ -16,7 +16,7 @@
   <meta name="description" content="如果鸡蛋被外力打碎，那是生命的结束；&lt;br&gt;如果鸡蛋被内力打碎，那是生命的开始；&lt;br&gt;奇迹的开端永远在事务内部">
   <meta name="author" content="王长金">
   <meta name="keywords" content="王长金的个人博客">
-  <title>归档 ~ 王长金的个人博客</title>
+  <title>二叉树的层次遍历 ~ 王长金的个人博客</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -118,6 +118,41 @@
             </span>
 
             
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 八月 18日 2021, 12:11 凌晨
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    189 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
           </div>
 
           
@@ -128,65 +163,143 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 114 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/05/18/RABBITMQ-%E5%8A%A8%E6%80%81%E7%9B%91%E5%90%AC%E4%B8%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">RABBITMQ 动态监听与消息转换</span>
-      <span style="float: right;">05-18</span>
-    </a>
-  
-    
-    <a href="/2020/05/18/JAXB-%E4%B8%ADMAP-%E7%9A%84%E4%BA%92%E8%BD%AC/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">JAXB 中MAP 的互转</span>
-      <span style="float: right;">05-18</span>
-    </a>
-  
-    
-    <a href="/2020/05/15/XXL-JOB-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%94%B9%E9%80%A0/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">XXL-JOB 微服务改造</span>
-      <span style="float: right;">05-15</span>
-    </a>
-  
-    
-    <a href="/2020/05/15/SPRING-CLOUD-%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8C%E5%85%83%E6%95%B0%E6%8D%AE/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">SPRING CLOUD 动态注册元数据</span>
-      <span style="float: right;">05-15</span>
-    </a>
-  
-    
-    <a href="/2020/05/15/ANGULAR-%E7%AC%94%E8%AE%B0/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">ANGULAR 笔记</span>
-      <span style="float: right;">05-15</span>
-    </a>
-  
-    
-    <a href="/2020/05/11/selenium-3-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">selenium 3 自动化测试</span>
-      <span style="float: right;">05-11</span>
-    </a>
-  
-</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="输出要求"><a href="#输出要求" class="headerlink" title="输出要求"></a>输出要求</h1><p>输出数组，按层输出，每层一个数组</p>
+<h1 id="java-实现"><a href="#java-实现" class="headerlink" title="java 实现"></a>java 实现</h1><pre><code>
+    public class TreeNode &#123;
+        int val = 0;
+        TreeNode left = null;
+        TreeNode right = null;
+    &#125;
 
 
-              </div>
-            </div>
+    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; levelOrder(TreeNode root) &#123;
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; lists = new ArrayList&lt;&gt;();
+        if(null==root)&#123;
+            return lists;
+        &#125;
+        // 辅助队列
+        Queue&lt;TreeNode&gt; q = new LinkedList();
+        q.add(root);
+        while (!q.isEmpty()) &#123;
+            ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+
+            // 下一层的缓存
+            ArrayList&lt;TreeNode&gt; children = new ArrayList&lt;&gt;();
+
+            // 队列为空当前层处理完毕
+            while (!q.isEmpty()) &#123;
+                TreeNode node = q.poll();
+                list.add(node.val);
+                // 左树添加到缓存
+                if (null != node.left) &#123;
+                    children.add(node.left);
+                &#125;
+                // 右树添加到缓存
+                if (null != node.right) &#123;
+                    children.add(node.right);
+                &#125;
+            &#125;
+
+            // 输出当前层
+            lists.add(list);
+            // 当前层的后代入队
+            q.addAll(children);
+        &#125;
+
+        return lists;
+    &#125;
+
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86">层次遍历</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '824af5b7d8e75025dab2',
+      clientSecret: '077d05ef9d7a47c68f68a2ef75f6effa7ff3620f',
+      repo: 'blogscomments',
+      owner: 'cjwangd',
+      admin: 'cjwangd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -263,6 +376,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -303,7 +421,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "二叉树的层次遍历&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

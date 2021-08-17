@@ -145,6 +145,66 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/09/Hyperledger-Fabric-%E7%AE%80%E6%98%93%E7%BD%91%E7%BB%9C%E5%AE%89%E8%A3%85/">
+        <p class="h4 index-header">Hyperledger Fabric 简易网络安装</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1、前提1.1 、本机已安装docker，go1.2 、已经拉取 Hyperledger Fabric 镜像1.3 、Hyperledger Fabric 二进制已经在 $PATH中2、脚本testret()&#123;
+
+   if [ $1 -ne 0 ]; then
+      exit 1;
+   fi
+   printf  &quot;\033[36m \t\t\t [OK] \033[0m\n&quot; 
+
+&#125;
+
+unsetenv()&#123;
+   unset FABRIC_CFG_PATH
+   unset CORE_PEER_LOCALMSPID
+   unset CORE_PEER_ADDRESS
+   unset CORE_PEER_MSPCONFIGPATH
+&#125;
+
+TEST_HOME=$(cd $(dirname $0); pwd)
+
+printf &#39;%s%s\n&#39; &#39;WORK DIR:&#39; $TEST_HOME
+
+
+PEER_PIDS=$(ps -ef|grep &#39;peer node start&#</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-09&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>&nbsp;
+          
+            <a href="/tags/hyperledger%20fabric">hyperledger fabric</a>&nbsp;
+          
+            <a href="/tags/fabric%20%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA">fabric 网络搭建</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/08/Redis-%E5%AE%89%E8%A3%85/">
         <p class="h4 index-header">Redis 安装</p>
         

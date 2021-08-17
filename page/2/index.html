@@ -145,6 +145,45 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/04/29/%E9%80%9A%E8%BF%87-Oracle-AQ-%E7%9B%91%E6%8E%A7%E8%A1%A8%E7%9A%84%E5%8F%98%E5%8C%96/">
+        <p class="h4 index-header">通过 Oracle AQ  监控表的变化</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前通过java代码去发送这个变化，这个方案的潜在问题是java代码可能阻塞导致表的数据更新变慢。当然也可以把变化通过 oracle java 代码发送到我们的队列中间件，但是数据库既然有，就用现成的。
+获取相关权限grant execute on DBMS_AQ to sia;
+GRANT EXECUTE ANY PROCEDURE TO sia;
+GRANT aq_administrator_role TO sia;
+GRANT aq_user_role TO sia;
+GRANT EXECUTE ON dbms_aqadm TO sia;
+GRANT EXECUTE ON dbms_aq TO sia;
+GRANT EXECUTE ON dbms_aqin TO sia;
+创建类型create type acdm_upload_queue_payload_type as object (
+msgtype varchar2(20),
+message varchar2(4000)
+);
+创建队列表begin
+  dbms_aqadm.create_queue_table(
+    q</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-29&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/04/28/%E4%BA%BA%E8%84%B8%E8%B7%9F%E8%B8%AA%E8%BE%93%E5%87%BA%E5%88%B0-html-%E5%B1%95%E7%A4%BA/">
         <p class="h4 index-header">人脸跟踪输出到 html 展示</p>
         
@@ -564,67 +603,6 @@ CA PSCK1转PSCK8私钥openssl pkcs8 -topk8 -inform PEM -in ca/ca-key1.pem -outfo
             <a href="/tags/%E5%8A%A0%E5%AF%86">加密</a>&nbsp;
           
             <a href="/tags/NETTY">NETTY</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/03/06/JNA-%E8%AF%BB%E5%8F%96%E6%8A%A4%E7%85%A7/">
-        <p class="h4 index-header">JNA 读取护照</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">护照读取流程
-初始化护照阅读器接口
-设置读取配置
-检测护照放入状态（只有护照放入才能读取）
-读取护照
-获取需要的信息
-释放护照阅读器资源
-
-定义接口public interface PassportService extends Library &#123;
-
-    PassportService INSTANCE = Native.load(&quot;IDCard&quot;, PassportService.class, W32APIOptions.UNICODE_OPTIONS);
-
-    /**
-     * 初始化sdk
-     * @param cArrUserID
-     * @param nType
-     * @param cArrDirectory  lib 路径
-     * @return
-     */
-    int InitIDCard(WString cArrUserID, int nType, WString cArrDirectory);
-
-    /**
-     * 检测是否有证件放入
-     * -1 核心尚未初始化
-     *</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JNA">JNA</a>&nbsp;
-          
-            <a href="/categories/JAVA">JAVA</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E8%AF%BB%E6%8A%A4%E7%85%A7">读护照</a>&nbsp;
           
         
       </div>

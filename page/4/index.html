@@ -145,6 +145,56 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/01/06/DATAV-%E6%94%AF%E6%8C%81%E4%BD%8E%E7%89%88%E6%9C%AC%E6%B5%8F%E8%A7%88%E5%99%A8es7%E8%BD%ACes5/">
+        <p class="h4 index-header">DATAV 支持低版本浏览器es7转es5</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">问题datav在xp下谷歌浏览器报错，xp下谷歌浏览器只支持es2015语法
+解决思路：使用babel将es2018语法转为es2015
+新建目录，复制要转换的datav.map.vue.js到文件夹命令行进入新建的文件夹新建 bable 配置文件 .babelrc&#123;
+    &quot;presets&quot;: [
+      &quot;es2015&quot;,
+      &quot;vue&quot;,
+      &quot;stage-2&quot;
+    ],
+    &quot;plugins&quot;: []
+  &#125;
+安装bablenpm install -g babel-cli安装转码规则npm install --save-dev babel-preset-es2015
+npm install --save-dev babel-preset-stage-2
+执行转换bable  datav.vue.map.js -o a.js
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-01-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/vue">vue</a>&nbsp;
+          
+            <a href="/tags/%E4%BD%8E%E7%89%88%E6%9C%AC%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9">低版本浏览器兼容</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/01/06/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A8%E9%80%81-eventsource/">
         <p class="h4 index-header">服务端推送 eventsource</p>
         
@@ -556,42 +606,6 @@ import com.</div>
           
             <a href="/categories/jna">jna</a>&nbsp;
           &nbsp;
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/12/03/MySQL-%E4%BC%98%E5%8C%96/">
-        <p class="h4 index-header">使用 Github，hexo 建立个人日志系统</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">创建 github 仓库可访问的仓库可访问的仓库的名称必须是 用户名.github.io
-保存源码的仓库 也可以在 可访问的仓库 建一个分支来保存源码。这里单独建立一个private 仓库
-配置gitgit config --global user.name &quot;你的GitHub用户名&quot;
-git config --global user.email &quot;你的GitHub注册邮箱&quot;
-配置hexo安装npm install -g hexo-cli 
-
-hexo init blog
-配置 package.json加入以下依赖
-&quot;hexo-admin&quot;: &quot;^2.3.0&quot;,  //   在网页写博客
-&quot;hexo-deployer-git&quot;: &quot;^3.0.0&quot;,  //  将编译静态文件发布到 github配置 _config.yamldeploy:
-  type: &#39;git&#39;
-  repo: &#39;https://github.com/username/use</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-03&nbsp;&nbsp;
-        
         
         
       </div>
