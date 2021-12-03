@@ -145,6 +145,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/12/03/%E7%AD%89%E4%BF%9D%E6%95%B4%E6%94%B9%E4%B9%8Bcentos7-ssh%E5%8D%87%E7%BA%A7/">
+        <p class="h4 index-header">等保整改之centos7 ssh升级</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">问题描述OpenSSH（OpenBSD Secure Shell）是OpenBSD计划组所维护的一套用于安全访问远程计算机的连接工具。该工具是SSH协议的开源实现，支持对所有的传输进行加密，可有效阻止窃听、连接劫持以及其他网络级的攻击。
+OpenSSH 7.7及之前版本中存在用户枚举漏洞，该漏洞源于程序会对有效的和无效的用户身份验证请求发出不同的响应。攻击者可通过发送特制的请求利用该漏洞枚举用户名称。
+环境红帽企业版7.5，安装选项 基础GUI界面，没有安装开发包
+修复过程下载openssh 最新版8.8下载地址
+http://www.openssh.com/portable.html安装开发包开发包列表
+cpp-4.8.5-28.el7.x86_64.rpm
+gcc-4.8.5-28.el7.x86_64.rpm
+gcc-c++-4.8.5-28.el7.x86_64.rpm
+glibc-devel-2.17-222.el7.x86_64.rpm
+glibc-headers-2.17-222.el7.x86_64.rpm
+kernel-headers-3.10.0-862.el7.x</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-12-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%AE%89%E5%85%A8">安全</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/openssh">openssh</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/08/18/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86/">
         <p class="h4 index-header">二叉树的层次遍历</p>
         
@@ -613,58 +658,6 @@ public class MsPrintSdk &#123;
             <a href="/tags/JNI">JNI</a>&nbsp;
           
             <a href="/tags/%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA">热敏打印机</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/05/01/JCEF-%E6%B7%BB%E5%8A%A0MP4%E7%AD%89%E8%A7%86%E9%A2%91%E7%9A%84%E6%94%AF%E6%8C%81/">
-        <p class="h4 index-header">JCEF 添加MP4等视频的支持</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">jcef 使用的cef动态库是不支持MP4播放的，只支持完全开源的ogg格式，若要能播放MP4需要对 cef进行重新编译
-撰写本文时，jcef最新版本用到的cef版本是88，官网最新的已经到91了，我们只能去编译jcef配套的88版本，以免出现兼容性问题和浪费时间。编译一次cef太费时间。
-编译环境1.windows 10 专业版 20H2,I79750H,64GB RAM, 2T NVME SSD
-2.ninja
-3.cmake
-4.visual studio 2019 community
-5.300M宽带
-6.忍者VPN，class for windows 安装 cft-tap 网卡，将流量全部从此网卡转发，免去配各种代理的麻烦
-7.python 2.7+ 以上
-ninja、cmake、python 的可执行文件添加到path
-开始编译步骤基本参考官网
-创建文件夹文件夹的名称不要包含特殊字符和除ASCII字符以外的字符，总体长度不要超过35，所在磁盘空闲空间最好有400GB
-c:\code\automate
-c:\code\chromium_git
-下载depot_tools
-ht</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-05-01&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JCEF">JCEF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/mp4%E6%92%AD%E6%94%BE%E6%94%AF%E6%8C%81">mp4播放支持</a>&nbsp;
-          
-            <a href="/tags/cef%E7%BC%96%E8%AF%91">cef编译</a>&nbsp;
           
         
       </div>

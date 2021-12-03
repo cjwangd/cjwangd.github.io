@@ -145,6 +145,58 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/05/01/JCEF-%E6%B7%BB%E5%8A%A0MP4%E7%AD%89%E8%A7%86%E9%A2%91%E7%9A%84%E6%94%AF%E6%8C%81/">
+        <p class="h4 index-header">JCEF 添加MP4等视频的支持</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">jcef 使用的cef动态库是不支持MP4播放的，只支持完全开源的ogg格式，若要能播放MP4需要对 cef进行重新编译
+撰写本文时，jcef最新版本用到的cef版本是88，官网最新的已经到91了，我们只能去编译jcef配套的88版本，以免出现兼容性问题和浪费时间。编译一次cef太费时间。
+编译环境1.windows 10 专业版 20H2,I79750H,64GB RAM, 2T NVME SSD
+2.ninja
+3.cmake
+4.visual studio 2019 community
+5.300M宽带
+6.忍者VPN，class for windows 安装 cft-tap 网卡，将流量全部从此网卡转发，免去配各种代理的麻烦
+7.python 2.7+ 以上
+ninja、cmake、python 的可执行文件添加到path
+开始编译步骤基本参考官网
+创建文件夹文件夹的名称不要包含特殊字符和除ASCII字符以外的字符，总体长度不要超过35，所在磁盘空闲空间最好有400GB
+c:\code\automate
+c:\code\chromium_git
+下载depot_tools
+ht</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-05-01&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JCEF">JCEF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/mp4%E6%92%AD%E6%94%BE%E6%94%AF%E6%8C%81">mp4播放支持</a>&nbsp;
+          
+            <a href="/tags/cef%E7%BC%96%E8%AF%91">cef编译</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/04/29/%E9%80%9A%E8%BF%87-Oracle-AQ-%E7%9B%91%E6%8E%A7%E8%A1%A8%E7%9A%84%E5%8F%98%E5%8C%96/">
         <p class="h4 index-header">通过 Oracle AQ  监控表的变化</p>
         
@@ -558,51 +610,6 @@ ssh root@1.1.1.1应用将开发数据库goc，fids加载到本地
             <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F">分布式</a>&nbsp;
           
             <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%86%85%E5%AD%98">分布式内存</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/03/10/NETTY-%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/">
-        <p class="h4 index-header">NETTY 加密通信</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">依赖引入&lt;dependency&gt;
-     &lt;groupId&gt;io.netty&lt;/groupId&gt;
-     &lt;artifactId&gt;netty-tcnative-boringssl-static&lt;/artifactId&gt;
-     &lt;version&gt;2.0.26.Final&lt;/version&gt;
-&lt;/dependency&gt;
-这个依赖默认是64位的，32位jdk是无法运行的，这里提供一个32位jar连接，系统最低要求win7 
-https://cloud.189.cn/t/ZRRBvmRzmEnu
-生成客户端和服务端密钥CA 证书创建CA PSCK1私钥openssl genrsa -out ca/ca-key1.pem 1024
-CA PSCK1转PSCK8私钥openssl pkcs8 -topk8 -inform PEM -in ca/ca-key1.pem -outform pem -nocrypt -out ca/ca-key.pemCA私钥 创建CSR请求（此处会要求证书相关信息参</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/JAVA">JAVA</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%8A%A0%E5%AF%86">加密</a>&nbsp;
-          
-            <a href="/tags/NETTY">NETTY</a>&nbsp;
           
         
       </div>

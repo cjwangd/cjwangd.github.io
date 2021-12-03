@@ -145,6 +145,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/03/10/NETTY-%E5%8A%A0%E5%AF%86%E9%80%9A%E4%BF%A1/">
+        <p class="h4 index-header">NETTY 加密通信</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">依赖引入&lt;dependency&gt;
+     &lt;groupId&gt;io.netty&lt;/groupId&gt;
+     &lt;artifactId&gt;netty-tcnative-boringssl-static&lt;/artifactId&gt;
+     &lt;version&gt;2.0.26.Final&lt;/version&gt;
+&lt;/dependency&gt;
+这个依赖默认是64位的，32位jdk是无法运行的，这里提供一个32位jar连接，系统最低要求win7 
+https://cloud.189.cn/t/ZRRBvmRzmEnu
+生成客户端和服务端密钥CA 证书创建CA PSCK1私钥openssl genrsa -out ca/ca-key1.pem 1024
+CA PSCK1转PSCK8私钥openssl pkcs8 -topk8 -inform PEM -in ca/ca-key1.pem -outform pem -nocrypt -out ca/ca-key.pemCA私钥 创建CSR请求（此处会要求证书相关信息参</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/JAVA">JAVA</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%8A%A0%E5%AF%86">加密</a>&nbsp;
+          
+            <a href="/tags/NETTY">NETTY</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/03/06/JNA-%E8%AF%BB%E5%8F%96%E6%8A%A4%E7%85%A7/">
         <p class="h4 index-header">JNA 读取护照</p>
         
@@ -593,58 +638,6 @@ cd nginx-1.19.6
             <a href="/tags/%E7%9B%B4%E6%92%AD">直播</a>&nbsp;
           
             <a href="/tags/%E5%B1%8F%E5%B9%95%E5%BD%95%E5%88%B6">屏幕录制</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/01/06/SPRING-CLOUD-BUS-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/">
-        <p class="h4 index-header">SPRING CLOUD BUS 自定义事件</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">引人依赖        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-cloud-starter-bus-amqp&lt;/artifactId&gt;
-        &lt;/dependency&gt;配置rabbit参数    rabbitmq:
-        host: 172.21.126.136
-        port: 5672
-        username: cares
-        password: Cares123
-定义事件package com.cares.fids.server.events;
-
-import org.springframework.cloud.bus.event.RemoteApplicationEvent;
-
-/**
- * @author wangcj
- * @desc
- * @date 2021/1/5 14:25
- **/
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-01-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/SPRING%20CLOUD">SPRING CLOUD</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/spring%20cloud%20bus">spring cloud bus</a>&nbsp;
           
         
       </div>
