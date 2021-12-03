@@ -199,7 +199,7 @@ zlib-devel-1.2.7-17.el7.x86_64.rpm
 systemd-devel-219-57.el7.x86_64.rpm</code></pre><h2 id="修改源码"><a href="#修改源码" class="headerlink" title="修改源码"></a>修改源码</h2><p>默认不修改，安装后执行重启命令会卡住出现僵死，会不断的重启sshd进程，因为sshd没有向systemd发送启动完成的信号，systemd不断的重复杀进程，启动进程，表现就是远程连接一会能连一会不能连</p>
 <h3 id="解压源码包"><a href="#解压源码包" class="headerlink" title="解压源码包"></a>解压源码包</h3><pre><code>tar zxvf openssh-8.8p1.tar.gz
 cd openssh-8.8p1</code></pre><h3 id="修改sshd-c-文件"><a href="#修改sshd-c-文件" class="headerlink" title="修改sshd.c 文件"></a>修改sshd.c 文件</h3><p>在sshd文件找到 server_accept_loop 函数调用的地方，在上方添加如下代码</p>
-<pre><code>sd_notify(0, &quot;READY=1&quot;);</code></pre><p><img src="%5Cimages%5Cpasted-190.png%5C" srcset="/img/loading.gif" alt="upload successful"></p>
+<pre><code>sd_notify(0, &quot;READY=1&quot;);</code></pre><p><img src="/images/pasted-190.png" srcset="/img/loading.gif" alt="upload successful"></p>
 <p>在include 部分增加 include</p>
 <pre><code>#include &lt;systemd/sd-daemon.h&gt;
 </code></pre><h3 id="修改Makefile"><a href="#修改Makefile" class="headerlink" title="修改Makefile"></a>修改Makefile</h3><p>修改LIBS 变量为</p>
