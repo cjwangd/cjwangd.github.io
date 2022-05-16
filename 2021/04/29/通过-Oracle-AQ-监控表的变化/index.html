@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    973 字
+                    1.2k 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      5 分钟
+                      6 分钟
                   </span>&nbsp;
                 
 
@@ -376,7 +376,51 @@ public class AqMsg &#123;
         &#125;
     &#125;
 &#125;
-</code></pre>
+</code></pre><h2 id="oracle-aq-断线重连"><a href="#oracle-aq-断线重连" class="headerlink" title="oracle aq 断线重连"></a>oracle aq 断线重连</h2><p>上述配置如果数据库因故障恢复后，代码无法自动重新连接需要重启应用程序</p>
+<h3 id="自定义消息鉴监听容器"><a href="#自定义消息鉴监听容器" class="headerlink" title="自定义消息鉴监听容器"></a>自定义消息鉴监听容器</h3><pre><code>/**
+ * 可自动重连的消息监听容器
+ */
+public class CaacAqMessageListenerContainer extends DefaultMessageListenerContainer &#123;
+
+    @Override
+    protected MessageConsumer createConsumer(Session session,
+                                             Destination destination) throws JMSException &#123;
+
+        return ((AQjmsSession) session).createConsumer(destination,
+                getMessageSelector(),
+                new OracleQueueMsgType(), null,
+                isPubSubNoLocal());
+    &#125;
+
+&#125;
+</code></pre><p>重载  createConsumer 方法，使用aq的api创建consumer。因为我们发送队列的是一个二维数据的数据结构，必须指定   OracleQueueMsgType  </p>
+<h3 id="设置监听配置"><a href="#设置监听配置" class="headerlink" title="设置监听配置"></a>设置监听配置</h3><pre><code>
+@Value(&quot;$&#123;spring.datasource.url&#125;&quot;)
+    private String jdbcUrl;
+    @Value(&quot;$&#123;spring.datasource.username&#125;&quot;)
+    private String username;
+    @Value(&quot;$&#123;spring.datasource.password&#125;&quot;)
+    private String password;
+    private final String queueName = &quot;osccaac_acdm_queue&quot;;
+
+    @Resource
+    private OracleMessageListener oracleMessageListener;
+
+    @Bean
+    public CaacAqMessageListenerContainer aqListenerContainer() throws JMSException &#123;
+        CaacAqMessageListenerContainer listenerContainer = new CaacAqMessageListenerContainer();
+        AQjmsConnectionFactory connectionFactory = new AQjmsConnectionFactory();
+        connectionFactory.setJdbcURL(jdbcUrl);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        listenerContainer.setConnectionFactory(connectionFactory);
+        listenerContainer.setMessageListener(oracleMessageListener);
+        listenerContainer.setConcurrentConsumers(10);
+        listenerContainer.setDestinationName(queueName);
+        return listenerContainer;
+    &#125;
+</code></pre><p>这样即使数据库故障后，我们也能自动去重连不需要人工干预，提升了程序可用性</p>
+
             <hr>
           </div>
           <br>
