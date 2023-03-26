@@ -145,6 +145,65 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/05/06/JNI-%E8%B0%83%E7%94%A8%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA/">
+        <p class="h4 index-header">JNI 调用热敏打印机</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">环境打印机是美松的热敏打印机，厂商只提供动态库和demo。
+win10 1909 + vs2017
+java 本地方法参考demo中的代码，写好java接口
+package com.cares.msprint;
+
+/**
+ * @author wangcj
+ * @desc
+ * @date 2021/4/28 16:21
+ **/
+public class MsPrintSdk &#123;
+
+    public static native int SetPrintport(String strPort, int iBaudrate);
+
+    public static native int SetUsbportauto();
+
+    public static native int SetInit();
+
+    public static native int SetClean();
+
+    public static native int SetClose();
+
+    public static native int SetAlignment(int iAlign</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-05-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/JNI">JNI</a>&nbsp;
+          
+            <a href="/tags/%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA">热敏打印机</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/05/01/JCEF-%E6%B7%BB%E5%8A%A0MP4%E7%AD%89%E8%A7%86%E9%A2%91%E7%9A%84%E6%94%AF%E6%8C%81/">
         <p class="h4 index-header">JCEF 添加MP4等视频的支持</p>
         
@@ -587,39 +646,6 @@ ssh root@1.1.1.1应用将开发数据库goc，fids加载到本地
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E8%BF%9C%E7%A8%8B%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C">远程脚本执行</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/03/18/%E5%88%86%E5%B8%83%E5%BC%8F%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E5%BA%93Hazelcast-%E5%BA%94%E7%94%A8/">
-        <p class="h4 index-header">分布式内存数据库Hazelcast 应用</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Hazelcast 简介Hazelcast是什么   “分布式”、“集群服务”、“网格式内存数据”、“分布式缓存“、“弹性可伸缩服务”——这些牛逼闪闪的名词拿到哪都是ITer装逼的不二之选。在Javaer的世界，有这样一个开源项目，只需要引入一个jar包、只需简单的配置和编码即可实现以上高端技能，他就是 Hazelcast。
-    Hazelcast 是由Hazelcast公司（没错，这公司也叫Hazelcast！）开发和维护的开源产品，可以为基于jvm环境运行的各种应用提供分布式集群和分布式缓存服务。Hazelcast可以嵌入到任何使用Java、C++、.NET开发的产品中（C++、.NET只提供客户端接入）。Hazelcast目前已经更新到3.X版本，Java中绝大部分数据结构都被其以为分布式的方式实现。比如Javaer熟悉的Map接口，当通过Hazelcast创建一个Map实例后，在节点A调用 Map::put(“A”,”A_DATA”) 方法添加数据，节点B使用 Map::get(“A”) 可以获到值为”A_DATA” 的数据。Hazelcast 提供了 Map、Queue、</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-03-18&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F">分布式</a>&nbsp;
-          
-            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%86%85%E5%AD%98">分布式内存</a>&nbsp;
           
         
       </div>

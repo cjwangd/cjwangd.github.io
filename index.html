@@ -145,6 +145,38 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2023/03/26/arthas-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">
+        <p class="h4 index-header">arthas 使用场景</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">使用约束1、需要 jdk，如果部署的应用是jre 运行，需要上传jdk2、热替换class 同debug 时热替换一样，不能新增方法和字段，否则替换失败。3、执行arths 的 用户必须与 目标程序运行的用户相同，否则无法连接目标进程
+执行jdkpath/bin/java -jar /path/to/arthas-boot.jar
+PS C:\Users\wangchangjin\Downloads\arthas-bin&gt; java -jar .\arthas-boot.jar
+[INFO] JAVA_HOME: D:\program\jdk\jdk8_64\jre
+[INFO] arthas-boot version: 3.6.7
+[INFO] Found existing java process, please choose one and input the serial number of the process, eg : 1. Then hit ENTER.
+* [1]: 14256 org.jetbrains.jps.cmdline.Launcher
+  [2]:</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2023-03-26&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2021/12/03/%E7%AD%89%E4%BF%9D%E6%95%B4%E6%94%B9%E4%B9%8Bcentos7-ssh%E5%8D%87%E7%BA%A7/">
         <p class="h4 index-header">等保整改之centos7 ssh升级</p>
         
@@ -599,65 +631,6 @@ import c</div>
             <a href="/tags/%E5%8F%91%E9%80%81IBMMQ">发送IBMMQ</a>&nbsp;
           
             <a href="/tags/%E7%9B%91%E5%90%ACIBMMQ">监听IBMMQ</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2021/05/06/JNI-%E8%B0%83%E7%94%A8%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA/">
-        <p class="h4 index-header">JNI 调用热敏打印机</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">环境打印机是美松的热敏打印机，厂商只提供动态库和demo。
-win10 1909 + vs2017
-java 本地方法参考demo中的代码，写好java接口
-package com.cares.msprint;
-
-/**
- * @author wangcj
- * @desc
- * @date 2021/4/28 16:21
- **/
-public class MsPrintSdk &#123;
-
-    public static native int SetPrintport(String strPort, int iBaudrate);
-
-    public static native int SetUsbportauto();
-
-    public static native int SetInit();
-
-    public static native int SetClean();
-
-    public static native int SetClose();
-
-    public static native int SetAlignment(int iAlign</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2021-05-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%A1%AC%E4%BB%B6">硬件</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/JNI">JNI</a>&nbsp;
-          
-            <a href="/tags/%E7%83%AD%E6%95%8F%E6%89%93%E5%8D%B0%E6%9C%BA">热敏打印机</a>&nbsp;
           
         
       </div>
